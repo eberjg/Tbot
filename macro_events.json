@@ -1,0 +1,6 @@
+[
+  {"name":"US CPI","time_utc":"2025-09-11T12:30:00Z","impact":"high","symbols":["*"],"window_min":45},
+  {"name":"FOMC Rate Decision","time_utc":"2025-09-17T18:00:00Z","impact":"high","symbols":["*"],"window_min":60},
+  {"name":"Nonfarm Payrolls","time_utc":"2025-09-05T12:30:00Z","impact":"high","symbols":["*"],"window_min":45},
+  {"name":"BTC ETF US Close Flow","time_utc":"2025-09-01T19:45:00Z","impact":"medium","symbols":["BTC-USD"],"window_min":30}
+]

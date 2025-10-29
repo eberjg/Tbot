@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environments
+.venv/
+.venv_new/
+env/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+
+# Secrets
+.env
+
+# VS Code
+.vscode/
+
+# Database or runtime
+*.db
+*.sqlite3

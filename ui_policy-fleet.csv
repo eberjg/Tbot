@@ -1,0 +1,1206 @@
+"ID","Title","Created By","References","Steps","Steps","Steps (Additional Info)","Steps (Expected Result)","Steps (References)","Steps (Shared step ID)","Steps (Step)"
+"C361","Violate with 1 test beacon, 2 reference beacons","F17138803802513","","Configure 1 Blufi and 3 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Ambient Temperature
+
+Click Save and Continue.
+
+Continue editing policy:
+...Set Beacon 1 and Beacon 2 as Reference Ambient Beacons
+...Deviation = 3
+...Use Global Scope is unchecked
+...Policy Devices list contains beacon 3
+...Notifications = None
+
+Place beacon 3 in a location with temperature 3 degrees greater or less than the average temperature of the ambient beacons.
+","","","","","",""
+"C2635","Violate with 1 test beacon, 1 reference beacon non-global","F17138803802513","","Configure 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Ambient Temperature
+
+Click Save and Continue.
+
+Continue editing policy:
+...Set Beacon 1 as Reference Ambient Beacon
+...Deviation = 3
+...Use Global Scope is unchecked
+...Policy Devices list contains beacon 2
+...Notifications = None
+
+Place beacon 2 in a location with temperature 3 degrees greater or less than the average temperature of the ambient beacons.
+","","","","","",""
+"C362","Violate with 2 test beacons, 4 reference beacons","F17138803802513","","","","","","","",""
+"C363","Violate with global test beacons, 2 reference beacons","F17138803802513","","","","","","","",""
+"C364","Create policy with no reference beacons","F17138803802513","","","","","","","",""
+"C365","Add reference beacon to existing policy","F17138803802513","","","","","","","",""
+"C366","Delete a reference beacon from existing policy","F17138803802513","","","","","","","",""
+"C367","Delete all reference beacons from existing policy, while alerting","F17138803802513","","","","","","","",""
+"C368","Remove Ambient Beacon setting from beacon used in policy while alerting","F17138803802513","","","","","","","",""
+"C369","Using Bluzone, delete a beacon currently being used as reference beacon","F17138803802513","","","","","","","",""
+"C423","Using mobile app, delete a beacon currently being used as reference beacon","F17138803802513","","","","","","","",""
+"C376","Using Bluzone, delete a beacon currently being used as a test beacon","F17138803802513","","","","","","","",""
+"C424","Using mobile app, delete a beacon currently being used as a test beacon","F17138803802513","","","","","","","",""
+"C370","Create policy where test beacon is also a reference beacon","F17138803802513","","","","","","","",""
+"C373","Create multiple policies with same beacons","F17138803802513","","","","","","","",""
+"C374","Create multiple policies with different beacons","F17138803802513","","","","","","","",""
+"C375","Change to temperature range is reflected in alert behaviour","F17138803802513","","","","","","","",""
+"C25","Create beacon battery policy - Global scope","F17138803802513","","
+Navigate to Bluzone site, 
+From left menu click on Policy
+Click on create tab 
+Add Policy Name = any name
+Select  policy Type = Battery
+Select namespace = Beacon
+Select Scope = Use Global scope
+Add Email= add user email
+","","","","","",""
+"C2563","Create beacon battery policy - Individual scope","F17138803802513","","Navigate to Bluzone site, 
+From left menu click on Policy
+Click on create tab 
+Add Policy Name = any name
+Select  policy Type = Battery
+Select namespace = Beacon
+Select Scope = Select individual Devices
+Click Save and Continue button
+Click Add button
+From Policy devices list select the subject beacon and click on Save button 
+Add Email= add user email
+
+","","","","","",""
+"C3356","Beacon battery replace alert - Global scope","Eber Garcia","","Given user allocate the subject beacon
+Then user remove battery from the subject beacon
+And an alert should be trigged 
+
+When user navigate to Bluzone site,
+Then From left menu click on Alerts tab
+And user is redirected to Alert page","","","","","",""
+"C2564","Beacon battery replace, email alert notification - Global scope","F17138803802513","","Givin User navigate to the email inbox and allocate the battery alert notification","","","","","",""
+"C3355","Beacon battery replace - email cleared Alert notification - Global scope","Eber Garcia","","Given user allocate the subject beacon
+Then user replace battery with a new one to the subject beacon
+And an alert should be trigged
+
+When user navigate to Bluzone site,
+Then From left menu click on Alerts tab
+And user is redirected to Alert page","","","","","",""
+"C3357","Beacon battery replace alert - Individual scope","Eber Garcia","","Given user allocate the subject beacon
+Then user remove battery from the subject beacon
+And an alert should be trigged
+
+When user navigate to Bluzone site,
+Then From left menu click on Alerts tab
+And user is redirected to Alert page","","","","","",""
+"C3358","Beacon battery replace, email alert notification - Individual scope","Eber Garcia","","Givin User navigate to the email inbox and allocate the battery alert notification","","","","","",""
+"C3359","Beacon battery replace - email cleared Alert notification - Individual scope","Eber Garcia","","Given user allocate the subject beacon
+Then user replace battery with a new one to the subject beacon
+And an alert should be trigged
+
+When user navigate to Bluzone site,
+Then From left menu click on Alerts tab
+And user is redirected to Alert page","","","","","",""
+"C3360","Beacon battery alert - non replacement battery device, at 84%","Eber Garcia","","Given user allocate the subject beacon
+Then user click on Statistic tab
+Then user notice the battery level has decreased below the 84% from its 100%
+And an alert should be trigged
+
+Givin the user had verify the Battery Level
+Then From left menu click on Alerts tab
+And user is redirected to Alert page","","","","","",""
+"C3361","Beacon battery alert - non replacement battery device 84%- Email alert notification","Eber Garcia","","Givin User navigate to the email inbox and allocate the battery alert notification","","","","","",""
+"C3363","Beacon battery alert - non replacement battery device, at 92%","Eber Garcia","","Given user allocate the subject beacon
+Then user click on Statistic tab
+Then user notice the battery level has decreased below the 92% from its 100%
+And an alert should be trigged
+
+Givin the user had verify the Battery Level
+Then From left menu click on Alerts tab
+And user is redirected to Alert page","","","","","",""
+"C3362","Beacon battery alert - non replacement battery device 92%- Email alert notification","Eber Garcia","","Givin User navigate to the email inbox and allocate the battery alert notification","","","","","",""
+"C290","Blufi violation 20 percent, global scope","F17138803802513","","","","","","","",""
+"C291","Blufi violation 99 percent, non-global scope","F17138803802513","","","","","","","",""
+"C292","Blufi violation 50 percent, email notification","F17138803802513","","","","","","","",""
+"C293","Blufi end violation","F17138803802513","","","","","","","",""
+"C294","Blufi violation 3 policy devices","F17138803802513","","","","","","","",""
+"C295","Blufi delete policy devices","F17138803802513","","","","","","","",""
+"C2810","Policy Name includes Hebrew characters","F17138803802513","","Establish Policy Name to include some UTF-8 Hebrew characters: Nir - בדיקת טמפרטורה
+
+On Blufi, change Device Name to include Hebrew characters: Nir - בדיקת טמפרטורה
+
+Violate the policy.
+   ","","","","","",""
+"C3526","Verify Battery Discharge Threshold in battery_type Table","Eber Garcia","","Open the admin interface or database management system that interacts with the battery_type table.
+Verify the Presence of Entries in the battery_type Table:
+Run a query or view the battery types to ensure that the battery_type table contains entries with and without a discharge_threshold value.
+SQL Query:
+
+
+SELECT * FROM battery_type WHERE discharge_threshold IS NOT NULL;
+
+3.	Update or Add a New Entry (Optional):
+	•	(Optional) Add or update an entry in the battery_type table with a valid discharge_threshold value if no valid values are present.
+SQL Query:
+
+UPDATE battery_type 
+SET discharge_threshold = 2.5 
+WHERE battery_type_id = 15;
+
+4.	Check Associated Battery Policy:
+	•	In the Bluzone UI, navigate to the Battery Policy section.
+	•	Create or update a battery policy for a beacon associated with a battery type that has a discharge_threshold value.
+	5.	Simulate Voltage Drop for Beacon:
+	•	Simulate a drop in voltage for a beacon with a battery type that references the discharge_threshold. Ensure that the beacon’s voltage drops below the threshold stored in the database.
+	6.	Verify System Behavior:
+	•	Ensure that when the beacon’s voltage drops below the discharge_threshold, the system generates an alert.
+	•	Check that the system references the correct threshold for the specific battery type from the battery_type table.
+	7.	View Logs/Alerts:
+	•	Check if the alert triggered based on the correct threshold by viewing logs or checking the alerts in the UI.
+	•	Confirm that the alert matches the battery type’s discharge_threshold.","","","","","",""
+"C1502","2 FOBs, 2 Feet, Duration = 30, 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1503","2 FOBs, 5 Feet, Duration = 30, 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1504","2 FOBs, 8 Feet, Duration = 30, 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, facing 0 degrees (directly face-to-face).","","","","","",""
+"C1521","2 FOBs, 2 Feet, Duration = 30, 45 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 45 degrees.","","","","","",""
+"C1522","2 FOBs, 5 Feet, Duration = 30, 45 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, facing 45 degrees.","","","","","",""
+"C1524","2 FOBs, 8 Feet, Duration = 30, 45 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, facing 45 degrees.","","","","","",""
+"C1525","2 FOBs, 2 Feet, Duration = 30, 90 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 90 degrees.","","","","","",""
+"C1526","2 FOBs, 5 Feet, Duration = 30, 90 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, facing 90 degrees.","","","","","",""
+"C1527","2 FOBs, 8 Feet, Duration = 30, 90 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, facing 90 degrees.","","","","","",""
+"C1528","3 FOBs, 2 Feet, Duration = 30, Equilateral","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C1536","3 FOBs, 5 Feet, Duration = 30, Equilateral","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C1537","3 FOBs, 8 Feet, Duration = 30, Equilateral","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, roughly the shape of an equilateral triangle.","","","","","",""
+"C1531","2 FOBs, 2 Feet, Duration = 30, BacktoBack 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, back 0 degrees (directly back-to-back).
+","","","","","",""
+"C1533","2 FOBs, 5 Feet, Duration = 30, BacktoBack 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, back 0 degrees (directly back-to-back).
+","","","","","",""
+"C1535","2 FOBs, 8 Feet, Duration = 30, BacktoBack 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, back 0 degrees (directly back-to-back).","","","","","",""
+"C1532","2 FOBs, 2 Feet, Duration = 60, 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1538","2 FOBs, 5 Feet, Duration = 60, 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1539","2 FOBs, 8 Feet, Duration = 60, 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, facing 0 degrees (directly face-to-face).","","","","","",""
+"C1540","2 FOBs, 2 Feet, Duration = 60, 45 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 45 degrees.","","","","","",""
+"C1541","2 FOBs, 5 Feet, Duration = 60, 45 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, facing 45 degrees.","","","","","",""
+"C1542","2 FOBs, 8 Feet, Duration = 60, 45 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, facing 45 degrees.","","","","","",""
+"C1543","2 FOBs, 2 Feet, Duration = 60, 90 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 90 degrees.","","","","","",""
+"C1544","2 FOBs, 5 Feet, Duration = 60, 90 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, facing 90 degrees.","","","","","",""
+"C1545","2 FOBs, 8 Feet, Duration = 60, 90 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, facing 90 degrees.","","","","","",""
+"C1546","3 FOBs, 2 Feet, Duration = 60, Equilateral","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C1547","3 FOBs, 5 Feet, Duration = 60, Equilateral","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C1548","3 FOBs, 8 Feet, Duration = 60, Equilateral","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, roughly the shape of an equilateral triangle.","","","","","",""
+"C1549","2 FOBs, 2 Feet, Duration = 60, BacktoBack 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, back 0 degrees (directly back-to-back).
+","","","","","",""
+"C1550","2 FOBs, 5 Feet, Duration = 60, BacktoBack 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 5 feet apart, back 0 degrees (directly back-to-back).
+","","","","","",""
+"C1551","2 FOBs, 8 Feet, Duration = 60, BacktoBack 0 Degrees","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 60
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 8 feet apart, back 0 degrees (directly back-to-back).","","","","","",""
+"C1573","FOBs alert, clear alert, then refire","F17138803802513","","In Bluzone, go to Policies side menu and create a Distance Violation policy, as follows:
+...Duration = 30
+...Automatically Clear Violations is selected
+...Use Global Scope
+
+Place the FOBs 2 feet apart, facing 0 degrees (directly face-to-face). In Bluzone alert list, observe an alert occurs for each beacon.
+
+Clear the alerts from the list.","","","","","",""
+"C1552","2 FOBs, 3 Feet, Duration = 30, 12 o'clock","F17138803802513","","Place the FOBs 3 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1554","2 FOBs, 5 Feet, Duration = 30, 12 o'clock","F17138803802513","","Place the FOBs 5 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1555","2 FOBs, 9 Feet, Duration = 30, 12 o'clock","F17138803802513","","Place the FOBs 9 feet apart, facing 0 degrees (directly face-to-face).
+","","","","","",""
+"C1556","2 FOBs, 3 Feet, Duration = 30, 2 o'clock","F17138803802513","","Place the FOBs 3 feet apart, facing 2 o'clock.","","","","","",""
+"C1557","2 FOBs, 5 Feet, Duration = 30, 2 o'clock","F17138803802513","","Place the FOBs 5 feet apart, 2 o'clock.","","","","","",""
+"C1558","2 FOBs, 9 Feet, Duration = 30, 2 o'clock","F17138803802513","","Place the FOBs 9 feet apart, 2 o'clock.","","","","","",""
+"C1559","2 FOBs, 3 Feet, Duration = 30, 9 o'clock","F17138803802513","","Place the FOBs 3 feet apart, 9 o'clock.","","","","","",""
+"C1560","2 FOBs, 5 Feet, Duration = 30, 9 o'clock","F17138803802513","","Place the FOBs 5 feet apart, facing 9 o'clock.
+","","","","","",""
+"C1561","2 FOBs, 9 Feet, Duration = 30, 9 o'clock","F17138803802513","","Place the FOBs 9 feet apart, facing 9 o'clock.
+","","","","","",""
+"C1562","3 FOBs, 3 Feet, Duration = 30, Equilateral","F17138803802513","","Place the FOBs 3 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C1570","3 FOBs, 5 Feet, Duration = 30, Equilateral","F17138803802513","","Place the FOBs 5 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C1571","3 FOBs, 9 Feet, Duration = 30, Equilateral","F17138803802513","","Place the FOBs 9 feet apart, roughly the shape of an equilateral triangle.
+","","","","","",""
+"C2355","Wake device from sleep","F17138803802513","","Confirm the device is asleep by using a scan tool to check if it can be seen.
+Hold the button for 3 seconds.","","","","","",""
+"C526","1 beacon alerts global (Duress Button Dashboard-Page)","F17138803802513","","Configure 1 Blufi and 1 Duress Button Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Duress Button
+...Namespace = Beacon by default
+...Use Global Scope = Click/checked
+...Notifications = Add Email Addresses
+...Click save and the policy will be created
+
+Go to Duress Button Dashboard - Page (https://bztest.bluzone.io/console/#/panic/-/dashboard)
+...Press and hold the Duress Button beacon for at list 3 sec or when light start flushing and release it.
+","","","","","",""
+"C527","1 beacon alerts non-global  (Duress Button Dashboard-Page)","F17138803802513","","Configure 1 Blufi and 1 Duress Button Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Duress Button
+...Namespace = Beacon by default
+...Select -  Select Individual Devices = Click Save And Continue
+...Click Add and select a subject beacon and click Save
+...Notifications = add Email Addresses
+...Click save and the policy will be created
+
+Go to Duress Button Dashboard - Page (https://bztest.bluzone.io/console/#/panic/-/dashboard)
+...Press and hold the Duress Button beacon for at list 3 sec or when light start flushing and release it.","","","","","",""
+"C528","3 beacons alert global (Duress Button Dashboard-Page)","F17138803802513","","Configure 1 Blufi and 3 Duress Button Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Duress Button
+...Namespace = Beacon by default
+...Use Global Scope = Click/checked
+...Notifications = Add Email Addresses
+...Click save and the policy will be created
+
+Go to Duress Button Dashboard - Page (https://bztest.bluzone.io/console/#/panic/-/dashboard)
+...Press and hold the Duress Button beacon for at list 3 sec or when light start flushing and release it.","","","","","",""
+"C529","3 beacons alert non-global (Duress Button Dashboard-Page)","F17138803802513","","Configure 1 Blufi and 3 Duress Button Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Duress Button
+...Namespace = Beacon by default
+...Select - Select Individual Devices = Click Save And Continue
+...Click Add and select a subject beacon and click Save
+...Notifications = add Email Addresses
+...Click save and the policy will be created
+
+Go to Duress Button Dashboard - Page (https://bztest.bluzone.io/console/#/panic/-/dashboard)
+...Press and hold the Duress Button beacon for at list 3 sec or when light start flushing and release it.","","","","","",""
+"C530","1 beacon alerts notification (Alert page)","F17138803802513","","Configure 1 Blufi and 1 Duress Button Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Duress Button
+...Namespace = Beacon by default
+...Use Global Scope = Click/checked
+...Notifications = Add Email Addresses
+...Click save and the policy will be created
+
+Go to Alerts Page (https://bztest.bluzone.io/console/#/alerts)
+...Press and hold the Duress Button beacon for at list 3 sec or when light starts flashing and release it.","","","","","",""
+"C531","3 beacons alert notification (Alerts page)","F17138803802513","","Configure 1 Blufi and 3 Duress Button Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Duress Button
+...Namespace = Beacon by default
+...Use Global Scope = Click/checked
+...Notifications = Add Email Addresses
+...Click save and the policy will be created
+
+Go to Alerts Page (https://bztest.bluzone.io/console/#/alerts)
+...Press and hold the Duress Button beacon for at list 3 sec or when light start flushing and release it.","","","","","",""
+"C2541","Fob alerts with Buzzer Enabled","F17138803802513","","Configure FOB to enable buzzer.
+
+Press the Duress buttons.  ","","","","","",""
+"C2542","Fob alerts with Buzzer Disabled","F17138803802513","","Configure FOB to disable buzzer.
+
+Press the Duress buttons.","","","","","",""
+"C2809","Policy Name includes Hebrew characters","F17138803802513","","Establish Policy Name to include some UTF-8 Hebrew characters: Nir - בדיקת טמפרטורה
+
+On FOB, change Device Name to include Hebrew characters: Nir - בדיקת טמפרטורה
+
+On Blufi (nearby device for Duress), change name to include טמפרטורה
+
+
+Violate the policy.
+   ","","","","","",""
+"C2907","Verify Duress Policy Alerts - with location floorplan image","Eber Garcia","","
+- Given a project that is configured for Asset Tracking
+- And has a location with a floor plan
+- And has a working Duress policy that is configured with my email address
+- When I trigger a Duress alert by long-pressing the button(s) on my beacon
+
+Alert was trigged and user should received an email notification  ","","","","","",""
+"C173","Beacon out violate global","F17138803802513","","Establish Geofence policy:
+...Violation State = Leaves zone
+...Variance Threshold = 2
+...Duration = 10 seconds.
+...Global Scope = yes
+...Email Addresses = n/a
+
+Place beacon in the zone for at least Duration.
+Move beacon outside the zone for at least Duration.","","","","","",""
+"C174","Beacon in un-violate global","F17138803802513","","Move beacon inside the zone for at least Duration.","","","","","",""
+"C181","Beacon in violate global","F17138803802513","","Establish Geofence policy:
+...Violation State = Enter zone
+...Variance Threshold = 2
+...Duration = 10 seconds.
+...Global Scope = yes
+...Email Addresses = n/a
+
+Place beacon outside the zone for at least Duration.
+Move beacon inside the zone for at least Duration.","","","","","",""
+"C182","Beacon out un-violate global","F17138803802513","","Move beacon outside the zone for at least Duration.","","","","","",""
+"C175","Beacon in violate non-global","F17138803802513","","Establish Geofence policy:
+...Violation State = Enter zone
+...Variance Threshold = 2
+...Duration = 10 seconds.
+...Select Individual Devices = yes and Click Save
+...Add 3 beacon to the Devise list > click save
+...Email Addresses = n/a
+...Click Save
+
+Place beacon outside the zone for at least Duration.
+Move beacon inside the zone for at least Duration.","","","","","",""
+"C176","Beacon out un-violate non-global","F17138803802513","","Move beacon outside the zone for at least Duration.","","","","","",""
+"C183","Beacon out violate non-global","F17138803802513","","Establish Geofence policy:
+...Violation State = Leaves zone
+...Variance Threshold = 2
+...Duration = 10 seconds.
+...Select Individual Devices = yes
+...Email Addresses = n/a
+
+Place beacon in the zone for at least Duration.
+Move beacon outside the zone for at least Duration.","","","","","",""
+"C184","Beacon in un-violate non-global","F17138803802513","","Move beacon inside the zone for at least Duration.","","","","","",""
+"C177","Beacon out violate email","F17138803802513","","Establish Geofence policy:
+...Violation State = Leaves zone
+...Variance Threshold = 2
+...Duration = 10 seconds.
+...Global Scope = yes
+...Email Addresses = add user email
+
+Place beacon in the zone for at least Duration.
+Move beacon outside the zone for at least Duration.","","","","","",""
+"C2774","Beacon out violate label","F17138803802513","","","","","","","",""
+"C2775","Beacon in un-violate label","F17138803802513","","","","","","","",""
+"C2776","Beacon in violate label","F17138803802513","","","","","","","",""
+"C2777","Beacon out un-violate label","F17138803802513","","","","","","","",""
+"C178","Beacon in un-violate email","F17138803802513","","Establish Geofence policy:
+...Violation State = Leaves zone
+...Variance Threshold = 2
+...Duration = 10 seconds.
+...Global Scope = yes
+...Email Addresses = add user email
+
+Place beacon in the zone for at least Duration.
+Move beacon outside the zone for at least Duration.","","","","","",""
+"C2592","Create Policy Enable Geofence Contact Tracing","F17138803802513","","","","","","","",""
+"C2593","Create Policy Disable Geofence Contact Tracing","F17138803802513","","","","","","","",""
+"C2594","Edit Policy Enable Geofence Contact Tracing","F17138803802513","","","","","","","",""
+"C2595","All Geofence policies have Geofence Contact Tracing Enabled","F17138803802513","","","","","","","",""
+"C2805","Policy Name includes Hebrew characters","F17138803802513","","Establish Policy Name to include some UTF-8 Hebrew characters: Nir - בדיקת טמפרטורה
+
+On Beacon, change Device Name to include Hebrew characters: Nir - בדיקת טמפרטורה
+
+Violate the policy.
+   ","","","","","",""
+"C2636","Data is saved in Scylla when GMS alert occurs","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause a Geofence alert to occur.","","","","","",""
+"C2637","Data is not saved in Scylla when there is no GMS alert","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Position the beacons so that a Geofence alert will not occur.","","","","","",""
+"C2638","Data is not saved in Scylla when the GMS policy flag is not set","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Position the beacons so that a Geofence alert will occur.","","","","","",""
+"C2639","Data is not saved in Scylla when the GMS project flag is not set","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Position the beacons so that a Geofence alert will occur.","","","","","",""
+"C2640","GMS data in Scylla is removed after 7 days.","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause a Geofence alert to occur.
+Over the next 8 days, cause alerts to occur each day.","","","","","",""
+"C2641","GMS data from the previous day is saved in S3","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause a Geofence alert to occur.
+Over the next 8 days, cause alerts to occur each day.","","","","","",""
+"C2642","The S3 system must expire the archived data after 30 days","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause a Geofence alert to occur.
+Over the next 32 days, cause alerts to occur each day.","","","","","",""
+"C2643","Contact Report 6 hours for today","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period today.","","","","","",""
+"C2644","Contact Report 6 hours for yesterday","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Wait 1 day.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period yesterday.","","","","","",""
+"C2645","Contact Report 6 hours for 2 days ago","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Wait 2 days.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period 2 days ago.","","","","","",""
+"C2646","Contact Report 6 hours for 7 days ago","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Wait 7 days.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period 7 days ago.","","","","","",""
+"C2647","Contact Report 6 hours for 8 days ago","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Wait 8 days.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period 8 days ago.","","","","","",""
+"C2648","Contact Report 6 hours start yesterday end today","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Wait 1 day.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period starting yesterday and ending today.","","","","","",""
+"C2649","Contact Report more than 24 hours","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Go to Distance Tracking Dashboard and get Contact Report for more than 24 hours.","","","","","",""
+"C2650","Contact Report more than 48 hours","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Go to Distance Tracking Dashboard and get Contact Report for more than 48 hours.","","","","","",""
+"C2651","Same contact period over multiple days yields same results","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Go to Distance Tracking Dashboard and get Contact Report for an 8 hour period that ends before the current time.
+Confirm the results are as expected.
+Run the same report daily over the next 8 days.","","","","","",""
+"C2652","CSV file for Contact Report 6 hours","F17138803802513","","Establish a Geofence policy and devices properly configured.
+Cause Geofence alerts to occur.
+Go to Distance Tracking Dashboard and get Contact Report for 6 hour time period today.
+Download the csv file for this report.","","","","","",""
+"C3846","Geofence Policy-Event is cleared when the associated Geofence is deleted","Eber Garcia","","Given a beacon is inside an active Geofence
+And the Geofence has an associated policy-event violation
+When the Geofence is deleted
+Then the beacon’s policy-event violation should automatically be cleared","","","","","",""
+"C3847","Geofence Policy-Event is cleared when the associated Geofence is disabled","Eber Garcia","","Given a beacon is inside an active Geofence
+And the Geofence has an associated policy-event violation
+When the Geofence is disabled
+Then the beacon’s policy-event violation should automatically be cleared","","","","","",""
+"C3848","No impact on beacons outside of a deleted or disabled Geofence","Eber Garcia","","Given a beacon is outside of the Geofence
+And the Geofence is deleted or disabled","","","","","",""
+"C3849","Re-enabling a Geofence does not restore previously cleared violations","Eber Garcia","","Given a beacon was inside a Geofence that was disabled
+And the policy-event violation was cleared
+When the Geofence is re-enabled","","","","","",""
+"C3850","Beacon re-enters a newly enabled Geofence","Eber Garcia","","Given a Geofence was disabled and is now re-enabled
+And a beacon enters the Geofence again","","","","","",""
+"C267","Violation no policy blufi","F17138803802513","","","","","","","",""
+"C268","Violation 1 policy blufi","F17138803802513","","","","","","","",""
+"C269","Violation 2 policy blufi","F17138803802513","","","","","","","",""
+"C270","No violation 1 policy blufi but offline","F17138803802513","","","","","","","",""
+"C271","Violation in motion","F17138803802513","","","","","","","",""
+"C272","Violation at rest","F17138803802513","","","","","","","",""
+"C273","Violation with various settings for Duration","F17138803802513","","","","","","","",""
+"C274","Violation with various settings for Clear Duration","F17138803802513","","","","","","","",""
+"C275","Violation with various settings for Motion Window Interval","F17138803802513","","","","","","","",""
+"C276","Violation with various settings for Motion Window Tolerance","F17138803802513","","","","","","","",""
+"C277","Violation global scope","F17138803802513","","","","","","","",""
+"C278","Violation non-global scope","F17138803802513","","","","","","","",""
+"C279","Violation with email notification","F17138803802513","","","","","","","",""
+"C280","Remove policy device","F17138803802513","","","","","","","",""
+"C281","Create policy with various settings for Model Training Interval","F17138803802513","","","","","","","",""
+"C282","Create policy with various settings for Asset Operating Speeds","F17138803802513","","","","","","","",""
+"C283","Create policy with various settings for Evaluation Window Size","F17138803802513","","","","","","","",""
+"C284","Create policy with various settings for Evaluation Threshold","F17138803802513","","","","","","","",""
+"C285","Violation with 1 policy device","F17138803802513","","","","","","","",""
+"C286","Violation with 3 policy devices","F17138803802513","","","","","","","",""
+"C287","Violation with email notification","F17138803802513","","","","","","","",""
+"C288","Reset Condition Models with 1 policy device","F17138803802513","","","","","","","",""
+"C289","Reset Condition Models with 3 policy devices","F17138803802513","","","","","","","",""
+"C456","Training fails if beacon not configured to output accel data for accel policy","F17138803802513","","","","","","","",""
+"C442","Training fails if beacon stops output of accel data for accel policy","F17138803802513","","","","","","","",""
+"C444","Training fails if beacon not configured to output veloc data for veloc policy","F17138803802513","","","","","","","",""
+"C445","Training fails if beacon stops output of veloc data for veloc policy","F17138803802513","","","","","","","",""
+"C532","Verify acceleration data is produced per beacon config settings","F17138803802513","","","","","","","",""
+"C533","Verify velocity data is produced per beacon config settings","F17138803802513","","","","","","","",""
+"C534","Verify no hi-speed data is produced if beacon config settings deactivate data","F17138803802513","","","","","","","",""
+"C535","Verify hi-speed data is produced with intermittent bluetooth","F17138803802513","","","","","","","",""
+"C536","Verify hi-speed data is produced with intermittent network","F17138803802513","","","","","","","",""
+"C537","Verify hi-speed data is produced long-term","F17138803802513","","","","","","","",""
+"C234","Parking policy Parked","F17138803802513","","","","","","","",""
+"C237","Parking policy not Parked","F17138803802513","","","","","","","",""
+"C238","Parking policy Global","F17138803802513","","","","","","","",""
+"C239","Parking policy non-Global no beacons","F17138803802513","","","","","","","",""
+"C243","Parking policy non-Global with beacons","F17138803802513","","","","","","","",""
+"C240","Parking policy with Notifications","F17138803802513","","","","","","","",""
+"C244","Beacon Parking enabled","F17138803802513","","","","","","","",""
+"C245","Beacon Parking not enabled","F17138803802513","","","","","","","",""
+"C246","Beacon Training 1 day","F17138803802513","","","","","","","",""
+"C247","Beacon Training 2 days","F17138803802513","","","","","","","",""
+"C248","Beacon Training 1 week","F17138803802513","","","","","","","",""
+"C235","Clear 1 alert then refire","F17138803802513","","","","","","","",""
+"C236","Clear all alerts then refire","F17138803802513","","","","","","","",""
+"C135","Beacon violation non-global scope","F17138803802513","BCP-7940","Configure 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Presence
+...Namespace = Beacon
+...Policy Blufis = None
+...Duration = 2 minutes
+...Use Global Scope is unchecked
+...Policy Devices list has 1 beacon
+...Notifications = None
+
+Make beacon not present by putting it in a metal box and moving it away from the blufi.","","","","","",""
+"C151","Beacon un-violation non-global scope","F17138803802513","","Make beacon present.","","","","","",""
+"C136","Beacon violation global scope","F17138803802513","","Configure at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Presence
+...Namespace = Beacon
+...Policy Blufis = None
+...Duration = 2 minutes
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Make beacon not present by putting it in a metal box and moving it away from the blufi.","","","","","",""
+"C152","Beacon un-violation global scope","F17138803802513","","Make beacon present.","","","","","",""
+"C2808","Beacon Policy Name includes Hebrew characters","F17138803802513","","Establish Beacon Policy Name to include some UTF-8 Hebrew characters: Nir - בדיקת טמפרטורה
+
+On Beacon, change Device Name to include Hebrew characters: Nir - בדיקת טמפרטורה
+
+Violate the policy.
+   ","","","","","",""
+"C315","Blufi violation non-global scope","F17138803802513","IOT-3492","Navigate to bluzon and create a Presences policy with Individual Devices option
+
+Navigate to policy page > click create policy
+select Pressece policy
+add name of the policy
+Namespace check Blufi
+Duration 2 minute (For Aruba AP need a 4> minute  for the policy to work as expected)
+Scoop check Individual Devices
+Enter email adress
+Click Save","","","","","",""
+"C316","Blufi un-violation non-global scope","F17138803802513","","Make blufi present.","","","","","",""
+"C317","Blufi violation global scope","F17138803802513","","Navigate to bluzon and create a Presences policy with Global scoop option 
+
+Navigate to policy page > click create policy
+select Pressece policy
+add name of the policy
+Namespace check Blufi
+Duration 2 minute
+Scoop check Global scoop
+Enter email adress
+Click Save
+","","","","","",""
+"C318","Blufi un-violation global scope","F17138803802513","","Make blufi present.","","","","","",""
+"C2807","Blufi Policy Name includes Hebrew characters","F17138803802513","","Establish Blufi Policy Name to include some UTF-8 Hebrew characters: Nir - בדיקת טמפרטורה
+
+On Blufi, change Device Name to include Hebrew characters: Nir - בדיקת טמפרטורה
+
+Violate the policy.
+   ","","","","","",""
+"C167","Auto-Clear Threshold must be 5db less than Signal Threshold","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = default
+...Automatically Clear Violations is checked
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.","","","","","",""
+"C169","Auto-Clear Threshold and Signal Threshold min value","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = -110 (minimum value)
+...Automatically Clear Violations is checked
+...Auto-Clear Threshold = -110 (minimum value)
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.","","","","","",""
+"C297","Automatically Clear Violations not selected","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = default
+...Automatically Clear Violations is not checked
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.
+
+","","","","","",""
+"C168","Beacon violation global scope","F17138803802513","","Configure at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = 1 Blufi
+...Signal Threshold = default
+...Automatically Clear Violations is checked
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Place beacon in close proximity to the Blufi.","","","","","",""
+"C296","Beacon violation non-global scope","F17138803802513","","Configure at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = 1 Blufi
+...Signal Threshold = default
+...Automatically Clear Violations is checked
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is not checked
+...Policy Devices list contains 1 beacon.
+...Notifications = None
+
+Place beacon in close proximity to the Blufi.
+","","","","","",""
+"C298","Auto-Clear Timeout min value","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = default
+...Automatically Clear Violations is checked
+...Auto-Clear Threshold = minimum value
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.","","","","","",""
+"C299","Auto-Clear Timeout max value","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = maximum value
+...Automatically Clear Violations is checked
+...Auto-Clear Threshold = 5db less than the maximum value
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.","","","","","",""
+"C300","Signal Threshold min value","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = minimum value
+...Automatically Clear Violations is not checked
+...Auto-Clear Threshold = n/a
+...Auto-Clear Timeout = n/a
+...Use Global Scope is checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.","","","","","",""
+"C301","Signal Threshold max value","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = None
+...Signal Threshold = maximum value
+...Automatically Clear Violations is not checked
+...Auto-Clear Threshold = n/a
+...Auto-Clear Timeout = n/a
+...Use Global Scope is not checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.","","","","","",""
+"C302","Violate 1 Policy Blufi","F17138803802513","","Provision at least 1 Blufi and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = Blufi 1
+...Signal Threshold = default
+...Automatically Clear Violations = default
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is not checked
+...Policy Devices list = Beacon 1
+...Notifications = None
+
+Place the beacon close to the policy blufi.","","","","","",""
+"C303","Violate 2 Policy Blufis","F17138803802513","","Provision at least 2 Blufis and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = Blufi 1, Blufi 2
+...Signal Threshold = default
+...Automatically Clear Violations = default
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is not checked
+...Policy Devices list = Beacon 1
+...Notifications = None
+
+Place the beacon close to the policy blufi.","","","","","",""
+"C304","Violate 3 Policy Blufis","F17138803802513","","Provision at least 3 Blufis and 2 Beacons.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Proximity Alert
+...Policy Blufis = Blufi 1, Blufi 2 , Blufi 3
+...Signal Threshold = default
+...Automatically Clear Violations = default
+...Auto-Clear Threshold = default
+...Auto-Clear Timeout = default
+...Use Global Scope is checked
+...Policy Devices list = n/a
+...Notifications = None
+
+Place the beacon close to the policy blufi.","","","","","",""
+"C225","Add Tamper Beacon policy","F17138803802513","","Provision at least 1 Blufi and 1 Tamper Beacon.
+In Bluzone web, go to Policies side menu and create a new policy:
+...Name = Any
+...Description = Any
+...Policy Type = Tamper Beacon
+...Use Global Scope is not checked
+...Policy Devices list is n/a
+...Notifications = None
+
+Display the newly created policy.
+","","","","","",""
+"C226","Add beacon to policy","F17138803802513","","Open the Tamper Beacon policy.
+Go to the Policy Devices section and add a tamper beacon.
+Save.
+
+Display the policy.","","","","","",""
+"C227","Delete beacon from policy","F17138803802513","","Open the Tamper Beacon policy.
+Go to the Policy Devices section and remove a tamper beacon.
+Save.
+
+Display the policy.","","","","","",""
+"C228","Make policy global","F17138803802513","","Open the Tamper Beacon policy.
+Go to the Scope section and select Use Global Scope.
+Save.
+
+Display the policy.","","","","","",""
+"C229","Make policy non-global","F17138803802513","","Open the Tamper Beacon policy.
+Go to the Scope section and select Select Individual Devices.
+Save.
+
+Display the policy.","","","","","",""
+"C230","Delete Policy","F17138803802513","","Open the Tamper Beacon policy.
+Click the Remove button and confirm.","","","","","",""
+"C231","Reset tamper latch with violation present","F17138803802513","","Display the Tamper beacon that is alerting.
+Click Reset Tamper Beacon button. Toast popup indicates success.
+Observe a device job is now scheduled.
+Wait for the job to complete successfully.
+Display Bluzone, Alerts.","","","","","",""
+"C232","Reset tamper latch with violation not present","F17138803802513","","Display the Tamper beacon.
+Click Reset Tamper Beacon button. Toast popup indicates success.
+Observe a device job is now scheduled.
+Wait for the job to finish.","","","","","",""
+"C233","Reset tamper latch repeatedly","F17138803802513","","Display the Tamper beacon.
+Click Reset Tamper Beacon button. Toast popup indicates success.
+Observe a device job is now scheduled.
+Click the reset button 4 more times. 5 jobs are now scheduled.
+Wait for each job to finish.","","","","","",""
+"C19","Violation non-global scope","F17138803802513","","Configure at least 1 Blufi and 1 Beacon.
+In Bluzone web, go to Policies side menu and create a new 
+add the following requirement 
+Policy Name = any name
+policy Type = Temperature,
+Select Scope = Select Individual Devices > Click Save and Continue button
+Click add = Select a device from Police devices list > Click Save
+Temperature Range = is set to cause a violation.
+Email= add user email","","","","","",""
+"C260","Violation global scope","F17138803802513","","Configure at least 1 Blufi and 1 Beacon.
+In Bluzone web, go to Policies side menu and create a new
+add the following requirement
+Policy Name = any name
+policy Type = Temperature,
+Select Scope = Global Scope
+Temperature Range = is set to cause a violation.
+Email= add user email","","","","","",""
+"C261","Violation at room temperature","F17138803802513","","Configure at least 1 Blufi and 1 Beacon.
+In Bluzone web, go to Policies side menu and create a new policy:
+Type = Temperature, Select Individual Devices is unchecked, add 1 beacon to Policy Device list, Temperature Range is set 55C - 60C. and room temperature is somewhere in not range to the set range on the policy ","","","","","",""
+"C262","Violation at cold temperature","F17138803802513","","Configure at least 1 Blufi and 1 Beacon.
+In Bluzone web, go to Policies side menu and create a new policy:
+Type = Temperature, 
+Select Individual Devices is unchecked, add 1 beacon to Policy Device list, 
+Temperature Range is set to cause a violation.
+put the subject beacon on the cold place like fridge (check the beacon scan temperature display the appropriate temperature where the the beacon is been placed)","","","","","",""
+"C263","Violation at hot temperature","F17138803802513","","Configure at least 1 Blufi and 1 Beacon.
+In Bluzone web, go to Policies side menu and create a new policy:
+Type = Temperature,
+Select Individual Devices is unchecked, add 1 beacon to Policy Device list,
+Temperature Range is set to cause a violation.
+put the subject beacon on the warm place like like by the window facing the sun (check the beacon scan temperature display the appropriate temperature where the the beacon is been placed)","","","","","",""
+"C264","Violation with email notification","F17138803802513","","Configure at least 1 Blufi and 1 Beacon.
+In Bluzone web, go to Policies side menu and create a new policy:
+Type = Temperature,
+Select = global scope is unchecked
+Temperature Range = is set to cause a violation.
+Email= add user email","","","","","",""
+"C265","Add policy device","F17138803802513","","Configure existing policy at least 1 Beacon.
+In Bluzone web, go to Policies side menu and config an existing policy (Scope=Individual Devices:)
+Policy Devices =  add 1 beacon to Policy Device list, 
+Temperature Range is set to cause a violation.","","","","","",""
+"C266","Remove policy device","F17138803802513","","Configure existing policy at least 2 Beacon.
+In Bluzone web, go to Policies side menu and config an existing policy (Scope=Individual Devices:)
+Policy Devices = Remove 1 beacon from Policy Device list by selecting the subject beacon
+Click Remove
+Click OK from the popup window (Please Confirm)
+Click Save","","","","","",""
+"C220","BCP-3174 Non-monitored beacon does not violate","F17138803802513","","Configure least 1 Blufi and 4 Beacons.
+In Bluzone web, go to Policies side menu and create 3 new policies:
+...Type = Temperature, Global Scope is unchecked, add beacon 1 to Policy Device list
+...Type = Temperature, Global Scope is unchecked, add beacon 2 to Policy Device list
+...Type = Temperature, Global Scope is unchecked, add beacon 3 to Policy Device list
+... Set temperature Range the same for each policy
+
+For all 4 beacons change the temperature so it is outside the policy range.","","","","","",""
+"C2806","Policy Name includes Hebrew characters","F17138803802513","","Establish Policy Name to include some UTF-8 Hebrew characters: Nir - בדיקת טמפרטורה
+
+On Beacon, change Device Name to include Hebrew characters: Nir - בדיקת טמפרטורה
+
+Violate the policy.
+   ","","","","","",""
+"C2565","Violation non-global scope","Eber Garcia","","Navigate to bztest
+from left menu click on Policies link
+Click on create tab
+Add Policy Name = any name
+Select policy Type = Vibration
+Select Metric = Velocity RMS
+Select Threshold value = 0.6
+Select time window = 10 minutes
+Select Scope = Select Individual Devices > Click Save and Continue button
+Click add = Select a devise from Police devices list > Click Save
+Email= add user email","","","","","",""
+"C2566","Violation global scope","Eber Garcia","","
+Navigate to bztest
+from left menu click on Policies link
+Click on create tab
+Add Policy Name = any name
+Select policy Type = Vibration
+Select Metric = Velocity Peak-to-Peak
+Select Threshold value = 0.5
+Select time window = 10 minutes
+Select Scope = Select global scope
+Email= add user emailNavigate to bztest
+
+
+","","","","","",""
+"C3483","Verify Creation and Management of Pego Walk Policy","Eber Garcia","","Steps:
+
+Navigate to Policy Creation Page:
+Access the Bluzone Console UI and navigate to the Policy Creation page.
+Verify that """"Walk Policy"""" is available as an option in the Policy Type dropdown.
+
+
+Set Walk Policy Parameters:
+Threshold: Enter a threshold value (in meters) that determines the deviation from the tethered BluFi at which walking is detected.
+Example: Set threshold as 5 meters.
+Timeout: Set a timeout value (in minutes) for how long to wait before auto-clearing the policy event if the beacon is no longer visible or hasn’t returned to a tether point.
+Example: Set timeout as 5 minutes.
+
+
+Create the Policy:
+Complete the policy creation by filling in all required fields, including Policy Name, Threshold, Timeout, and any other relevant fields.
+Submit the policy and confirm that it is successfully created and listed in the Policy List View.
+
+
+
+
+
+
+
+
+
+UI and Workflow Verification:
+Validate that the policy workflow (creation, update, deletion) is smooth, and that all relevant data and configurations are correctly reflected in the BZ Console UI.
+Ensure that any changes in the Pego metric type are correctly supported and reflected in the Console UI and data processing.","","","","","",""
+"C3484","Verify and perform CRUD Operations for walk policy","Eber Garcia","","Perform CRUD Operations:
+Read: Verify that the newly created policy is listed in the Policy List View and that all the correct values (e.g., threshold, timeout) are displayed.
+Update: Edit the Walk Policy by adjusting the threshold or timeout values. Submit the changes and verify they are correctly applied and reflected in the Policy List View.
+Delete: Delete the Walk Policy and confirm that it is removed from the Policy List View and the database.","","","","","",""
+"C3485","Verify Database Entry","Eber Garcia","","Ensure that the threshold value is correctly stored in the threshold column of the policy table.
+Confirm that the timeout value is correctly stored in the auto_clear_timeout column of the policy table.","","","","","",""
+"C3486","Subscription to Location Packets","Eber Garcia","","Verify that location packets are being subscribed to successfully using the nats subscription pattern for location data (e.g., nats subscribe 'location.{partitionId??}.*.1340.12997416672907791521').
+Monitor packet flow to ensure that data is being processed correctly for the Walk Policy in the system.","","","","","",""
+"C3490","Verify Policy Event Trigger on Room Exit","Eber Garcia","","Start tracking the PAWS device within the room.
+Move the PAWS device around the room to ensure trilateration is working correctly.
+Exit the room with the PAWS device.","","","","","",""
+"C3491","Verify Policy Event (Auto cleared) OK State on Signal Loss (After 5 Minutes)","Eber Garcia","","Exit the room with the PAWS device.
+Ensure that the PAWS device signal is no longer detectable by the BluFis.
+Wait 5 minutes.","","","","","",""
+"C3492","Verify Policy Event Violate State on Tether Point Reached","Eber Garcia","","Exit the room with the PAWS device to trigger the PolicyEvent VIOLATION.
+Re-enter the room with the PAWS device and ensure it is detected by the BluFis.
+Return the PAWS device to a known tether point inside the room.","","","","","",""
+"C3493","Verify Policy Event OK State on Tether Point Reached","Eber Garcia","","Re-enter the room with the PAWS device and ensure it is detected by the BluFis.
+Return the PAWS device to a known tether point inside the room.","","","","","",""
+"C3494","Verify Alert Not Triggered for Movement Within Room","Eber Garcia","","Move the PAWS device around the room, avoiding exit points.
+Monitor the system for any alerts or violations.","","","","","",""
+"C3851","Creating a New Stationary Policy","Eber Garcia",""," Given I am logged into Bluzone
+When I navigate to the Policies section
+And I select “Create New Policy”
+And I choose the policy type as “Stationary Policy”
+Then I should be able to define a configurable time window for the alert
+
+","","","","","",""
+"C3852","Configuring Stationary Policy Alert Duration","Eber Garcia","","Given I have created a Stationary Policy
+When I set the policy to trigger an alert after 5 minutes of no movement
+And I increase the maximum allowable time window to 7 days
+Then The system should save and apply the configuration correctly
+
+","","","","","",""
+"C3853","Beacon Location Stagnation Triggers a Policy Event","Eber Garcia","","Given A beacon is active and has a valid location
+When The beacon remains in the same location beyond the configured alert threshold
+Then The system should generate a Policy-Event for “Beacon Stationary”
+
+","","","","","",""
+"C3854","Policy Event Clears When Beacon Starts Moving Again","Eber Garcia","","Given A beacon has triggered a Stationary Policy-Event
+When The beacon starts moving and updates its location
+
+","","","","","",""
+"C3855","Handling Policy Events During System Restart","Eber Garcia","","Given A beacon is in a stationary state
+And The Bluzone system or the monitoring service restarts
+When The service comes back online
+Then It should resume tracking the beacon’s stationary status without data loss
+
+","","","","","",""
+"C3856","Creating a Stationary Policy Without Setting a Time Threshold","Eber Garcia","","","","","","","",""
+"C3857","Setting an Invalid Alert Duration (Less Than 5 Minutes or More Than 7 Days)","Eber Garcia","","User try to modify the duration ","","","","","",""
+"C3858","A Beacon is Marked as Stationary Due to a Data Transmission Failure","Eber Garcia","","Given A beacon is actively moving but stops sending location data due to network issues
+When The system does not receive updates for the configured alert threshold
+
+","","","","","",""
+"C3859","A User Tries to Delete an Active Stationary Policy","Eber Garcia","","Given A Stationary Policy is actively monitoring beacons
+When A user attempts to delete the policy
+Then The system should prompt for confirmation before deletion
+
+","","","","","",""
+"C3865","Create Lone Worker Policy","Eber Garcia","","	1.	Navigate to Policies > Create
+	2.	Enter Policy Name and Description
+	3.	Select “Lone” as Policy Type
+	4.	Choose one or more locations from the list
+	5.	Set “Violation Starts After” to 5 minutes
+	6.	Choose “Use Global Scope”
+	7.	Enter a valid notification email
+	8.	Click Save
+
+","","","","","",""
+"C3866","Trigger Lone Worker Alert","Eber Garcia","","	1.	Move only one active beacon into the selected zone
+	2.	Wait for 5 minutes
+	3.	Monitor Alert panel and notification inbox
+","","","","","",""
+"C3868","Clear Alert When Second Device Enters Zone","Eber Garcia","","	1.	Move two beacons into the policy-configured zone
+	2.	Wait beyond violation time (e.g., 6 minutes
+","","","","","",""
+"C3867","Prevent Alert with Multiple Devices in Zone","Eber Garcia","","Given a Lone Worker Policy is active
+And two or more devices are in the zone
+When the time threshold is met
+
+","","","","","",""
+"C3869","Email Notification for Lone Worker Alert","Eber Garcia","","Given an alert is triggered by the Lone Worker Policy
+And notification emails are configured
+
+","","","","","",""
+"C3870","Validate Lone Worker Alert per Geofenced Zone","Eber Garcia","","	1.	Enter Zone A with a single beacon
+	2.	Wait for the configured alert time
+	3.	Repeat steps for Zone B","","","","","",""
+"C3871","Alert Timing Validation","Eber Garcia","","1.	Move a beacon into a zone alone
+	2.	Observe for 4 minutes – ensure no alert
+	3.	Wait until 6 minutes","","","","","",""
+"C3872","Edit Policy Timing","Eber Garcia","","","","","","","",""
+"C3873","Edit Policy Timing","Eber Garcia","","1.	Edit policy to change time to 10 minutes
+	2.	Move a beacon alone into zone
+	3.	Observe for 6 minutes","","","","","",""
+"C3874","Delete Policy Behavior","Eber Garcia","","	1.	Delete the Lone Worker policy
+	2.	Leave a beacon alone in the zone","","","","","",""
+"C3875","Disable Policy Behavior","Eber Garcia","","	1.	Disable the policy
+	2.	Move a single beacon into the zone
+	3.	Wait past threshold","","","","","",""
+"C4027","Create a Fleet Presence Policy","Eber Garcia","","	1.	Navigate to the “Policies” section in the left sidebar.
+	2.	Click on “Create Policy”.
+	3.	Select “Fleet Presence” as the Policy Type.
+	4.	Enter a unique policy name (e.g., policy_fleet_presence).
+	5.	Set the threshold to “40%” (or desired percentage).
+	6.	Set the violation duration to “10 minutes”.
+	7.	Enable “Auto-Clear Violations”.
+	8.	Set auto-clear timeout to “5 minutes”.
+        9.     User select Location from lotion options 
+	9.	Leave Email field blank or enter test email.
+	10.	Click “Save”.","","","","","",""
+"C4028","Violation is Triggered When Offline BluFi Count Exceeds Threshold","Eber Garcia","","	1.	Disconnect 3 or more BluFi devices (simulate offline condition).
+	2.	Wait 5 minutes.
+	3.	Navigate to the “Alerts” or “Violations” tab.","","","","","",""
+"C4029","Auto-Clear Violation When Threshold is Recovered","Eber Garcia","","	1.	Reconnect enough BluFi devices so the offline count drops below 40%.
+	2.	Maintain this state for at least 5 minutes.
+	3.	Monitor the “Violations” section.","","","","","",""
+"C4030","Offline time is insufficient to trigger violation","Eber Garcia","","	1.	Disconnect 3 BluFi devices.
+	2.	Reconnect them within 3 minutes.
+	3.	Observe the “Violations” page for alerts.","","","","","",""
+"C4031","Send alert email when violation is triggered","Eber Garcia","","	1.	Trigger a violation (e.g., disconnect 3 of 5 BluFis for 5 minutes).
+	2.	Check the configured email inbox.","","","","","",""
+"C4032","Send alert email when a violation is auto-cleared","Eber Garcia","","	1.	Simulate a violation: take enough BluFi devices offline to exceed the threshold.
+	2.	Wait until the violation is triggered (e.g., 5 minutes).
+	3.	Reconnect the BluFi devices so the count is within normal limits.
+	4.	Wait for auto-clear timeout to pass (e.g., 5 minutes).
+	5.	Check the configured email inbox.","","","","","",""

@@ -1,0 +1,444 @@
+
+ELBOT – Institutional Trading Intelligence System
+
+Product Requirements & Technical Architecture Document v2.0
+
+Date: October 2025
+Prepared by: Eber Garcia
+
+⸻
+
+1. Executive Summary
+
+ELBOT is an institutional-grade, AI-enhanced hybrid trading intelligence system that blends human-like reasoning with algorithmic precision.
+It can both analyze and execute trades across multiple crypto markets — combining quantitative technical indicators, macro-awareness, and institutional liquidity tracking to trade intelligently and safely.
+
+ELBOT supports two primary modes:
+	•	🟢 AutoTrade: Fully automated order execution.
+	•	⚪ ManualTrade: Human confirmation mode with full reasoning and signal transparency.
+
+Its purpose: act as a disciplined, unemotional trader that flows with institutional liquidity, never against it.
+
+⸻
+
+2. Core Objectives
+
+ID	Objective	Description
+G1	Hybrid Trading System	Combine automated execution with human oversight.
+G2	Institutional Liquidity Awareness	Understand and follow smart money behavior.
+G3	AI-Driven Reasoning	Use OpenAI for context-aware market interpretation.
+G4	Hedge-Mode Support	Enable simultaneous long and short positions.
+G5	Multi-Venue Connectivity	Operate across spot and futures exchanges.
+G6	Robust Risk Framework	Circuit breakers, position limits, drawdown control.
+
+
+⸻
+
+3. System Overview
+
+Flow Diagram
+
+TradingView → Flask API → TA Engine → Liquidity Intelligence → 
+OpenAI Reasoning → Decision Fusion → Execution Engine → Alerts
+
+Primary Layers
+	1.	Data Layer — market feeds, liquidity data, macro inputs.
+	2.	Indicator Engine — EMA, RSI, MACD, ATR, HMA, VWAP, CVD.
+	3.	AI Reasoning Layer — human-style logic (OpenAI GPT-5).
+	4.	Liquidity Intelligence — detects traps, walls, and sweeps.
+	5.	Decision Fusion Engine — merges TA + AI + liquidity for final bias.
+	6.	Execution Layer — handles spot/futures trades across venues.
+	7.	Risk Controls & Alerts — Telegram, Pushover, Dashboard.
+
+⸻
+
+4. Technical Components
+
+Indicator Engine
+	•	Computes core TA indicators (EMA, RSI, MACD, ATR).
+	•	Detects divergences, trend changes, and volatility spikes.
+
+AI Reasoning Layer
+	•	Uses OpenAI GPT-5 for narrative-style reasoning.
+	•	Takes numeric signals as structured JSON input.
+	•	Returns structured decision: bias, confidence, rationale.
+
+Liquidity Intelligence
+	•	Reads order books via ccxt.pro.
+	•	Detects liquidity traps, fake walls, and institutional sweeps.
+	•	Tracks “big-player” profiles by size and timing.
+
+Decision Fusion Engine
+	•	Weighs outputs from TA, Liquidity, and AI modules.
+	•	Outputs unified bias and confidence score.
+
+Execution Layer
+	•	Connects to multiple exchanges (Coinbase, Binance, MEXC, OKX).
+	•	Executes trades via ccxt.pro (market, limit, OCO).
+	•	Supports both spot and futures orders.
+
+⸻
+
+5. Institutional Liquidity Intelligence
+
+Purpose
+
+Identify when large players create liquidity traps or manipulation zones, so ELBOT can wait for confirmation before acting.
+
+Detection Logic (Simplified)
+
+if price_moves_to_wall and volume_spike and closes_back_inside:
+    bias = "reverse"
+
+Concepts
+
+Term	Meaning
+Wall	High concentration of resting orders.
+Sweep	Price breaks through wall consuming liquidity.
+Trap	Fake move designed to trigger stops before reversal.
+
+Strategy
+	•	Track bid/ask imbalance.
+	•	Monitor sudden wall creation or deletion.
+	•	Wait for sweep → rejection → confirmation.
+	•	Only act after absorption — never pre-empt moves.
+
+Philosophy: “Trade after manipulation, not during it.”
+
+⸻
+
+6. OpenAI Human-Style Reasoning Layer
+
+How It Works
+
+ELBOT sends structured market snapshots to OpenAI:
+
+{
+  "symbol": "XRPUSDT",
+  "trend": "sideways",
+  "rsi": 42.3,
+  "volume_spike": true,
+  "wall_detected": "2.95",
+  "macro_risk": false
+}
+
+Example Prompt
+
+“You are a professional, unemotional trader. Given this data,
+explain the market structure, likely outcome, and bias (LONG/SHORT/WAIT).
+Return JSON with bias, confidence, reasoning.”
+
+Example AI Output
+
+{
+  "bias": "WAIT",
+  "confidence": 64,
+  "reasoning": "Support defended at 2.95; confirmation needed above 3.00."
+}
+
+Integration
+
+AI reasoning never executes trades — it advises.
+The decision engine validates alignment between numeric indicators and reasoning output before acting.
+
+⸻
+
+7. Multi-Venue & Hedge-Mode Trading Infrastructure
+
+Why It Matters
+
+Coinbase only allows one net position per asset.
+Binance, OKX, and MEXC allow hedge mode (long and short at once).
+This enables ELBOT to scalp both directions or hedge spot holdings.
+
+Supported Exchanges
+
+Exchange	Hedge Mode	Type	Notes
+Binance Futures	✅	Futures	Ideal for long/short hedging
+MEXC Futures	✅	Futures	Hedge + minimal KYC
+OKX Futures	✅	Futures	Institutional-grade
+Kraken Futures	⚠️ Partial	Futures	Regulated option
+Coinbase	❌	Spot	Long-term asset holding
+
+Dual Context Design
+
+{
+  "spot": {"BTCUSDT": {"side": "LONG", "amount": 0.5}},
+  "futures": {
+    "BTCUSDT_LONG": {"amount": 1.0},
+    "BTCUSDT_SHORT": {"amount": 1.0}
+  }
+}
+
+Hedge Manager Example
+
+class HedgeManager:
+    def evaluate_hedge(self, spot_position, futures_signal):
+        if spot_position['side'] == "LONG" and futures_signal['bias'] == "SHORT":
+            execute_futures_short(symbol="BTCUSDT", size=spot_position['amount'])
+
+
+⸻
+
+8. Recommended Tech Stack
+
+Layer	Technology
+Core Language	Python 
+Fast Execution Microservice	Go
+Frontend	React + Next.js + Tailwind
+Exchange API	ccxt.pro
+Web Framework	FastAPI / Flask
+AI Reasoning	OpenAI GPT-5 + LangChain
+Cache	Redis
+Database	PostgreSQL
+Deployment	Docker + AWS ECS
+Monitoring	Prometheus + Grafana
+Notifications	Telegram + Pushover
+
+Philosophy: Python for brain, Go for muscle, OpenAI for intuition.
+
+⸻
+
+9. Developer Guidelines
+
+Coding Principles
+	•	Modular functions; JSON in/out for each service.
+	•	No direct AI → order execution link (safety).
+	•	Unit tests per module.
+	•	Use environment variables for all credentials.
+
+5-Day Onboarding Sprint
+
+Day	Goal
+1	Environment setup, API keys, Flask test server
+2	TA Engine & validation
+3	Liquidity module & order-book processing
+4	AI reasoning integration
+5	Execution + alerts + end-to-end test
+
+
+⸻
+
+10. Environment Configuration
+
+.env Example
+
+TELEGRAM_TOKEN=xxx
+PUSHOVER_TOKEN=xxx
+SPOT_EXCHANGE=coinbase
+FUTURES_EXCHANGE=binance
+HEDGE_MODE=True
+OPENAI_API_KEY=xxx
+MAX_DAILY_LOSS=-50
+
+Notes
+	•	Use separate API keys per exchange.
+	•	Store secrets in AWS Secrets Manager or Vault.
+	•	Always test with sandbox accounts first.
+
+⸻
+
+11. Security & Risk Controls
+	•	Max drawdown guard stops AutoTrade after daily loss threshold.
+	•	Rate limits on API calls.
+	•	Encrypted key storage.
+	•	Sandbox-first QA policy.
+	•	Optional 2FA approval for critical actions.
+
+⸻
+
+12. Glossary of Trading & TA Terms
+
+Term	Meaning
+ATR	Average True Range (volatility measure)
+EMA/SMA/HMA	Moving averages (trend direction)
+RSI	Relative Strength Index (momentum)
+MACD	Trend-momentum crossover indicator
+VWAP	Volume Weighted Average Price
+BOS	Break of Structure
+CVD	Cumulative Volume Delta
+OCO	One-Cancels-Other (linked orders)
+
+
+⸻
+
+13. Philosophy & Closing Statement
+
+ELBOT is designed to think like a human analyst, act like a disciplined trader, and execute like an institution.
+It learns from liquidity, respects structure, and reacts only when probabilities align.
+
+“ELBOT trades like water — adapting to liquidity, moving with institutional intent, never against it.”
+
+
+
+---------------ELBOT – Institutional Trading Intelligence System--------------------
+
+Product Requirements & Technical Architecture Document v2.0 + Developer Guide
+
+Date: October 2025  Prepared by: Eber Garcia
+
+⸻
+
+(Sections 1 – 13 from ELBOT v2.0 remain unchanged; this version adds the new Appendix A.)
+
+⸻
+
+APPENDIX A – Developer Companion Sheet
+
+⚙️ 1. Environment & Dependencies
+
+Core Stack
+
+Component	Tool / Library
+Language	Python 3.11+
+Package Manager	pip or poetry
+Virtual Env	venv or conda
+Core APIs	ccxt.pro, openai, pandas, numpy, ta, flask, fastapi, redis, psycopg2
+Async	aiohttp, asyncio, celery
+
+Containerization
+
+docker compose up -d
+
+Expose Flask (5000), Redis, PostgreSQL services.
+
+⸻
+
+🌐 2. .env Example
+
+# AI
+OPENAI_API_KEY=sk-xxxxx
+OPENAI_MODEL=gpt-5
+
+# Exchanges
+SPOT_EXCHANGE=coinbase
+FUTURES_EXCHANGE=binance
+HEDGE_MODE=True
+API_KEY_COINBASE=xxxxx
+API_SECRET_COINBASE=xxxxx
+API_KEY_BINANCE=xxxxx
+API_SECRET_BINANCE=xxxxx
+
+# Notifications
+TELEGRAM_TOKEN=xxxxx
+TELEGRAM_CHAT_ID=xxxxx
+PUSHOVER_APP_TOKEN=xxxxx
+PUSHOVER_USER_KEY=xxxxx
+
+# Risk Controls
+MAX_DAILY_LOSS=-50
+RISK_PER_TRADE=0.01
+
+# System
+ENV=production
+LOG_LEVEL=info
+
+
+⸻
+
+🧠 3. Data Flow Overview
+
+TradingView → Flask Webhook → Indicator Engine
+        ↓
+      Liquidity Module (order-book walls)
+        ↓
+     OpenAI Reasoning (JSON output)
+        ↓
+    Decision Fusion Engine
+        ↓
+  AutoTrade / ManualTrade Execution
+        ↓
+  Telegram / Pushover Alerts
+
+
+⸻
+
+📊 4. Exchange Testnet Setup
+
+Exchange	Testnet URL	Notes
+Binance Futures	https://testnet.binancefuture.com	Full hedge-mode support
+MEXC Demo	https://www.mxc.com/futures/demo	Quick no-KYC testing
+Kraken Sandbox	https://futures.kraken.com/demo	Regulated demo venue
+Coinbase Sandbox	https://public.sandbox.exchange.coinbase.com	Spot-only testing
+
+
+⸻
+
+⚖️ 5. Key Modules & Scripts
+
+File	Purpose
+elbot_main.py	Entry point / web server
+indicators.py	Technical analysis calculations
+liquidity.py	Order-book and wall detection
+ai_reasoning.py	OpenAI integration
+decision_engine.py	Bias fusion logic
+execution.py	Order routing via ccxt
+risk_manager.py	Risk / drawdown control
+notifier.py	Telegram & Pushover alerts
+
+
+⸻
+
+🚀 6. Typical Developer Workflow
+
+Step	Command	Description
+1	python -m venv venv && source venv/bin/activate	Create virtual environment
+2	pip install -r requirements.txt	Install dependencies
+3	python elbot_main.py	Start local Flask server
+4	Webhook TradingView → http://localhost:5000/tvhook	Trigger test signal
+5	Check Telegram for alert	Validate logic
+6	Switch to testnet API keys	Simulate trades
+7	Deploy Docker container	Promote to staging/production
+
+
+⸻
+
+🧱 7. Best Practices
+	•	Encrypt all API secrets (AWS Secrets Manager / Vault).
+	•	Run unit tests (pytest) before deployment.
+	•	Use OpenAI temperature ≤ 0.3 for determinism.
+	•	Keep AI reasoning separate from execution logic.
+	•	Maintain structured logs under /logs directory.
+	•	Recycle containers daily to reset memory.
+
+⸻
+
+🔍 8. Troubleshooting Quick Tips
+
+Issue	Check
+No webhook response	Flask route /tvhook active?
+Orders rejected	API permissions / testnet mode?
+AI returns plain text	Prompt format or response schema?
+No Telegram alerts	Chat ID or token expired?
+Frequent “WAIT” signals	Indicator thresholds too strict – tune ATR/volume.
+
+
+⸻
+
+🧩 9. Deployment Checklist
+
+✅ .env configured  ✅ Testnet verified  ✅ Logs active
+✅ Risk controls tested ✅ Alerts functioning ✅ Containers rebuilt (docker compose build && up -d)
+
+⸻
+
+🧠 10. Developer Philosophy
+
+“Code each module as if it were replaceable — ELBOT’s strength is modularity, discipline, and flow.”
+
+	•	JSON interfaces between modules.
+	•	Stateless functions where possible.
+	•	Async non-blocking I/O.
+	•	Every AI decision must be logged for audit.
+
+⸻
+
+💬 Final Reminder
+
+ELBOT’s edge lies not in prediction but in reading liquidity and institutional intent—
+executing with discipline, patience, and clarity.
+
+“ELBOT trades like water — adapting to liquidity, moving with institutional intent, never against it.”
+
+⸻
+

@@ -1,0 +1,830 @@
+timestamp,symbol,timeframe,price,rsi,macd,adx,ema21,ema50,volume_spike,risk_reward,confidence,signal,side,commentary
+2025-06-23T08:32:04.841424,BTC/USD,1h,101236.32,48.1,12.82,20.4,101323.25,101805.92,False,1.5,⭐,🔴 *BEAR*,SHORT,Bearish momentum with low RSI and price below EMA21. Caution advised for short entry.
+2025-06-23T08:34:37.638084,BTC/USD,1h,101300.36,48.9,17.93,20.4,101329.07,101808.43,610.178,False,1.5,⭐,False,🔴 *BEAR*,SHORT,Bearish momentum with low RSI and price below EMA21. Caution advised for short entry.
+2025-06-23T08:34:41.615744,ETH/USD,1h,2252.04,50.3,-3.19,34.5,2246.35,2284.24,25.347,False,1.5,⭐⭐⭐,False,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.
+2025-06-23T08:35:42.809978,BTC/USD,1h,101301.71,48.9,18.04,20.4,101329.19,101808.48,610.178,False,1.5,⭐,False,🔴 *BEAR*,SHORT,Bearish momentum with low RSI and price below EMA21. Caution advised for short entry.
+2025-06-23T08:35:43.833699,ETH/USD,1h,2253.91,51.0,-3.04,34.5,2246.52,2284.31,25.347,False,1.5,⭐⭐⭐,False,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.
+2025-06-23T08:49:45.614264,BTC/USD,1h,101571.82,52.2,39.59,20.4,101353.75,101819.08,629.953,False,1.5,⭐⭐⭐,False,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,CPI Release,Bullish,🐋 Large wallet inflow,Negative with DXY
+2025-06-23T08:49:48.336890,ETH/USD,1h,2258.98,52.8,-2.64,34.2,2246.98,2284.51,26.007,False,1.5,⭐⭐⭐,False,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,ETF Decision,Bearish,🐋 Large wallet outflow,Neutral impact
+2025-06-23T08:50:34.359470,BTC/USD,1h,101540.62,51.8,37.1,20.4,101350.91,101817.85,629.953,False,1.5,⭐⭐⭐,False,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,CPI Release,Bullish,🔍 No major whale moves,Positive correlation with SPX
+2025-06-23T08:50:35.558638,ETH/USD,1h,2259.39,52.9,-2.61,34.2,2247.02,2284.53,26.007,False,1.5,⭐⭐⭐,False,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,CPI Release,Neutral,🐋 Large wallet outflow,Negative with DXY
+2025-06-23T09:13:39.354025,BTC/USD,1h,101367.7,49.5,40.74,19.1,101367.07,101806.87,619.69,False,1.5,⭐⭐,False,🟡 *NEUTRAL*,WAIT,Indicators show conflicting signals. Wait for confirmation before entering a trade.,No Major Event,Bullish,🔍 No major whale moves,Negative with DXY
+2025-06-23T09:13:42.349411,XRP/USD,1h,2.0,45.0,-0.01,21.4,2.01,2.04,0.024,False,1.5,⚠️ Low,False,🔴 *BEAR*,SHORT,Bearish momentum with low RSI and price below EMA21. Caution advised for short entry.,ETF Decision,Neutral,🔍 No major whale moves,Negative with DXY
+2025-06-23T10:05:13.187416,BTC/USD,1h,102519.2,61.4,187.42,19.7,101557.01,101873.65,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,No clear liquidity sweep detected.
+2025-06-23T10:05:13.894590,ETH/USD,1h,2307.32,65.5,5.81,31.6,2257.15,2286.14,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,No clear liquidity sweep detected.
+2025-06-23T10:05:14.564536,XRP/USD,1h,2.03,55.4,-0.0,19.4,2.02,2.04,False,1.5,⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,No clear liquidity sweep detected.
+2025-06-23T10:48:07.378902,BTC/USD,1h,101754.09,52.7,126.38,19.7,101487.45,101843.64,True,740.32,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T10:48:08.090651,ETH/USD,1h,2282.65,58.0,3.84,31.6,2254.9,2285.17,True,30.0,1.5,⭐⭐⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T10:48:08.639600,XRP/USD,1h,2.02,50.9,-0.0,19.4,2.02,2.04,True,0.03,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T14:10:01.664594,BTC/USD,1h,102929.54,60.6,207.03,17.3,101645.61,101858.0,False,895.48,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T14:10:02.237852,ETH/USD,1h,2296.8,58.4,4.38,25.5,2257.26,2281.56,False,35.48,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T14:10:02.794012,XRP/USD,1h,2.04,56.6,-0.0,18.6,2.02,2.03,False,0.03,1.5,⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:33:36.569713,BTC/USD,1h,102836.92,59.4,276.79,17.2,101760.12,101899.22,False,892.14,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:33:37.151664,ETH/USD,1h,2298.57,58.0,7.58,24.3,2261.88,2282.62,False,34.79,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:33:37.682027,XRP/USD,1h,2.05,58.3,0.0,18.4,2.02,2.03,False,0.03,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:36:09.522783,BTC/USD,1h,102940.02,60.4,285.01,17.2,101769.49,101903.26,False,893.96,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:36:10.106517,ETH/USD,1h,2308.31,60.3,8.35,24.3,2262.76,2283.0,False,34.79,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:36:10.652012,XRP/USD,1h,2.06,59.1,0.0,18.4,2.02,2.03,False,0.03,1.5,⭐⭐⭐,🟢 *BULL*,LONG,False,Market conditions support a cautious long position.
+2025-06-23T15:53:25.264929,BTC/USD,15m,102923.56,60.9,393.39,22.4,102323.34,101897.93,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:25.919284,ETH/USD,15m,2311.81,63.9,13.49,21.4,2282.25,2267.37,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:26.484471,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:27.027698,BTC/USD,15m,102923.56,60.9,393.39,22.4,102323.34,101897.93,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:27.585214,ETH/USD,15m,2311.81,63.9,13.49,21.4,2282.25,2267.37,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:28.152465,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:28.699520,BTC/USD,15m,102923.56,60.9,393.39,22.4,102323.34,101897.93,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:29.329848,ETH/USD,15m,2311.81,63.9,13.49,21.4,2282.25,2267.37,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:29.891999,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:30.464790,BTC/USD,15m,102920.14,60.8,393.11,22.4,102323.03,101897.8,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:31.036152,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:31.619301,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:32.164021,BTC/USD,15m,102920.14,60.8,393.11,22.4,102323.03,101897.8,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:32.703328,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:33.239317,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:33.788905,BTC/USD,15m,102920.14,60.8,393.11,22.4,102323.03,101897.8,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:34.329089,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:34.882920,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:35.434371,BTC/USD,15m,102920.14,60.8,393.11,22.4,102323.03,101897.8,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:35.994112,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:36.541964,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:37.091442,BTC/USD,15m,102920.14,60.8,393.11,22.4,102323.03,101897.8,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:37.704008,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:38.256737,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:38.842225,BTC/USD,15m,102920.14,60.8,393.11,22.4,102323.03,101897.8,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:39.380974,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:39.925571,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:40.494158,BTC/USD,15m,102896.25,60.6,391.21,22.4,102320.86,101896.86,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:41.032825,ETH/USD,15m,2312.15,64.0,13.51,21.4,2282.28,2267.39,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:41.576429,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:42.160704,BTC/USD,15m,102896.25,60.6,391.21,22.4,102320.86,101896.86,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:42.699857,ETH/USD,15m,2312.48,64.1,13.54,21.4,2282.31,2267.4,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:43.253756,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:43.814745,BTC/USD,15m,102896.25,60.6,391.21,22.4,102320.86,101896.86,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:44.369874,ETH/USD,15m,2312.48,64.1,13.54,21.4,2282.31,2267.4,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:44.933823,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:45.489263,BTC/USD,15m,102896.25,60.6,391.21,22.4,102320.86,101896.86,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:46.088054,ETH/USD,15m,2312.48,64.1,13.54,21.4,2282.31,2267.4,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:46.703195,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:47.249212,BTC/USD,15m,102896.25,60.6,391.21,22.4,102320.86,101896.86,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:47.832462,ETH/USD,15m,2312.48,64.1,13.54,21.4,2282.31,2267.4,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:48.398388,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:48.992411,BTC/USD,15m,102896.25,60.6,391.21,22.4,102320.86,101896.86,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:49.539392,ETH/USD,15m,2312.48,64.1,13.54,21.4,2282.31,2267.4,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:50.249607,XRP/USD,15m,2.06,63.2,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:50.800243,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:51.442015,ETH/USD,15m,2312.6,64.1,13.55,21.4,2282.33,2267.41,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:51.994874,XRP/USD,15m,2.06,63.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:52.541722,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:53.127307,ETH/USD,15m,2312.6,64.1,13.55,21.4,2282.33,2267.41,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:53.688214,XRP/USD,15m,2.06,63.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:54.274374,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:54.831592,ETH/USD,15m,2312.6,64.1,13.55,21.4,2282.33,2267.41,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:55.496544,XRP/USD,15m,2.06,63.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:56.060223,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:56.605513,ETH/USD,15m,2312.6,64.1,13.55,21.4,2282.33,2267.41,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:57.160070,XRP/USD,15m,2.06,63.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:57.715959,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:53:58.354975,ETH/USD,15m,2312.6,64.1,13.55,21.4,2282.33,2267.41,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:53:58.915530,XRP/USD,15m,2.06,63.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:53:59.499490,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:54:00.056821,ETH/USD,15m,2312.6,64.1,13.55,21.4,2282.33,2267.41,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.05,True
+2025-06-23T15:54:00.610121,XRP/USD,15m,2.06,63.8,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:54:01.178028,BTC/USD,15m,102917.78,60.8,392.92,22.4,102322.82,101897.7,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,505.82,True
+2025-06-23T15:54:01.762426,ETH/USD,15m,2316.08,65.0,13.83,21.4,2282.64,2267.54,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.22,True
+2025-06-23T15:54:02.313386,XRP/USD,15m,2.06,63.8,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:54:02.874422,BTC/USD,15m,103007.28,61.8,400.06,22.4,102330.95,101901.21,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,510.4,True
+2025-06-23T15:54:03.421271,ETH/USD,15m,2316.08,65.0,13.83,21.4,2282.64,2267.54,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.22,True
+2025-06-23T15:54:03.970314,XRP/USD,15m,2.06,63.8,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:54:04.519645,BTC/USD,15m,103007.28,61.8,400.06,22.4,102330.95,101901.21,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,510.4,True
+2025-06-23T15:54:05.080064,ETH/USD,15m,2316.08,65.0,13.83,21.4,2282.64,2267.54,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.22,True
+2025-06-23T15:54:05.634925,XRP/USD,15m,2.06,63.8,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:54:06.211854,BTC/USD,15m,103007.28,61.8,400.06,22.4,102330.95,101901.21,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,510.4,True
+2025-06-23T15:54:06.765725,ETH/USD,15m,2316.08,65.0,13.83,21.4,2282.64,2267.54,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.22,True
+2025-06-23T15:54:07.336623,XRP/USD,15m,2.06,63.8,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:54:07.881069,BTC/USD,15m,103007.28,61.8,400.06,22.4,102330.95,101901.21,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,510.4,True
+2025-06-23T15:54:08.440686,ETH/USD,15m,2316.08,65.0,13.83,21.4,2282.64,2267.54,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.22,True
+2025-06-23T15:54:08.989709,XRP/USD,15m,2.06,63.8,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:54:09.551573,BTC/USD,15m,103007.28,61.8,400.06,22.4,102330.95,101901.21,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,510.4,True
+2025-06-23T15:57:01.176121,BTC/USD,15m,103122.7,62.9,409.27,22.4,102341.44,101905.74,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,519.71,True
+2025-06-23T15:57:01.925255,ETH/USD,15m,2317.38,65.4,13.93,21.4,2282.76,2267.59,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:02.614950,XRP/USD,15m,2.06,64.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:03.288415,BTC/USD,15m,103122.7,62.9,409.27,22.4,102341.44,101905.74,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,519.71,True
+2025-06-23T15:57:03.982179,ETH/USD,15m,2317.38,65.4,13.93,21.4,2282.76,2267.59,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:04.760827,XRP/USD,15m,2.06,64.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:05.440929,BTC/USD,15m,103122.7,62.9,409.27,22.4,102341.44,101905.74,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,519.71,True
+2025-06-23T15:57:06.108054,ETH/USD,15m,2317.38,65.4,13.93,21.4,2282.76,2267.59,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:06.805069,XRP/USD,15m,2.06,64.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:07.489690,BTC/USD,15m,103122.7,62.9,409.27,22.4,102341.44,101905.74,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,519.71,True
+2025-06-23T15:57:08.172123,ETH/USD,15m,2317.38,65.4,13.93,21.4,2282.76,2267.59,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:08.923198,XRP/USD,15m,2.06,64.5,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:09.603606,BTC/USD,15m,103122.7,62.9,409.27,22.4,102341.44,101905.74,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,519.71,True
+2025-06-23T15:57:10.280638,ETH/USD,15m,2317.38,65.4,13.93,21.4,2282.76,2267.59,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:10.956897,XRP/USD,15m,2.06,64.6,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:11.620333,BTC/USD,15m,103149.55,63.2,411.41,22.4,102343.89,101906.79,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,520.78,True
+2025-06-23T15:57:12.304181,ETH/USD,15m,2317.5,65.4,13.94,21.4,2282.77,2267.6,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:12.977195,XRP/USD,15m,2.06,64.6,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:13.683844,BTC/USD,15m,103149.55,63.2,411.41,22.4,102343.89,101906.79,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,520.78,True
+2025-06-23T15:57:14.365222,ETH/USD,15m,2317.5,65.4,13.94,21.4,2282.77,2267.6,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:15.035235,XRP/USD,15m,2.06,64.6,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:15.704839,BTC/USD,15m,103149.55,63.2,411.41,22.4,102343.89,101906.79,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,520.78,True
+2025-06-23T15:57:16.460521,ETH/USD,15m,2317.5,65.4,13.94,21.4,2282.77,2267.6,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:17.139611,XRP/USD,15m,2.06,64.6,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:17.825044,BTC/USD,15m,103149.55,63.2,411.41,22.4,102343.89,101906.79,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,520.78,True
+2025-06-23T15:57:18.525702,ETH/USD,15m,2317.5,65.4,13.94,21.4,2282.77,2267.6,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:19.237115,XRP/USD,15m,2.06,64.6,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T15:57:19.905711,BTC/USD,15m,103149.55,63.2,411.41,22.4,102343.89,101906.79,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,520.78,True
+2025-06-23T15:57:20.575402,ETH/USD,15m,2316.16,65.1,13.83,21.4,2282.65,2267.55,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.51,True
+2025-06-23T15:57:21.255702,XRP/USD,15m,2.06,64.4,0.01,32.5,2.03,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T16:01:01.954930,BTC/USD,15m,103240.9,64.0,434.33,23.1,102433.23,101962.66,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,508.83,True
+2025-06-23T16:01:02.646483,ETH/USD,15m,2314.55,64.6,14.44,22.0,2285.41,2269.33,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,20.14,True
+2025-06-23T16:01:03.348540,XRP/USD,15m,2.06,65.0,0.01,33.1,2.04,2.02,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T16:16:04.140613,BTC/USD,15m,103417.37,65.7,465.09,23.4,102535.54,102025.56,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,502.05,True
+2025-06-23T16:16:04.917509,ETH/USD,15m,2334.57,69.0,17.8,24.1,2291.69,2272.71,False,1.5,⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,21.53,True
+2025-06-23T16:16:05.605347,XRP/USD,15m,2.08,68.8,0.02,34.9,2.04,2.03,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T16:31:06.393255,BTC/USD,15m,103876.12,69.7,535.38,25.0,102690.43,102113.19,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,502.42,True
+2025-06-23T16:31:07.097015,ETH/USD,15m,2363.54,75.0,22.93,27.2,2300.58,2277.35,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,22.97,True
+2025-06-23T16:31:07.810659,XRP/USD,15m,2.09,69.8,0.02,37.0,2.05,2.03,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-06-23T16:46:08.497563,BTC/USD,15m,103954.12,70.3,570.3,26.1,102811.62,102188.26,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,486.75,True
+2025-06-23T16:46:09.247360,ETH/USD,15m,2354.47,70.8,23.67,29.2,2304.79,2280.06,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,22.53,True
+2025-06-23T16:46:09.944778,XRP/USD,15m,2.09,68.2,0.02,38.4,2.05,2.03,False,1.5,⭐⭐⭐⭐,🟢 *BULL*,LONG,Market conditions support a cautious long position given moderate RSI and positive MACD alignment.,0.02,True
+2025-07-13 17:23:10.990416+00:00,BTC/USD,118726.81,118563.41,118971.91,,,paper,entry
+2025-07-13 17:23:19.826484+00:00,XRP/USD,2.83,2.82,2.84,,,paper,entry
+2025-07-13 17:28:51.511409+00:00,BTC/USD,118711.22,118551.07,118951.44,,,paper,entry
+2025-07-13 17:29:00.316072+00:00,XRP/USD,2.83,2.82,2.84,,,paper,entry
+2025-07-13 17:44:16.683337+00:00,XRP/USD,2.83,2.82,2.84,2.8455,0.55,paper,target
+2025-07-13 17:46:19.398728+00:00,BTC/USD,118814.8,118682.52,119013.22,,,paper,entry
+2025-07-13 17:46:20.113042+00:00,BTC/USD,118814.8,118682.52,119013.22,,,live,entry
+2025-07-13 17:46:28.962468+00:00,XRP/USD,2.85,2.84,2.86,,,paper,entry
+2025-07-13 17:46:29.905249+00:00,XRP/USD,2.85,2.84,2.86,,,live,entry
+2025-07-13 18:24:17.486245+00:00,BTC/USD,118999.99,118859.91,119210.11,,,paper,entry
+2025-07-13 18:24:18.139334+00:00,BTC/USD,118999.99,118859.91,119210.11,,,live,entry
+2025-07-13 18:24:26.975997+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 18:24:28.527002+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 18:59:09.289727+00:00,BTC/USD,119048.28,118919.15,119241.98,,,paper,entry
+2025-07-13 18:59:09.963365+00:00,BTC/USD,119048.28,118919.15,119241.98,,,live,entry
+2025-07-13 18:59:18.742016+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 18:59:20.321811+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 19:08:28.620659+00:00,BTC/USD,119022.29,118899.7,119206.17,,,paper,entry
+2025-07-13 19:08:29.332998+00:00,BTC/USD,119022.29,118899.7,119206.17,,,live,entry
+2025-07-13 19:08:38.336879+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 19:08:39.790412+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 19:37:27.070713+00:00,BTC/USD,119357.87,119208.49,119581.94,,,paper,entry
+2025-07-13 19:37:27.751538+00:00,BTC/USD,119357.87,119208.49,119581.94,,,live,entry
+2025-07-13 19:37:36.750534+00:00,XRP/USD,2.87,2.86,2.88,,,paper,entry
+2025-07-13 19:37:38.172896+00:00,XRP/USD,2.87,2.86,2.88,,,live,entry
+2025-07-13 19:51:23.774062+00:00,BTC/USD,119225.35,119073.59,119452.99,,,paper,entry
+2025-07-13 19:51:24.440443+00:00,BTC/USD,119225.35,119073.59,119452.99,,,live,entry
+2025-07-13 19:51:33.451897+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 19:51:34.899048+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 20:04:30.669323+00:00,BTC/USD,118905.53,118744.01,119147.81,,,paper,entry
+2025-07-13 20:04:31.316672+00:00,BTC/USD,118905.53,118744.01,119147.81,,,live,entry
+2025-07-13 20:04:40.233335+00:00,XRP/USD,2.84,2.83,2.86,,,paper,entry
+2025-07-13 20:04:41.637786+00:00,XRP/USD,2.84,2.83,2.86,,,live,entry
+2025-07-13 20:08:43.668865+00:00,BTC/USD,118952.33,118792.92,119191.44,,,paper,entry
+2025-07-13 20:08:44.340559+00:00,BTC/USD,118952.33,118792.92,119191.44,,,live,entry
+2025-07-13 20:08:54.544626+00:00,XRP/USD,2.84,2.83,2.86,,,paper,entry
+2025-07-13 20:08:56.054134+00:00,XRP/USD,2.84,2.83,2.86,,,live,entry
+2025-07-13 20:17:19.467487+00:00,BTC/USD,119091.49,118942.24,119315.36,,,paper,entry
+2025-07-13 20:17:20.514994+00:00,BTC/USD,119091.49,118942.24,119315.36,,,live,entry
+2025-07-13 20:17:29.310806+00:00,XRP/USD,2.85,2.84,2.86,,,paper,entry
+2025-07-13 20:17:30.249950+00:00,XRP/USD,2.85,2.84,2.86,,,live,entry
+2025-07-13 20:19:22.927124+00:00,BTC/USD,119210.4,119054.84,119443.74,,,paper,entry
+2025-07-13 20:19:24.017617+00:00,BTC/USD,119210.4,119054.84,119443.74,,,live,entry
+2025-07-13 20:19:32.842354+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 20:19:34.549596+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 20:26:40.004837+00:00,BTC/USD,119262.2,119109.68,119490.98,,,paper,entry
+2025-07-13 20:26:41.118096+00:00,BTC/USD,119262.2,119109.68,119490.98,,,live,entry
+2025-07-13 20:26:50.187452+00:00,XRP/USD,2.85,2.84,2.86,,,paper,entry
+2025-07-13 20:26:51.949527+00:00,XRP/USD,2.85,2.84,2.86,,,live,entry
+2025-07-13 20:36:42.930355+00:00,BTC/USD,119294.91,119148.92,119513.9,,,paper,entry
+2025-07-13 20:36:43.582549+00:00,BTC/USD,119294.91,119148.92,119513.9,,,live,entry
+2025-07-13 20:36:52.545394+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 20:36:54.033712+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 20:41:49.858084+00:00,BTC/USD,119187.32,119037.55,119411.98,,,paper,entry
+2025-07-13 20:41:50.980949+00:00,BTC/USD,119187.32,119037.55,119411.98,,,live,entry
+2025-07-13 20:41:59.878196+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-13 20:42:01.597903+00:00,XRP/USD,2.86,2.85,2.88,,,live,entry
+2025-07-13 21:12:27.277634+00:00,BTC/USD,119187.32,119037.55,119411.98,118955.8,-0.19,live,stopped
+2025-07-13 21:13:28.502850+00:00,BTC/USD,119187.32,119037.55,119411.98,118954.53,-0.2,live,stopped
+2025-07-13 21:14:29.698793+00:00,BTC/USD,119187.32,119037.55,119411.98,118910.88,-0.23,live,stopped
+2025-07-13 21:15:30.927385+00:00,BTC/USD,119187.32,119037.55,119411.98,118921.92,-0.22,live,stopped
+2025-07-13 21:16:32.127991+00:00,BTC/USD,119187.32,119037.55,119411.98,119000.78,-0.16,live,stopped
+2025-07-13 21:17:33.325372+00:00,BTC/USD,119187.32,119037.55,119411.98,118996.97,-0.16,live,stopped
+2025-07-13 21:18:34.523702+00:00,BTC/USD,119187.32,119037.55,119411.98,118986.23,-0.17,live,stopped
+2025-07-13 21:19:35.795825+00:00,BTC/USD,119187.32,119037.55,119411.98,118974.78,-0.18,live,stopped
+2025-07-13 21:20:37.069896+00:00,BTC/USD,119187.32,119037.55,119411.98,119017.47,-0.14,live,stopped
+2025-07-13 21:21:39.913784+00:00,BTC/USD,119187.32,119037.55,119411.98,118988.6,-0.17,live,stopped
+2025-07-13 21:22:49.446675+00:00,XRP/USD,2.86,2.85,2.88,2.8387,-0.74,live,stopped
+2025-07-13 21:37:30.167782+00:00,BTC/USD,118794.59,118660.95,118995.05,,,paper,entry
+2025-07-13 21:42:46.766348+00:00,BTC/USD,118734.95,118583.68,118961.86,,,paper,entry
+2025-07-13 21:49:18.711932+00:00,BTC/USD,118868.8,118716.34,119097.49,,,paper,entry
+2025-07-13 22:10:49.951614+00:00,BTC/USD,118424.05,118262.87,118665.82,,,paper,entry
+2025-07-13 22:11:00.023228+00:00,XRP/USD,2.8,2.79,2.82,,,paper,entry
+2025-07-13 22:18:38.060551+00:00,BTC/USD,118420.7,118250.73,118675.66,,,paper,entry
+2025-07-13 22:19:50.164037+00:00,XRP/USD,2.8,2.79,2.82,,,paper,entry
+2025-07-13 22:20:27.646582+00:00,BTC/USD,118369.63,118205.26,118616.18,,,paper,entry
+2025-07-13 22:23:07.971578+00:00,BTC/USD,118419.2,118251.43,118670.86,,,paper,entry
+2025-07-13 22:23:18.109739+00:00,XRP/USD,2.8,2.79,2.82,,,paper,entry
+2025-07-13 22:24:45.572159+00:00,BTC/USD,118552.04,118375.88,118816.28,,,paper,entry
+2025-07-13 22:24:55.737018+00:00,XRP/USD,2.81,2.8,2.82,,,paper,entry
+2025-07-13 22:27:20.504991+00:00,BTC/USD,118453.05,118283.31,118707.66,,,paper,entry
+2025-07-13 22:28:31.119952+00:00,XRP/USD,2.8,2.79,2.82,,,paper,entry
+2025-07-13 22:28:58.994860+00:00,BTC/USD,118467.49,118296.45,118724.05,,,paper,entry
+2025-07-13 22:29:09.127955+00:00,XRP/USD,2.8,2.79,2.82,,,paper,entry
+2025-07-13 22:37:01.516300+00:00,BTC/USD,118717.99,118550.6,118969.08,,,paper,entry
+2025-07-13 22:38:11.948373+00:00,XRP/USD,2.82,2.81,2.84,,,paper,entry
+2025-07-14 01:16:46.435770+00:00,BTC/USD,119057.11,118893.93,119301.88,,,paper,entry
+2025-07-14 01:17:57.190679+00:00,XRP/USD,2.87,2.86,2.88,,,paper,entry
+2025-07-14 01:19:06.873715+00:00,XRP/USD,2.87,2.86,2.88,2.858,-0.42,paper,stopped
+2025-07-14 02:20:11.425810+00:00,BTC/USD,119216.4,119073.58,119430.63,,,paper,entry
+2025-07-14 02:21:21.957090+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-14 09:27:12.692665+00:00,BTC/USD,119216.4,119073.58,119430.63,122131.92,2.45,paper,target
+2025-07-14 09:27:14.037996+00:00,BTC/USD,122133.5,121949.62,122409.32,,,paper,entry
+2025-07-14 09:29:25.551850+00:00,XRP/USD,2.86,2.85,2.88,2.9776,4.11,paper,target
+2025-07-14 09:29:26.940072+00:00,XRP/USD,2.98,2.96,3.01,,,paper,entry
+2025-07-14 10:13:09.581797+00:00,BTC/USD,122133.5,121949.62,122409.32,121816.18,-0.26,paper,stopped
+2025-07-14 10:29:30.212222+00:00,BTC/USD,121960.35,121783.09,122226.24,,,paper,entry
+2025-07-14 10:30:41.397216+00:00,XRP/USD,2.98,2.96,3.01,,,paper,entry
+2025-07-14 10:56:06.332559+00:00,BTC/USD,121939.78,121787.48,122168.23,,,paper,entry
+2025-07-14 10:57:16.931596+00:00,XRP/USD,3.01,2.99,3.04,,,paper,entry
+2025-07-14 13:14:51.859777+00:00,BTC/USD,121929.18,121767.43,122171.8,,,paper,entry
+2025-07-14 13:20:13.253542+00:00,BTC/USD,121629.28,121468.96,121869.76,,,paper,entry
+2025-07-14 13:29:45.976447+00:00,BTC/USD,121751.2,121584.15,122001.78,,,paper,entry
+2025-07-14 13:29:56.303824+00:00,XRP/USD,2.96,2.95,2.98,,,paper,entry
+2025-07-14 13:37:34.096694+00:00,BTC/USD,121429.29,121237.72,121716.64,,,paper,entry
+2025-07-14 13:37:44.304375+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 14:04:34.042609+00:00,BTC/USD,121429.29,121237.72,121716.64,121825.46,0.33,paper,target
+2025-07-14 14:11:35.705395+00:00,BTC/USD,121738.18,121484.16,122119.21,,,paper,entry
+2025-07-14 14:11:50.476599+00:00,XRP/USD,3.01,2.99,3.04,,,paper,entry
+2025-07-14 14:26:59.914560+00:00,BTC/USD,121738.18,121484.16,122119.21,121387.73,-0.29,paper,stopped
+2025-07-14 14:27:08.771158+00:00,XRP/USD,3.01,2.99,3.04,2.9868,-0.77,paper,stopped
+2025-07-14 15:10:36.115546+00:00,BTC/USD,120468.43,120151.92,120943.2,,,paper,entry
+2025-07-14 15:10:46.622908+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 15:14:43.752246+00:00,BTC/USD,120706.35,120373.38,121205.8,,,paper,entry
+2025-07-14 15:14:54.445143+00:00,XRP/USD,2.98,2.96,3.01,,,paper,entry
+2025-07-14 15:41:17.870805+00:00,BTC/USD,120183.73,119883.3,120634.38,,,paper,entry
+2025-07-14 15:41:28.327844+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 15:43:20.414862+00:00,BTC/USD,120100.68,119800.25,120551.32,,,paper,entry
+2025-07-14 15:54:39.612930+00:00,BTC/USD,119670.5,119365.78,120127.58,,,paper,entry
+2025-07-14 15:54:50.252921+00:00,XRP/USD,2.92,2.9,2.95,,,paper,entry
+2025-07-14 16:04:30.716581+00:00,BTC/USD,119807.69,119514.97,120246.77,,,paper,entry
+2025-07-14 16:04:41.079679+00:00,XRP/USD,2.94,2.92,2.97,,,paper,entry
+2025-07-14 16:09:06.672472+00:00,BTC/USD,119651.3,119364.5,120081.5,,,paper,entry
+2025-07-14 16:09:17.072228+00:00,XRP/USD,2.93,2.91,2.96,,,paper,entry
+2025-07-14 16:12:08.877365+00:00,BTC/USD,119476.08,119190.08,119905.08,,,paper,entry
+2025-07-14 16:12:29.103619+00:00,XRP/USD,2.92,2.9,2.95,,,paper,entry
+2025-07-14 16:21:02.292565+00:00,BTC/USD,119399.99,119114.95,119827.55,,,paper,entry
+2025-07-14 16:21:12.534360+00:00,XRP/USD,2.95,2.93,2.98,,,paper,entry
+2025-07-14 16:32:42.617495+00:00,BTC/USD,119891.5,119577.55,120362.42,,,paper,entry
+2025-07-14 16:32:53.891698+00:00,XRP/USD,2.97,2.95,3.0,,,paper,entry
+2025-07-14 16:39:41.945769+00:00,BTC/USD,119899.63,119587.52,120367.8,,,paper,entry
+2025-07-14 16:39:52.352033+00:00,XRP/USD,2.98,2.96,3.01,,,paper,entry
+2025-07-14 16:43:05.871117+00:00,BTC/USD,119800.75,119501.35,120249.85,,,paper,entry
+2025-07-14 16:43:16.162733+00:00,XRP/USD,2.98,2.96,3.01,,,paper,entry
+2025-07-14 16:46:24.898481+00:00,BTC/USD,119731.73,119442.37,120165.77,,,paper,entry
+2025-07-14 16:46:39.412024+00:00,XRP/USD,2.98,2.96,3.01,,,paper,entry
+2025-07-14 16:48:43.762838+00:00,BTC/USD,119960.18,119658.72,120412.37,,,paper,entry
+2025-07-14 16:48:54.863542+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 16:53:59.355635+00:00,BTC/USD,120173.71,119877.04,120618.72,,,paper,entry
+2025-07-14 16:54:09.999888+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 16:55:25.678579+00:00,BTC/USD,120201.01,119917.79,120625.84,,,paper,entry
+2025-07-14 16:55:36.133399+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 16:56:56.475399+00:00,BTC/USD,120282.83,119994.37,120715.52,,,paper,entry
+2025-07-14 16:57:06.734751+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 16:57:56.022329+00:00,BTC/USD,120271.77,119981.95,120706.5,,,paper,entry
+2025-07-14 16:58:06.672983+00:00,XRP/USD,3.0,2.98,3.03,,,paper,entry
+2025-07-14 16:59:42.930060+00:00,BTC/USD,120285.33,119995.51,120720.06,,,paper,entry
+2025-07-14 16:59:54.340769+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 17:00:55.478656+00:00,BTC/USD,120266.62,119993.96,120675.61,,,paper,entry
+2025-07-14 17:01:07.227372+00:00,XRP/USD,2.99,2.97,3.02,,,paper,entry
+2025-07-14 17:10:09.970464+00:00,BTC/USD,120528.04,120247.43,120948.95,,,paper,entry
+2025-07-14 17:10:21.970833+00:00,XRP/USD,2.97,2.95,3.0,,,paper,entry
+2025-07-14 17:26:41.434864+00:00,BTC/USD,120105.02,119849.62,120488.12,,,paper,entry
+2025-07-14 17:26:52.443872+00:00,XRP/USD,2.96,2.94,2.99,,,paper,entry
+2025-07-14 17:33:09.905098+00:00,BTC/USD,120159.02,119908.12,120535.37,,,paper,entry
+2025-07-14 17:33:21.142464+00:00,XRP/USD,2.97,2.95,3.0,,,paper,entry
+2025-07-14 17:42:25.116707+00:00,BTC/USD,119995.01,119750.89,120361.19,,,paper,entry
+2025-07-14 17:42:36.711531+00:00,XRP/USD,2.95,2.93,2.98,,,paper,entry
+2025-07-14 18:49:47.804711+00:00,BTC/USD,119738.99,119539.49,120038.24,,,paper,entry
+2025-07-14 18:49:59.152976+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 18:58:07.556937+00:00,BTC/USD,119647.08,119459.45,119928.52,,,paper,entry
+2025-07-14 18:58:19.032240+00:00,XRP/USD,2.92,2.91,2.94,,,paper,entry
+2025-07-14 19:02:16.340629+00:00,BTC/USD,119834.88,119643.26,120122.31,,,paper,entry
+2025-07-14 19:02:27.791072+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 19:12:54.440937+00:00,BTC/USD,119839.31,119637.27,120142.37,,,live,entry
+2025-07-14 19:13:04.209065+00:00,XRP/USD,2.92,2.9,2.95,,,live,entry
+2025-07-14 19:14:41.163063+00:00,BTC/USD,119813.48,119607.53,120122.4,,,live,entry
+2025-07-14 19:14:51.302603+00:00,XRP/USD,2.92,2.9,2.95,,,live,entry
+2025-07-14 19:18:26.511482+00:00,BTC/USD,119813.99,119611.02,120118.44,,,paper,entry
+2025-07-14 19:18:37.869364+00:00,XRP/USD,2.92,2.9,2.95,,,paper,entry
+2025-07-14 19:28:21.833605+00:00,BTC/USD,119836.73,119636.33,120137.33,,,paper,entry
+2025-07-14 19:28:32.945844+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 19:29:53.586283+00:00,BTC/USD,119786.96,119586.56,120087.56,,,paper,entry
+2025-07-14 19:30:06.169088+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 19:32:00.371047+00:00,BTC/USD,119916.86,119719.67,120212.64,,,paper,entry
+2025-07-14 19:32:11.654753+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 19:35:26.909248+00:00,BTC/USD,120089.92,119891.37,120387.74,,,paper,entry
+2025-07-14 19:35:38.223394+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 19:40:37.331714+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 19:49:12.725948+00:00,XRP/USD,2.91,2.9,2.92,,,paper,entry
+2025-07-14 19:50:40.429548+00:00,XRP/USD,2.92,2.91,2.94,,,paper,entry
+2025-07-14 19:53:29.492596+00:00,XRP/USD,2.92,2.91,2.94,,,paper,entry
+2025-07-14 19:56:52.070803+00:00,XRP/USD,2.91,2.9,2.92,,,paper,entry
+2025-07-14 19:59:19.746559+00:00,XRP/USD,2.93,2.92,2.94,,,paper,entry
+2025-07-14 20:01:12.569871+00:00,XRP/USD,2.92,2.91,2.94,,,paper,entry
+2025-07-14 20:03:17.357708+00:00,XRP/USD,2.92,2.91,2.94,,,paper,entry
+2025-07-14 20:10:42.521127+00:00,XRP/USD,2.89,2.88,2.9,,,paper,entry
+2025-07-14 20:25:54.503074+00:00,XRP/USD,2.89,2.88,2.9,2.9007,0.04,paper,target
+2025-07-14 23:02:56.381817+00:00,XRP/USD,2.95,2.94,2.97,,,paper,entry
+2025-07-14 23:22:04.186870+00:00,XRP/USD,2.95,2.94,2.97,,,paper,entry
+2025-07-14 23:29:03.451797+00:00,XRP/USD,2.94,2.93,2.96,,,paper,entry
+2025-07-14 23:59:08.594117+00:00,XRP/USD,2.94,2.93,2.96,2.9649,0.08,paper,target
+2025-07-15 00:30:40.707280+00:00,XRP/USD,2.95,2.94,2.97,,,paper,entry
+2025-07-15 00:45:52.788867+00:00,XRP/USD,2.95,2.94,2.97,2.9237,-0.09,paper,stopped
+2025-07-15 01:39:01.363364+00:00,XRP/USD,2.9,2.89,2.92,,,paper,entry
+2025-07-15 01:54:13.900324+00:00,XRP/USD,2.9,2.89,2.92,2.9203,0.07,paper,target
+2025-07-15 02:39:42.591505+00:00,XRP/USD,2.87,2.85,2.9,,,paper,entry
+2025-07-15 03:10:02.305783+00:00,XRP/USD,2.87,2.85,2.9,2.8414,-0.1,paper,stopped
+2025-07-15 03:40:21.713578+00:00,XRP/USD,2.82,2.8,2.85,,,paper,entry
+2025-07-15 04:25:50.115170+00:00,XRP/USD,2.82,2.8,2.85,2.8734,0.19,paper,target
+2025-07-15 04:41:00.598670+00:00,XRP/USD,2.87,2.85,2.9,,,paper,entry
+2025-07-15 05:42:44.360242+00:00,XRP/USD,2.88,2.87,2.9,,,paper,entry
+2025-07-15 06:43:22.270506+00:00,XRP/USD,2.88,2.87,2.9,2.8605,-0.07,paper,stopped
+2025-07-15 06:43:24.186350+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-15 07:44:04.903451+00:00,XRP/USD,2.86,2.85,2.88,,,paper,entry
+2025-07-15 08:14:25.084419+00:00,XRP/USD,2.86,2.85,2.88,2.8438,-0.06,paper,stopped
+2025-07-15 08:44:49.184866+00:00,XRP/USD,2.85,2.84,2.86,,,paper,entry
+2025-07-15 09:15:09.508537+00:00,XRP/USD,2.85,2.84,2.86,2.8821,0.11,paper,target
+2025-07-15 09:45:29.573283+00:00,XRP/USD,2.89,2.88,2.9,,,paper,entry
+2025-07-15 10:30:58.964697+00:00,XRP/USD,2.89,2.88,2.9,2.9093,0.07,paper,target
+2025-07-15 10:32:42.730804+00:00,XRP/USD,2.91,2.9,2.92,,,paper,entry
+2025-07-15 10:34:44.482076+00:00,XRP/USD,2.91,2.9,2.92,,,paper,entry
+2025-07-15 10:34:56.877771+00:00,BTC/USD,117032.92,116878.76,117264.16,,,paper,entry
+2025-07-15 10:43:42.868331+00:00,XRP/USD,2.9,2.89,2.92,,,paper,entry
+2025-07-15 10:43:55.753986+00:00,BTC/USD,117121.64,116974.57,117342.24,,,paper,entry
+2025-07-15 11:14:33.595035+00:00,BTC/USD,117121.64,116974.57,117342.24,116759.61,-0.03,paper,stopped
+2025-07-15 11:49:33.635363+00:00,XRP/USD,2.9,2.89,2.92,,,paper,entry
+2025-07-15 11:49:46.731110+00:00,BTC/USD,116721.05,116568.9,116949.28,,,paper,entry
+2025-07-15 13:33:44.471503+00:00,XRP/USD,2.92,2.9,2.95,,,paper,entry
+2025-07-15 13:33:57.549230+00:00,BTC/USD,117927.92,117633.81,118369.08,,,paper,entry
+2025-07-15 13:53:32.897559+00:00,XRP/USD,2.92,2.9,2.95,,,spot,entry
+2025-07-15 14:04:40.100236+00:00,XRP/USD,2.92,2.9,2.95,,,futures,entry
+2025-07-15 14:04:41.914558+00:00,XRP/USD,2.92,2.9,2.95,,,spot,entry
+2025-07-15 14:34:59.078133+00:00,XRP/USD,2.92,2.9,2.95,2.8963,-1.35,spot,stopped
+2025-07-15 15:52:00.311190+00:00,XRP/USD,2.89,2.87,2.92,,,futures,entry
+2025-07-15 15:52:02.154395+00:00,XRP/USD,2.89,2.87,2.92,,,spot,entry
+2025-07-15 15:55:21.121261+00:00,XRP/USD,2.89,2.88,2.9,,,futures,entry
+2025-07-15 15:55:22.908760+00:00,XRP/USD,2.89,2.88,2.9,,,spot,entry
+2025-07-15 16:30:31.763071+00:00,XRP/USD,2.89,2.88,2.9,2.9004,0.42,spot,target
+2025-07-15 16:49:41.188573+00:00,XRP/USD,2.91,2.9,2.92,,,futures,entry
+2025-07-15 16:49:44.841932+00:00,XRP/USD,2.91,2.9,2.92,,,spot,entry
+2025-07-15 16:58:57.226946+00:00,XRP/USD,2.91,2.9,2.92,,,futures,entry
+2025-07-15 17:00:11.823073+00:00,XRP/USD,2.91,2.9,2.92,,,futures,entry
+2025-07-15 17:02:15.343999+00:00,XRP/USD,2.91,2.9,2.92,,,futures,entry
+2025-07-15 17:02:18.491887+00:00,XRP/USD,2.91,2.9,2.92,,,spot,entry
+2025-07-15 17:07:53.093580+00:00,XRP/USD,2.91,2.9,2.92,,,futures,entry
+2025-07-15 17:18:55.098731+00:00,XRP/USD,2.92,2.91,2.94,,,futures,entry
+2025-07-15 17:18:58.465003+00:00,XRP/USD,2.92,2.91,2.94,,,spot,entry
+2025-07-15 17:31:06.374819+00:00,XRP/USD,2.92,2.91,2.94,,,futures,entry
+2025-07-15 17:31:09.606794+00:00,XRP/USD,2.92,2.91,2.94,,,spot,entry
+2025-07-15 17:54:09.314094+00:00,XRP/USD,2.93,2.92,2.94,,,futures,entry
+2025-07-15 17:54:12.413963+00:00,XRP/USD,2.93,2.92,2.94,,,spot,entry
+2025-07-15 18:04:58.070501+00:00,XRP/USD,2.94,2.93,2.96,,,futures,entry
+2025-07-15 18:05:00.755709+00:00,XRP/USD,2.94,2.93,2.96,,,spot,entry
+2025-07-15 18:35:17.142706+00:00,XRP/USD,2.94,2.93,2.96,2.9067,-1.11,spot,stopped
+2025-07-15 19:56:12.235481+00:00,XRP/USD,2.87,2.86,2.88,,,futures,entry
+2025-07-15 19:56:15.123563+00:00,XRP/USD,2.87,2.86,2.88,,,spot,entry
+2025-07-15 23:10:21.857130+00:00,XRP/USD,2.93,2.92,2.94,,,futures,entry
+2025-07-15 23:10:24.445154+00:00,XRP/USD,2.93,2.92,2.94,,,spot,entry
+2025-07-15 23:55:45.625664+00:00,XRP/USD,2.93,2.92,2.94,2.9171,-0.43,spot,stopped
+2025-07-16 01:00:00.900370+00:00,XRP/USD,2.93,2.92,2.94,,,futures,entry
+2025-07-16 01:00:03.543860+00:00,XRP/USD,2.93,2.92,2.94,,,spot,entry
+2025-07-16 13:31:16.412503+00:00,XRP/USD,2.98,2.97,3.0,,,futures,entry
+2025-07-16 13:31:19.163763+00:00,XRP/USD,2.98,2.97,3.0,,,spot,entry
+2025-07-16 14:16:45.515115+00:00,XRP/USD,2.98,2.97,3.0,2.9584,-0.64,spot,stopped
+2025-07-16 15:06:43.459113+00:00,XRP/USD,3.0,2.99,3.02,,,futures,entry
+2025-07-16 15:06:46.274219+00:00,XRP/USD,3.0,2.99,3.02,,,spot,entry
+2025-07-16 15:18:14.616979+00:00,XRP/USD,2.98,2.97,3.0,,,futures,entry
+2025-07-16 15:18:17.189711+00:00,XRP/USD,2.98,2.97,3.0,,,spot,entry
+2025-07-16 16:27:11.183767+00:00,BTC/USD,119214.9,118850.01,119762.24,,,spot,entry
+2025-07-16 16:27:23.639503+00:00,ETH/USD,3251.29,3237.68,3271.7,,,spot,entry
+2025-07-16 16:42:31.506794+00:00,ETH/USD,3251.29,3237.68,3271.7,3277.57,0.71,spot,target
+2025-07-16 17:28:55.729623+00:00,XRP/USD,3.03,3.02,3.04,,,futures,entry
+2025-07-16 17:28:58.427779+00:00,XRP/USD,3.03,3.02,3.04,,,spot,entry
+2025-07-16 17:29:12.075678+00:00,BTC/USD,119689.97,119423.65,120089.45,,,spot,entry
+2025-07-16 17:29:24.361244+00:00,ETH/USD,3287.57,3273.27,3309.02,,,spot,entry
+2025-07-16 17:44:32.171631+00:00,BTC/USD,119689.97,119423.65,120089.45,119337.25,-0.26,spot,stopped
+2025-07-16 17:58:20.755239+00:00,XRP/USD,3.03,3.02,3.04,,,futures,entry
+2025-07-16 17:58:23.527802+00:00,XRP/USD,3.03,3.02,3.04,,,spot,entry
+2025-07-16 17:58:36.974372+00:00,BTC/USD,119128.54,118877.98,119504.38,,,spot,entry
+2025-07-16 17:58:50.256103+00:00,ETH/USD,3313.82,3298.79,3336.36,,,spot,entry
+2025-07-16 18:00:41.310304+00:00,XRP/USD,3.03,3.02,3.04,,,futures,entry
+2025-07-16 18:00:43.962334+00:00,XRP/USD,3.03,3.02,3.04,,,spot,entry
+2025-07-16 18:01:06.985171+00:00,ETH/USD,3320.58,3306.2,3342.15,,,spot,entry
+2025-07-16 18:10:21.277878+00:00,XRP/USD,3.03,3.02,3.04,,,futures,entry
+2025-07-16 18:10:23.859967+00:00,XRP/USD,3.03,3.02,3.04,,,spot,entry
+2025-07-16 18:10:37.458831+00:00,BTC/USD,119496.68,119245.58,119873.33,,,spot,entry
+2025-07-16 18:10:50.645988+00:00,ETH/USD,3343.92,3328.11,3367.64,,,spot,entry
+2025-07-16 18:19:06.632477+00:00,XRP/USD,3.03,3.02,3.04,,,futures,entry
+2025-07-16 18:19:09.220219+00:00,XRP/USD,3.03,3.02,3.04,,,spot,entry
+2025-07-16 18:21:06.581218+00:00,ETH/USD,3342.13,3326.59,3365.44,,,spot,entry
+2025-07-16 18:23:27.842972+00:00,XRP/USD,3.04,3.03,3.06,,,futures,entry
+2025-07-16 18:23:30.443187+00:00,XRP/USD,3.04,3.03,3.06,,,spot,entry
+2025-07-16 18:23:53.068713+00:00,ETH/USD,3344.34,3328.58,3367.98,,,spot,entry
+2025-07-16 18:26:09.290045+00:00,XRP/USD,3.04,3.03,3.06,,,futures,entry
+2025-07-16 18:26:11.968893+00:00,XRP/USD,3.04,3.03,3.06,,,spot,entry
+2025-07-16 18:26:34.523909+00:00,ETH/USD,3351.97,3336.49,3375.19,,,spot,entry
+2025-07-16 18:29:57.926628+00:00,XRP/USD,3.05,3.04,3.06,,,futures,entry
+2025-07-16 18:30:00.588821+00:00,XRP/USD,3.05,3.04,3.06,,,spot,entry
+2025-07-16 18:30:23.723414+00:00,ETH/USD,3350.7,3335.93,3372.86,,,spot,entry
+2025-07-16 18:32:58.998440+00:00,XRP/USD,3.06,3.04,3.09,,,futures,entry
+2025-07-16 18:33:01.686739+00:00,XRP/USD,3.06,3.04,3.09,,,spot,entry
+2025-07-16 18:33:14.980281+00:00,BTC/USD,119519.93,119266.34,119900.31,,,spot,entry
+2025-07-16 18:33:28.790679+00:00,ETH/USD,3346.6,3331.47,3369.3,,,spot,entry
+2025-07-16 18:36:48.343181+00:00,XRP/USD,3.06,3.04,3.09,,,futures,entry
+2025-07-16 18:36:51.053313+00:00,XRP/USD,3.06,3.04,3.09,,,spot,entry
+2025-07-16 18:37:04.306634+00:00,BTC/USD,119739.12,119484.01,120121.78,,,spot,entry
+2025-07-16 18:37:19.144266+00:00,ETH/USD,3364.95,3349.21,3388.56,,,spot,entry
+2025-07-16 18:43:20.797464+00:00,XRP/USD,3.07,3.05,3.1,,,futures,entry
+2025-07-16 18:43:23.366097+00:00,XRP/USD,3.07,3.05,3.1,,,spot,entry
+2025-07-16 18:43:36.682369+00:00,BTC/USD,119759.11,119507.56,120136.44,,,spot,entry
+2025-07-16 18:43:49.846263+00:00,ETH/USD,3357.99,3342.65,3381.0,,,spot,entry
+2025-07-16 18:48:11.420953+00:00,XRP/USD,3.06,3.04,3.09,,,futures,entry
+2025-07-16 18:48:13.955675+00:00,XRP/USD,3.06,3.04,3.09,,,spot,entry
+2025-07-16 18:48:27.206229+00:00,BTC/USD,119748.46,119489.05,120137.58,,,spot,entry
+2025-07-16 18:48:40.540721+00:00,ETH/USD,3341.94,3326.12,3365.67,,,spot,entry
+2025-07-16 18:54:50.652095+00:00,XRP/USD,3.05,3.03,3.08,,,futures,entry
+2025-07-16 18:54:53.328017+00:00,XRP/USD,3.05,3.03,3.08,,,spot,entry
+2025-07-16 18:55:06.452277+00:00,BTC/USD,119661.11,119390.99,120066.29,,,spot,entry
+2025-07-16 18:55:19.373690+00:00,ETH/USD,3341.53,3326.74,3363.72,,,spot,entry
+2025-07-16 19:16:28.987468+00:00,XRP/USD,3.05,3.03,3.08,,,futures,entry
+2025-07-16 19:16:31.587638+00:00,XRP/USD,3.05,3.03,3.08,,,spot,entry
+2025-07-16 19:16:54.679124+00:00,ETH/USD,3350.81,3337.05,3371.45,,,spot,entry
+2025-07-16 19:27:21.459378+00:00,XRP/USD,3.06,3.05,3.08,,,futures,entry
+2025-07-16 19:27:24.122426+00:00,XRP/USD,3.06,3.05,3.08,,,spot,entry
+2025-07-16 19:27:55.806417+00:00,ETH/USD,3359.36,3345.22,3380.57,,,spot,entry
+2025-07-16 19:43:06.452413+00:00,XRP/USD,3.06,3.05,3.08,3.0474,-0.36,spot,stopped
+2025-07-16 20:14:29.047559+00:00,ETH/USD,3359.36,3345.22,3380.57,3394.27,0.91,spot,target
+2025-07-16 20:30:16.796877+00:00,XRP/USD,3.1,3.09,3.12,,,futures,entry
+2025-07-16 20:30:19.413153+00:00,XRP/USD,3.1,3.09,3.12,,,spot,entry
+2025-07-16 20:30:36.509365+00:00,BTC/USD,119668.34,119447.65,119999.38,,,spot,entry
+2025-07-16 20:30:53.960190+00:00,ETH/USD,3415.43,3399.76,3438.94,,,spot,entry
+2025-07-16 20:46:05.505962+00:00,XRP/USD,3.1,3.09,3.12,3.0733,-0.76,spot,stopped
+2025-07-16 20:46:06.279113+00:00,ETH/USD,3415.43,3399.76,3438.94,3391.6,-0.61,spot,stopped
+2025-07-16 21:01:48.676263+00:00,BTC/USD,119668.34,119447.65,119999.38,120073.0,0.3,spot,target
+2025-07-16 21:33:17.244489+00:00,XRP/USD,3.08,3.06,3.11,,,futures,entry
+2025-07-16 21:33:19.912976+00:00,XRP/USD,3.08,3.06,3.11,,,spot,entry
+2025-07-16 21:33:38.839505+00:00,BTC/USD,119868.56,119659.8,120181.7,,,spot,entry
+2025-07-16 21:33:55.897864+00:00,ETH/USD,3385.44,3370.77,3407.44,,,spot,entry
+2025-07-16 21:49:06.693674+00:00,BTC/USD,119868.56,119659.8,120181.7,119524.05,-0.25,spot,stopped
+2025-07-16 22:36:30.037659+00:00,BTC/USD,119200.0,119008.54,119487.19,,,spot,entry
+2025-07-16 22:36:47.347021+00:00,ETH/USD,3374.09,3361.78,3392.56,,,spot,entry
+2025-07-16 22:51:58.589080+00:00,XRP/USD,3.08,3.06,3.11,3.0498,-0.86,spot,stopped
+2025-07-16 22:51:59.993186+00:00,ETH/USD,3374.09,3361.78,3392.56,3353.1,-0.55,spot,stopped
+2025-07-16 22:52:01.775428+00:00,BTC/USD,119200.0,119008.54,119487.19,118697.62,-0.37,spot,stopped
+2025-07-17 00:11:46.437071+00:00,ETH/USD,3376.09,3364.87,3392.92,,,spot,entry
+2025-07-17 00:58:38.055563+00:00,BTC/USD,119010.64,118860.53,119235.8,,,spot,entry
+2025-07-17 01:14:02.298929+00:00,ETH/USD,3376.09,3364.87,3392.92,3395.21,0.5,spot,target
+2025-07-17 01:14:36.609876+00:00,ETH/USD,3393.86,3382.03,3411.6,,,spot,entry
+2025-07-17 01:29:47.490195+00:00,BTC/USD,119010.64,118860.53,119235.8,118760.39,-0.18,spot,stopped
+2025-07-17 01:29:48.239322+00:00,ETH/USD,3393.86,3382.03,3411.6,3376.02,-0.46,spot,stopped
+2025-07-17 02:47:15.174641+00:00,XRP/USD,3.04,3.03,3.06,,,futures,entry
+2025-07-17 02:47:17.819828+00:00,XRP/USD,3.04,3.03,3.06,,,spot,entry
+2025-07-17 03:14:44.809927+00:00,XRP/USD,3.04,3.03,3.06,3.0292,-0.31,spot,stopped
+2025-07-17 04:51:27.221667+00:00,XRP/USD,3.06,3.05,3.08,,,futures,entry
+2025-07-17 04:51:29.750850+00:00,XRP/USD,3.06,3.05,3.08,,,spot,entry
+2025-07-17 05:07:29.619936+00:00,ETH/USD,3345.14,3336.92,3357.47,,,spot,entry
+2025-07-17 05:22:40.209567+00:00,XRP/USD,3.06,3.05,3.08,3.0879,0.8,spot,target
+2025-07-17 05:53:54.222222+00:00,ETH/USD,3345.14,3336.92,3357.47,3370.34,0.66,spot,target
+2025-07-17 05:54:00.450286+00:00,XRP/USD,3.14,3.12,3.17,,,futures,entry
+2025-07-17 05:54:03.180661+00:00,XRP/USD,3.14,3.12,3.17,,,spot,entry
+2025-07-17 06:15:50.020925+00:00,ETH/USD,3374.05,3365.75,3386.5,,,spot,entry
+2025-07-17 06:31:00.464092+00:00,ETH/USD,3374.05,3365.75,3386.5,3431.16,1.48,spot,target
+2025-07-17 07:02:20.914492+00:00,XRP/USD,3.15,3.13,3.18,,,futures,entry
+2025-07-17 07:02:23.553612+00:00,XRP/USD,3.15,3.13,3.18,,,spot,entry
+2025-07-17 07:45:15.591560+00:00,ETH/USD,3461.54,3447.09,3483.22,,,spot,entry
+2025-07-17 08:17:22.558168+00:00,ETH/USD,3461.54,3447.09,3483.22,3446.84,-0.37,spot,stopped
+2025-07-17 08:17:28.919266+00:00,XRP/USD,3.17,3.16,3.18,,,futures,entry
+2025-07-17 08:17:31.465694+00:00,XRP/USD,3.17,3.16,3.18,,,spot,entry
+2025-07-17 08:18:58.273900+00:00,XRP/USD,3.17,3.16,3.18,3.1863,0.45,spot,target
+2025-07-17 08:52:30.652966+00:00,ETH/USD,3428.49,3417.77,3444.57,,,spot,entry
+2025-07-17 09:07:42.555402+00:00,ETH/USD,3428.49,3417.77,3444.57,3458.37,0.76,spot,target
+2025-07-17 09:09:32.995385+00:00,BTC/USD,118659.23,118505.05,118890.5,,,spot,entry
+2025-07-17 09:24:57.185858+00:00,BTC/USD,118659.23,118505.05,118890.5,118933.01,0.2,spot,target
+2025-07-17 09:25:03.593586+00:00,XRP/USD,3.27,3.25,3.3,,,futures,entry
+2025-07-17 09:25:06.182209+00:00,XRP/USD,3.27,3.25,3.3,,,spot,entry
+2025-07-17 09:56:57.557746+00:00,ETH/USD,3472.42,3461.27,3489.14,,,spot,entry
+2025-07-17 10:13:55.380584+00:00,BTC/USD,118685.34,118517.79,118936.66,,,spot,entry
+2025-07-17 10:29:19.801497+00:00,XRP/USD,3.27,3.25,3.3,3.2446,-0.68,spot,stopped
+2025-07-17 10:44:53.128515+00:00,ETH/USD,3472.42,3461.27,3489.14,3457.08,-0.39,spot,stopped
+2025-07-17 10:44:53.753586+00:00,BTC/USD,118685.34,118517.79,118936.66,118344.4,-0.25,spot,stopped
+2025-07-17 10:46:12.692126+00:00,XRP/USD,3.25,3.23,3.28,,,futures,entry
+2025-07-17 10:46:15.392007+00:00,XRP/USD,3.25,3.23,3.28,,,spot,entry
+2025-07-17 11:02:22.377682+00:00,ETH/USD,3456.06,3445.72,3471.57,,,spot,entry
+2025-07-17 11:17:33.153942+00:00,XRP/USD,3.25,3.23,3.28,3.2907,1.1,spot,target
+2025-07-17 11:23:34.448358+00:00,ETH/USD,3456.06,3445.72,3471.57,3443.23,-0.33,spot,stopped
+2025-07-17 11:48:45.176822+00:00,XRP/USD,3.27,3.25,3.3,,,futures,entry
+2025-07-17 11:48:47.915646+00:00,XRP/USD,3.27,3.25,3.3,,,spot,entry
+2025-07-17 12:08:00.428295+00:00,XRP/USD,3.27,3.25,3.3,3.2459,-0.65,spot,stopped
+2025-07-17 13:08:42.659592+00:00,XRP/USD,3.25,3.23,3.28,,,futures,entry
+2025-07-17 13:08:45.286694+00:00,XRP/USD,3.25,3.23,3.28,,,spot,entry
+2025-07-17 13:17:35.972044+00:00,XRP/USD,3.23,3.21,3.26,,,futures,entry
+2025-07-17 13:17:38.607167+00:00,XRP/USD,3.23,3.21,3.26,,,spot,entry
+2025-07-17 13:34:00.527199+00:00,XRP/USD,3.23,3.21,3.26,3.1997,-0.82,spot,stopped
+2025-07-17 13:46:33.232730+00:00,XRP/USD,3.18,3.16,3.21,,,futures,entry
+2025-07-17 13:46:35.958439+00:00,XRP/USD,3.18,3.16,3.21,,,spot,entry
+2025-07-17 13:49:36.732367+00:00,XRP/USD,3.21,3.19,3.24,,,futures,entry
+2025-07-17 13:49:39.402476+00:00,XRP/USD,3.21,3.19,3.24,,,spot,entry
+2025-07-17 14:28:09.254204+00:00,BTC/USD,118720.49,118469.24,119097.36,,,spot,entry
+2025-07-17 14:59:12.332453+00:00,XRP/USD,3.24,3.22,3.27,,,futures,entry
+2025-07-17 14:59:15.178682+00:00,XRP/USD,3.24,3.22,3.27,,,spot,entry
+2025-07-17 14:59:50.266134+00:00,ETH/USD,3427.17,3414.47,3446.22,,,spot,entry
+2025-07-17 15:15:01.961868+00:00,XRP/USD,3.24,3.22,3.27,3.2038,-0.98,spot,stopped
+2025-07-17 15:15:02.753966+00:00,ETH/USD,3427.17,3414.47,3446.22,3403.67,-0.6,spot,stopped
+2025-07-17 15:31:01.914370+00:00,BTC/USD,118635.58,118408.56,118976.11,,,spot,entry
+2025-07-17 15:46:23.168906+00:00,BTC/USD,118635.58,118408.56,118976.11,119027.98,0.29,spot,target
+2025-07-17 16:02:34.094171+00:00,ETH/USD,3426.98,3414.84,3445.19,,,spot,entry
+2025-07-17 16:17:54.323727+00:00,ETH/USD,3426.98,3414.84,3445.19,3401.8,-0.64,spot,stopped
+2025-07-17 16:18:01.544376+00:00,XRP/USD,3.25,3.23,3.28,,,futures,entry
+2025-07-17 16:18:04.218334+00:00,XRP/USD,3.25,3.23,3.28,,,spot,entry
+2025-07-17 17:05:09.038396+00:00,BTC/USD,118798.55,118583.16,119121.64,,,spot,entry
+2025-07-17 17:14:50.034778+00:00,XRP/USD,3.27,3.25,3.3,,,futures,entry
+2025-07-17 17:14:52.688853+00:00,XRP/USD,3.27,3.25,3.3,,,spot,entry
+2025-07-17 17:15:11.655041+00:00,BTC/USD,118969.6,118761.58,119281.63,,,spot,entry
+2025-07-17 17:15:34.284879+00:00,XRP/USD,3.27,3.25,3.3,,,futures,entry
+2025-07-17 17:15:37.147790+00:00,XRP/USD,3.27,3.25,3.3,,,spot,entry
+2025-07-17 17:15:56.467712+00:00,BTC/USD,118960.52,118763.71,119255.74,,,spot,entry
+2025-07-17 17:24:45.390495+00:00,XRP/USD,3.28,3.26,3.31,,,futures,entry
+2025-07-17 17:24:48.148783+00:00,XRP/USD,3.28,3.26,3.31,,,spot,entry
+2025-07-17 17:25:06.925914+00:00,BTC/USD,118764.26,118566.23,119061.3,,,spot,entry
+2025-07-17 17:49:49.144679+00:00,XRP/USD,3.29,3.27,3.32,,,futures,entry
+2025-07-17 17:49:51.853723+00:00,XRP/USD,3.29,3.27,3.32,,,spot,entry
+2025-07-17 17:50:12.132340+00:00,BTC/USD,119121.43,118909.48,119439.36,,,spot,entry
+2025-07-17 17:50:30.800496+00:00,ETH/USD,3421.66,3407.85,3442.38,,,spot,entry
+2025-07-17 18:03:03.308209+00:00,XRP/USD,3.31,3.29,3.34,,,futures,entry
+2025-07-17 18:03:06.067438+00:00,XRP/USD,3.31,3.29,3.34,,,spot,entry
+2025-07-17 18:03:25.829025+00:00,BTC/USD,119300.81,119089.53,119617.73,,,spot,entry
+2025-07-17 18:03:45.203483+00:00,ETH/USD,3422.47,3408.78,3443.0,,,spot,entry
+2025-07-17 18:08:00.531806+00:00,XRP/USD,3.32,3.3,3.35,,,futures,entry
+2025-07-17 18:08:03.701167+00:00,XRP/USD,3.32,3.3,3.35,,,spot,entry
+2025-07-17 18:08:23.030248+00:00,BTC/USD,119395.47,119189.79,119703.99,,,spot,entry
+2025-07-17 18:08:42.784579+00:00,ETH/USD,3434.27,3420.94,3454.26,,,spot,entry
+2025-07-17 18:16:59.142672+00:00,XRP/USD,3.33,3.31,3.36,,,futures,entry
+2025-07-17 18:17:01.709986+00:00,XRP/USD,3.33,3.31,3.36,,,spot,entry
+2025-07-17 18:17:21.559209+00:00,BTC/USD,119419.84,119217.05,119724.02,,,spot,entry
+2025-07-17 18:17:40.737119+00:00,ETH/USD,3429.74,3416.6,3449.45,,,spot,entry
+2025-07-17 18:19:41.153695+00:00,XRP/USD,3.32,3.3,3.35,,,futures,entry
+2025-07-17 18:19:43.832526+00:00,XRP/USD,3.32,3.3,3.35,,,spot,entry
+2025-07-17 18:20:02.973353+00:00,BTC/USD,119462.06,119256.14,119770.94,,,spot,entry
+2025-07-17 18:20:22.056354+00:00,ETH/USD,3431.92,3419.29,3450.86,,,spot,entry
+2025-07-18 00:39:34.737119+00:00,XRP/USD,3.59,3.56,3.64,,,futures,entry
+2025-07-18 00:39:37.493920+00:00,XRP/USD,3.59,3.56,3.64,,,spot,entry
+2025-07-18 00:40:06.729000+00:00,ETH/USD,3500.3,3486.14,3521.54,,,spot,entry
+2025-07-18 00:55:19.843279+00:00,XRP/USD,3.59,3.56,3.64,3.6427,1.17,spot,target
+2025-07-18 00:56:21.154313+00:00,ETH/USD,3500.3,3486.14,3521.54,3536.0,0.82,spot,target
+2025-07-18 01:13:26.848513+00:00,BTC/USD,120483.54,120243.72,120843.27,,,spot,entry
+2025-07-18 01:41:52.448956+00:00,BTC/USD,120797.42,120540.45,121182.88,,,spot,entry
+2025-07-18 01:42:12.499458+00:00,ETH/USD,3605.74,3586.74,3634.24,,,spot,entry
+2025-07-18 01:57:24.495223+00:00,BTC/USD,120797.42,120540.45,121182.88,120447.48,-0.23,spot,stopped
+2025-07-18 01:58:32.242971+00:00,XRP/USD,3.6,3.57,3.64,,,futures,entry
+2025-07-18 01:58:34.963210+00:00,XRP/USD,3.6,3.57,3.64,,,spot,entry
+2025-07-18 02:46:03.520257+00:00,BTC/USD,120335.67,120116.02,120665.14,,,spot,entry
+2025-07-18 02:46:23.488611+00:00,ETH/USD,3600.0,3583.46,3624.81,,,spot,entry
+2025-07-18 03:01:35.709306+00:00,BTC/USD,120335.67,120116.02,120665.14,120115.7,-0.15,spot,stopped
+2025-07-18 03:18:26.079477+00:00,XRP/USD,3.62,3.6,3.65,,,futures,entry
+2025-07-18 03:18:28.912358+00:00,XRP/USD,3.62,3.6,3.65,,,spot,entry
+2025-07-18 03:50:08.643086+00:00,BTC/USD,120304.82,120110.1,120596.9,,,spot,entry
+2025-07-18 03:50:27.499478+00:00,ETH/USD,3597.83,3586.0,3615.58,,,spot,entry
+2025-07-18 04:05:39.924146+00:00,ETH/USD,3597.83,3586.0,3615.58,3585.8,-0.27,spot,stopped
+2025-07-18 04:06:41.120139+00:00,XRP/USD,3.62,3.6,3.65,3.5984,-0.48,spot,stopped
+2025-07-18 04:07:42.287016+00:00,BTC/USD,120304.82,120110.1,120596.9,120071.7,-0.16,spot,stopped
+2025-07-18 04:24:30.679645+00:00,XRP/USD,3.58,3.56,3.61,,,futures,entry
+2025-07-18 04:24:33.344024+00:00,XRP/USD,3.58,3.56,3.61,,,spot,entry
+2025-07-18 04:56:03.928436+00:00,BTC/USD,120550.5,120400.29,120775.82,,,spot,entry
+2025-07-18 04:56:22.509755+00:00,ETH/USD,3620.98,3610.2,3637.15,,,spot,entry
+2025-07-18 05:11:34.917088+00:00,XRP/USD,3.58,3.56,3.61,3.6296,1.11,spot,target
+2025-07-18 05:28:17.267516+00:00,ETH/USD,3620.98,3610.2,3637.15,3639.11,0.4,spot,target
+2025-07-18 05:29:24.913248+00:00,XRP/USD,3.63,3.61,3.66,,,futures,entry
+2025-07-18 05:29:27.490816+00:00,XRP/USD,3.63,3.61,3.66,,,spot,entry
+2025-07-18 05:45:09.176957+00:00,BTC/USD,120550.5,120400.29,120775.82,120381.58,-0.11,spot,stopped
+2025-07-18 06:02:08.842117+00:00,BTC/USD,120880.79,120709.55,121137.65,,,spot,entry
+2025-07-18 06:02:26.827807+00:00,ETH/USD,3668.42,3656.33,3686.56,,,spot,entry
+2025-07-18 06:17:38.654019+00:00,XRP/USD,3.63,3.61,3.66,3.5678,-1.37,spot,stopped
+2025-07-18 06:18:39.766602+00:00,BTC/USD,120880.79,120709.55,121137.65,120447.76,-0.29,spot,stopped
+2025-07-18 06:19:41.045671+00:00,ETH/USD,3668.42,3656.33,3686.56,3648.35,-0.44,spot,stopped
+2025-07-18 07:07:48.543080+00:00,XRP/USD,3.55,3.53,3.58,,,futures,entry
+2025-07-18 07:07:51.135754+00:00,XRP/USD,3.55,3.53,3.58,,,spot,entry
+2025-07-18 07:08:11.572320+00:00,BTC/USD,120463.64,120301.21,120707.28,,,spot,entry
+2025-07-18 07:08:30.941277+00:00,ETH/USD,3668.65,3657.15,3685.9,,,spot,entry
+2025-07-18 07:23:43.396141+00:00,XRP/USD,3.55,3.53,3.58,3.5286,-0.48,spot,stopped
+2025-07-18 07:24:44.664659+00:00,BTC/USD,120463.64,120301.21,120707.28,119906.76,-0.37,spot,stopped
+2025-07-18 07:25:45.816741+00:00,ETH/USD,3668.65,3657.15,3685.9,3650.5,-0.4,spot,stopped
+2025-07-18 08:32:35.042453+00:00,XRP/USD,3.47,3.45,3.5,,,futures,entry
+2025-07-18 08:32:37.584584+00:00,XRP/USD,3.47,3.45,3.5,,,spot,entry
+2025-07-18 08:40:13.033461+00:00,XRP/USD,3.47,3.45,3.5,3.4397,-0.7,spot,stopped
+2025-07-18 09:36:40.783121+00:00,XRP/USD,3.43,3.41,3.46,,,short,entry
+2025-07-18 09:46:52.514309+00:00,XRP/USD,3.43,3.41,3.46,3.4609,0.72,short,target
+2025-07-18 10:23:25.500671+00:00,BTC/USD,118743.57,118566.13,118943.19,,,spot,entry
+2025-07-18 10:23:44.353421+00:00,ETH/USD,3608.37,3597.21,3625.11,,,spot,entry
+2025-07-18 10:55:37.868266+00:00,BTC/USD,118743.57,118566.13,118943.19,119181.96,0.15,spot,target
+2025-07-18 11:55:03.763149+00:00,XRP/USD,3.49,3.47,3.52,,,futures,entry
+2025-07-18 11:55:06.439297+00:00,XRP/USD,3.49,3.47,3.52,,,spot,entry
+2025-07-18 12:26:45.948897+00:00,ETH/USD,3598.01,3587.82,3613.3,,,spot,entry
+2025-07-18 12:41:58.025590+00:00,ETH/USD,3598.01,3587.82,3613.3,3614.8,0.37,spot,target
+2025-07-18 12:43:23.562923+00:00,BTC/USD,119491.84,119358.87,119691.3,,,spot,entry
+2025-07-18 12:58:52.004846+00:00,XRP/USD,3.51,3.49,3.54,,,futures,entry
+2025-07-18 12:58:54.606350+00:00,XRP/USD,3.51,3.49,3.54,,,spot,entry
+2025-07-18 13:14:36.981662+00:00,XRP/USD,3.51,3.49,3.54,3.4865,-0.54,spot,stopped
+2025-07-18 13:15:38.185058+00:00,BTC/USD,119491.84,119358.87,119691.3,118982.96,-0.34,spot,stopped
+2025-07-18 13:32:54.484012+00:00,ETH/USD,3631.61,3618.45,3651.35,,,spot,entry
+2025-07-18 13:48:06.383493+00:00,ETH/USD,3631.61,3618.45,3651.35,3654.74,0.51,spot,target
+2025-07-18 14:00:02.867962+00:00,XRP/USD,3.51,3.49,3.54,,,futures,entry
+2025-07-18 14:00:05.543367+00:00,XRP/USD,3.51,3.49,3.54,,,spot,entry
+2025-07-18 14:26:33.683364+00:00,XRP/USD,3.51,3.49,3.54,3.4299,-1.83,spot,stopped
+2025-07-18 16:10:32.874404+00:00,XRP/USD,3.38,3.35,3.42,,,short,entry
+2025-07-18 16:31:40.408540+00:00,XRP/USD,3.38,3.35,3.42,3.4237,1.03,short,target
+2025-07-18 17:22:39.960223+00:00,ETH/USD,3588.21,3573.1,3610.88,,,spot,entry
+2025-07-18 18:34:21.096230+00:00,XRP/USD,3.46,3.44,3.49,,,futures,entry
+2025-07-18 18:34:23.710086+00:00,XRP/USD,3.46,3.44,3.49,,,spot,entry
+2025-07-18 18:37:57.917987+00:00,ETH/USD,3595.85,3581.12,3617.94,,,spot,entry
+2025-07-18 18:44:12.756561+00:00,XRP/USD,3.46,3.44,3.49,,,futures,entry
+2025-07-18 18:44:15.361773+00:00,XRP/USD,3.46,3.44,3.49,,,spot,entry
+2025-07-18 20:13:59.523245+00:00,XRP/USD,3.44,3.42,3.46,,,futures,entry
+2025-07-18 20:14:02.118012+00:00,XRP/USD,3.44,3.42,3.46,,,spot,entry
+2025-07-18 20:19:58.892031+00:00,XRP/USD,3.44,3.42,3.46,3.4148,-0.29,spot,stopped
+2025-07-18 20:31:09.341163+00:00,XRP/USD,3.37,3.35,3.4,,,short,entry
+2025-07-18 20:46:37.283064+00:00,XRP/USD,3.37,3.35,3.4,3.4025,0.77,short,target
+2025-07-18 22:33:05.602656+00:00,ETH/USD,3570.69,3555.9,3592.88,,,spot,entry
+2025-07-18 22:48:17.927576+00:00,ETH/USD,3570.69,3555.9,3592.88,3549.95,-0.46,spot,stopped
+2025-07-18 23:04:56.406233+00:00,XRP/USD,3.38,3.36,3.41,,,short,entry
+2025-07-18 23:40:46.632895+00:00,XRP/USD,3.38,3.36,3.41,3.41,0.71,short,target
+2025-07-19 00:21:13.003767+00:00,XRP/USD,3.45,3.44,3.47,,,futures,entry
+2025-07-19 00:21:15.593562+00:00,XRP/USD,3.45,3.44,3.47,,,spot,entry
+2025-07-19 01:07:52.608174+00:00,XRP/USD,3.45,3.44,3.47,3.4036,-1.08,spot,stopped
+2025-07-19 01:22:28.117965+00:00,XRP/USD,3.46,3.44,3.49,,,futures,entry
+2025-07-19 01:22:30.742401+00:00,XRP/USD,3.46,3.44,3.49,,,spot,entry
+2025-07-19 02:16:09.164326+00:00,XRP/USD,3.46,3.44,3.49,3.4335,-0.61,spot,stopped
+2025-07-19 02:34:15.752751+00:00,ETH/USD,3562.92,3552.24,3578.94,,,spot,entry
+2025-07-19 10:03:59.311222+00:00,BTC/USD,118361.27,118291.76,118465.54,,,spot,entry
+2025-07-19 10:44:49.231255+00:00,BTC/USD,118361.27,118291.76,118465.54,118513.47,0.1,spot,target
+2025-07-19 12:23:57.955960+00:00,XRP/USD,3.4,3.39,3.42,,,short,entry
+2025-07-19 15:48:15.002266+00:00,XRP/USD,3.4,3.39,3.42,3.4209,0.18,short,target
+2025-07-19 17:31:33.552327+00:00,XRP/USD,3.44,3.43,3.46,,,futures,entry
+2025-07-19 17:31:36.081102+00:00,XRP/USD,3.44,3.43,3.46,,,spot,entry
+2025-07-19 17:48:09.550612+00:00,XRP/USD,3.44,3.43,3.46,3.4281,-0.1,spot,stopped
+2025-07-19 18:45:32.058438+00:00,ETH/USD,3560.27,3552.99,3571.19,,,spot,entry
+2025-07-19 19:33:33.771164+00:00,XRP/USD,3.42,3.41,3.44,,,short,entry
+2025-07-19 19:41:35.970854+00:00,ETH/USD,3566.13,3558.82,3577.1,,,spot,entry
+2025-07-19 19:56:49.031753+00:00,ETH/USD,3566.13,3558.82,3577.1,3578.56,0.1,spot,target
+2025-07-19 20:44:08.624928+00:00,ETH/USD,3579.41,3571.46,3591.34,,,spot,entry
+2025-07-19 20:59:22.107421+00:00,ETH/USD,3579.41,3571.46,3591.34,3566.9,-0.1,spot,stopped
+2025-07-19 21:05:25.444713+00:00,XRP/USD,3.42,3.41,3.44,3.4092,-0.09,short,stopped
+2025-07-19 21:07:12.863276+00:00,BTC/USD,117819.47,117704.68,117948.61,,,spot,entry
+2025-07-19 21:22:41.544581+00:00,BTC/USD,117819.47,117704.68,117948.61,117472.05,-0.04,spot,stopped
+2025-07-19 21:27:57.087864+00:00,XRP/USD,3.4,3.39,3.42,,,short,entry
+2025-07-19 22:20:49.948498+00:00,ETH/USD,3590.95,3581.81,3604.66,,,spot,entry
+2025-07-19 22:36:04.005072+00:00,ETH/USD,3590.95,3581.81,3604.66,3581.67,-0.08,spot,stopped
+2025-07-19 22:51:42.177625+00:00,XRP/USD,3.4,3.39,3.42,3.4259,0.23,short,target
+2025-07-19 22:55:33.303289+00:00,ETH/USD,3583.5,3575.79,3595.06,,,spot,entry
+2025-07-19 23:41:58.612992+00:00,ETH/USD,3583.5,3575.79,3595.06,3597.48,0.12,spot,target
+2025-07-19 23:58:03.879624+00:00,ETH/USD,3595.07,3588.21,3605.36,,,spot,entry
+2025-07-20 00:13:16.779086+00:00,ETH/USD,3595.07,3588.21,3605.36,3586.47,-0.07,spot,stopped
+2025-07-20 00:40:15.446149+00:00,XRP/USD,3.42,3.41,3.44,,,short,entry
+2025-07-20 01:06:32.418230+00:00,BTC/USD,118071.28,117969.7,118223.65,,,spot,entry
+2025-07-20 01:06:51.330218+00:00,ETH/USD,3601.25,3593.24,3613.26,,,spot,entry
+2025-07-20 01:22:04.169014+00:00,XRP/USD,3.42,3.41,3.44,3.4511,0.27,short,target
+2025-07-20 01:22:05.400308+00:00,ETH/USD,3601.25,3593.24,3613.26,3623.89,0.19,spot,target
+2025-07-20 02:09:22.882583+00:00,BTC/USD,118071.28,117969.7,118223.65,117888.89,-0.05,spot,stopped
+2025-07-20 02:09:51.398223+00:00,ETH/USD,3605.31,3595.24,3620.42,,,spot,entry
+2025-07-20 02:25:08.915546+00:00,XRP/USD,3.4,3.39,3.42,,,short,entry
+2025-07-20 02:40:47.812389+00:00,ETH/USD,3605.31,3595.24,3620.42,3621.78,0.14,spot,target
+2025-07-20 03:12:29.585178+00:00,BTC/USD,118085.54,117993.86,118223.06,,,spot,entry
+2025-07-20 03:12:48.760491+00:00,ETH/USD,3617.38,3609.11,3629.79,,,spot,entry
+2025-07-20 03:28:01.995874+00:00,BTC/USD,118085.54,117993.86,118223.06,117979.45,-0.03,spot,stopped
+2025-07-20 03:28:03.146088+00:00,ETH/USD,3617.38,3609.11,3629.79,3640.41,0.19,spot,target
+2025-07-20 03:31:18.456352+00:00,XRP/USD,3.4,3.39,3.42,3.4226,0.2,short,target
+2025-07-20 04:01:55.405266+00:00,XRP/USD,3.44,3.43,3.46,,,futures,entry
+2025-07-20 04:01:58.038802+00:00,XRP/USD,3.44,3.43,3.46,,,spot,entry
+2025-07-20 04:17:36.157362+00:00,XRP/USD,3.44,3.43,3.46,3.4284,-0.1,spot,stopped
+2025-07-20 04:18:08.361351+00:00,ETH/USD,3650.53,3637.44,3670.17,,,spot,entry
+2025-07-20 04:33:40.282378+00:00,BTC/USD,118170.45,118071.77,118318.47,,,spot,entry
+2025-07-20 04:49:06.975514+00:00,BTC/USD,118170.45,118071.77,118318.47,118049.83,-0.03,spot,stopped
+2025-07-20 05:49:31.383916+00:00,XRP/USD,3.42,3.41,3.44,,,short,entry
+2025-07-20 06:11:50.366113+00:00,XRP/USD,3.42,3.41,3.44,3.409,-0.1,short,stopped
+2025-07-20 07:20:58.868563+00:00,XRP/USD,3.44,3.43,3.46,,,futures,entry
+2025-07-20 07:21:01.515089+00:00,XRP/USD,3.44,3.43,3.46,,,spot,entry
+2025-07-20 07:21:32.777701+00:00,ETH/USD,3669.55,3662.95,3679.45,,,spot,entry
+2025-07-20 07:37:06.189346+00:00,BTC/USD,118084.11,118020.92,118178.9,,,spot,entry
+2025-07-20 07:52:30.998933+00:00,ETH/USD,3669.55,3662.95,3679.45,3680.75,0.09,spot,target
+2025-07-20 08:08:11.033518+00:00,BTC/USD,118084.11,118020.92,118178.9,118247.86,0.04,spot,target
+2025-07-20 08:24:04.057624+00:00,XRP/USD,3.45,3.44,3.47,,,futures,entry
+2025-07-20 08:24:06.596310+00:00,XRP/USD,3.45,3.44,3.47,,,spot,entry
+2025-07-20 08:24:39.636740+00:00,ETH/USD,3688.72,3680.84,3700.54,,,spot,entry
+2025-07-20 08:40:16.465419+00:00,BTC/USD,118279.77,118204.5,118392.68,,,spot,entry
+2025-07-20 08:55:42.454879+00:00,XRP/USD,3.45,3.44,3.47,3.4797,0.26,spot,target
+2025-07-20 08:55:43.669987+00:00,ETH/USD,3688.72,3680.84,3700.54,3703.28,0.12,spot,target
+2025-07-20 09:11:27.291402+00:00,BTC/USD,118279.77,118204.5,118392.68,118101.81,-0.05,spot,stopped
+2025-07-20 09:34:00.305414+00:00,ETH/USD,3707.65,3696.86,3723.84,,,spot,entry
+2025-07-20 11:20:51.205330+00:00,ETH/USD,3707.65,3696.86,3723.84,3727.14,0.16,spot,target
+2025-07-20 12:25:30.134506+00:00,ETH/USD,3736.74,3725.85,3753.08,,,spot,entry
+2025-07-20 13:08:05.518318+00:00,BTC/USD,118212.12,118091.69,118392.76,,,spot,entry
+2025-07-20 13:23:28.481475+00:00,ETH/USD,3736.74,3725.85,3753.08,3753.9,0.14,spot,target
+2025-07-20 13:27:55.364625+00:00,BTC/USD,118163.87,118057.09,118324.04,,,spot,entry
+2025-07-20 13:32:25.854191+00:00,BTC/USD,118163.6,118060.57,118318.14,,,spot,entry
+2025-07-20 13:40:36.548776+00:00,BTC/USD,118151.98,118055.69,118296.42,,,spot,entry
+2025-07-20 13:40:54.843165+00:00,ETH/USD,3740.76,3731.41,3754.79,,,spot,entry
+2025-07-20 13:44:18.973902+00:00,BTC/USD,118144.53,118044.47,118294.62,,,spot,entry
+2025-07-20 13:44:37.637043+00:00,ETH/USD,3738.88,3729.32,3753.22,,,spot,entry
+2025-07-20 13:50:38.766909+00:00,BTC/USD,118225.2,118132.59,118364.12,,,spot,entry
+2025-07-20 13:56:58.090055+00:00,BTC/USD,118363.34,118263.91,118512.48,,,spot,entry
+2025-07-20 13:57:44.810440+00:00,BTC/USD,118358.92,118259.49,118508.06,,,spot,entry
+2025-07-20 14:13:41.147136+00:00,ETH/USD,3736.87,3726.81,3751.96,,,spot,entry
+2025-07-20 14:14:51.921001+00:00,BTC/USD,118358.92,118259.49,118508.06,118591.8,0.06,spot,target
+2025-07-20 14:35:30.010363+00:00,ETH/USD,3736.87,3726.81,3751.96,3752.56,0.13,spot,target
+2025-07-20 15:01:18.772201+00:00,BTC/USD,118518.11,118369.05,118741.7,,,spot,entry
+2025-07-20 15:30:11.809225+00:00,BTC/USD,118518.11,118369.05,118741.7,118741.87,0.06,spot,target
+2025-07-20 16:03:14.575564+00:00,BTC/USD,118832.42,118685.56,119052.71,,,spot,entry
+2025-07-20 16:20:11.748202+00:00,BTC/USD,118567.8,118408.88,118806.18,,,spot,entry
+2025-07-20 16:32:12.486332+00:00,BTC/USD,118672.61,118522.22,118898.2,,,spot,entry
+2025-07-20 16:39:49.643682+00:00,BTC/USD,118664.77,118518.97,118883.47,,,spot,entry
+2025-07-20 16:46:02.112397+00:00,BTC/USD,118786.09,118643.33,119000.23,,,spot,entry
+2025-07-20 16:52:28.500728+00:00,BTC/USD,118690.17,118542.32,118911.94,,,spot,entry
+2025-07-20 16:57:13.876512+00:00,BTC/USD,118562.22,118415.33,118782.56,,,spot,entry
+2025-07-20 17:40:03.324411+00:00,BTC/USD,118562.22,118415.33,118782.56,118395.93,-0.04,spot,stopped
+2025-07-20 19:21:48.957243+00:00,XRP/USD,3.54,3.53,3.56,,,futures,entry
+2025-07-20 19:21:51.744973+00:00,XRP/USD,3.54,3.53,3.56,,,spot,entry
+2025-07-20 19:22:10.101429+00:00,BTC/USD,118516.02,118394.55,118698.22,,,spot,entry
+2025-07-20 19:42:33.582887+00:00,XRP/USD,3.55,3.54,3.56,,,futures,entry
+2025-07-20 19:42:36.171525+00:00,XRP/USD,3.55,3.54,3.56,,,spot,entry
+2025-07-20 19:42:54.149494+00:00,BTC/USD,118447.48,118333.24,118618.84,,,spot,entry
+2025-07-20 19:53:19.357767+00:00,XRP/USD,3.53,3.52,3.54,,,futures,entry
+2025-07-20 19:53:22.032192+00:00,XRP/USD,3.53,3.52,3.54,,,spot,entry
+2025-07-20 19:53:40.478037+00:00,BTC/USD,118382.51,118273.2,118546.48,,,spot,entry
+2025-07-20 20:09:13.148259+00:00,XRP/USD,3.53,3.52,3.54,3.503,-0.23,spot,stopped
+2025-07-20 20:09:14.345676+00:00,BTC/USD,118382.51,118273.2,118546.48,118076.34,-0.08,spot,stopped
+2025-07-20 20:10:01.804597+00:00,ETH/USD,3734.03,3721.42,3752.94,,,spot,entry
+2025-07-20 21:07:01.529140+00:00,XRP/USD,3.5,3.49,3.52,,,futures,entry
+2025-07-20 21:07:04.121960+00:00,XRP/USD,3.5,3.49,3.52,,,spot,entry
+2025-07-20 21:13:51.621015+00:00,XRP/USD,3.5,3.49,3.52,3.4888,-0.1,spot,stopped
+2025-07-20 21:25:44.522600+00:00,ETH/USD,3734.03,3721.42,3752.94,3762.21,0.23,spot,target
+2025-07-20 22:08:08.155420+00:00,XRP/USD,3.48,3.47,3.5,,,short,entry
+2025-07-20 22:13:19.291019+00:00,XRP/USD,3.48,3.47,3.5,3.4483,-0.28,short,stopped
+2025-07-20 23:44:03.852764+00:00,XRP/USD,3.46,3.44,3.49,,,short,entry
+2025-07-21 00:08:41.408268+00:00,XRP/USD,3.46,3.44,3.49,3.4366,-0.21,short,stopped
+2025-07-21 10:33:37.896910+00:00,XRP/USD,3.53,3.52,3.54,,,futures,entry
+2025-07-21 10:33:40.356768+00:00,XRP/USD,3.53,3.52,3.54,,,spot,entry
+2025-07-21 10:38:43.488802+00:00,BTC/USD,118506.53,118372.56,118707.48,,,spot,entry
+2025-07-21 10:54:19.216267+00:00,XRP/USD,3.53,3.52,3.54,3.5493,0.11,spot,target
+2025-07-21 11:44:08.178037+00:00,XRP/USD,3.54,3.53,3.56,,,futures,entry
+2025-07-21 11:44:10.795964+00:00,XRP/USD,3.54,3.53,3.56,,,spot,entry
+2025-07-21 12:01:44.938020+00:00,BTC/USD,118506.53,118372.56,118707.48,118024.22,-0.08,spot,stopped
+2025-07-21 12:01:46.109393+00:00,XRP/USD,3.54,3.53,3.56,3.5225,-0.37,spot,stopped
+2025-07-21 13:03:54.405993+00:00,XRP/USD,3.53,3.52,3.54,,,futures,entry
+2025-07-21 13:03:57.035400+00:00,XRP/USD,3.53,3.52,3.54,,,spot,entry
+2025-07-21 13:05:31.692569+00:00,XRP/USD,3.53,3.52,3.54,3.5176,-0.27,spot,stopped
+2025-07-21 13:41:38.922212+00:00,BTC/USD,118730.0,118532.81,119025.78,,,spot,entry
+2025-07-21 13:42:13.622054+00:00,SOL/USD,192.85,192.12,193.94,,,spot,entry
+2025-07-21 14:08:02.142450+00:00,XRP/USD,3.6,3.59,3.62,,,futures,entry
+2025-07-21 14:08:04.720664+00:00,XRP/USD,3.6,3.59,3.62,,,spot,entry
+2025-07-21 14:09:54.278745+00:00,XRP/USD,3.6,3.59,3.62,3.5823,-0.37,spot,stopped
+2025-07-21 14:11:50.548391+00:00,SOL/USD,192.85,192.12,193.94,191.91,-0.37,spot,stopped
+2025-07-21 14:21:07.474719+00:00,BTC/USD,118730.0,118532.81,119025.78,119085.33,0.23,spot,target
+2025-07-21 15:09:04.331792+00:00,ETH/USD,3838.46,3825.16,3858.41,,,spot,entry
+2025-07-21 15:31:12.412350+00:00,BTC/USD,118754.25,118530.8,119089.42,,,spot,entry
+2025-07-21 15:31:35.847498+00:00,ETH/USD,3839.77,3826.76,3859.28,,,spot,entry
+2025-07-21 16:10:17.725193+00:00,XRP/USD,3.6,3.58,3.63,,,futures,entry
+2025-07-21 16:10:20.373335+00:00,XRP/USD,3.6,3.58,3.63,,,spot,entry
+2025-07-21 16:18:30.111082+00:00,XRP/USD,3.6,3.58,3.63,3.571,-0.61,spot,stopped
+2025-07-21 17:40:21.451215+00:00,XRP/USD,3.6,3.58,3.63,,,futures,entry
+2025-07-21 17:40:24.061113+00:00,XRP/USD,3.6,3.58,3.63,,,spot,entry
+2025-07-21 18:39:13.137472+00:00,XRP/USD,3.58,3.56,3.61,,,futures,entry
+2025-07-21 18:39:15.786752+00:00,XRP/USD,3.58,3.56,3.61,,,spot,entry
+2025-07-21 18:55:36.480183+00:00,XRP/USD,3.58,3.56,3.61,3.557,-0.49,spot,stopped
+2025-07-22 02:20:58.071782+00:00,ETH/USD,3775.7,3762.88,3794.93,,,spot,entry
+2025-07-22 02:26:58.260678+00:00,ETH/USD,3784.26,3771.02,3804.12,,,spot,entry
+2025-07-22 02:33:23.633738+00:00,ETH/USD,3782.67,3769.84,3801.92,,,spot,entry
+2025-07-22 02:41:50.862929+00:00,ETH/USD,3782.19,3770.23,3800.13,,,spot,entry
+2025-07-22 12:15:01.998750+00:00,XRP/USD,3.52,3.51,3.54,,,futures,entry
+2025-07-22 12:15:04.601865+00:00,XRP/USD,3.52,3.51,3.54,,,spot,entry
+2025-07-22 12:16:11.653395+00:00,SOL/USD,199.97,199.19,201.14,,,spot,entry
+2025-07-22 12:31:28.782208+00:00,XRP/USD,3.52,3.51,3.54,3.5072,-0.1,spot,stopped
+2025-07-22 13:04:13.213070+00:00,SOL/USD,199.97,199.19,201.14,203.02,0.43,spot,target
+2025-07-22 13:20:41.831870+00:00,XRP/USD,3.53,3.52,3.54,,,futures,entry
+2025-07-22 13:20:44.443551+00:00,XRP/USD,3.53,3.52,3.54,,,spot,entry
+2025-07-22 13:21:44.441831+00:00,SOL/USD,202.85,201.82,204.4,,,spot,entry
+2025-07-22 13:36:59.500825+00:00,SOL/USD,202.85,201.82,204.4,200.94,-0.27,spot,stopped
+2025-07-22 13:46:09.816510+00:00,XRP/USD,3.53,3.52,3.54,3.5165,-0.11,spot,stopped
+2025-07-22 20:52:16.071285+00:00,BTC/USD,119820.12,119609.71,120135.74,,,futures,entry
+2025-07-22 20:52:18.687012+00:00,BTC/USD,119820.12,119609.71,120135.74,,,spot,entry
+2025-07-22 21:08:27.279754+00:00,XRP/USD,3.53,3.52,3.54,,,futures,entry
+2025-07-22 21:08:30.113582+00:00,XRP/USD,3.53,3.52,3.54,,,spot,entry
+2025-07-22 21:25:31.460638+00:00,ETH/USD,3711.14,3701.03,3726.3,,,futures,entry
+2025-07-22 21:25:34.657798+00:00,ETH/USD,3711.14,3701.03,3726.3,,,spot,entry
+2025-07-22 21:41:09.576165+00:00,BTC/USD,119820.12,119609.71,120135.74,119552.19,-0.12,spot,stopped
+2025-07-22 21:42:15.541561+00:00,SOL/USD,200.14,199.52,201.07,,,futures,entry
+2025-07-22 22:13:48.323335+00:00,SOL/USD,200.14,199.52,201.07,201.92,0.49,futures,target
+2025-07-22 22:14:18.669127+00:00,BTC/USD,119698.03,119538.25,119937.7,,,futures,entry
+2025-07-22 22:30:11.204274+00:00,XRP/USD,3.53,3.52,3.54,3.5461,0.25,spot,target
+2025-07-22 22:30:59.414428+00:00,ETH/USD,3720.09,3712.17,3731.97,,,futures,entry
+2025-07-22 22:31:01.993222+00:00,ETH/USD,3720.09,3712.17,3731.97,,,spot,entry
+2025-07-22 22:37:00.624262+00:00,ETH/USD,3711.14,3701.03,3726.3,3728.63,0.26,spot,target
+2025-07-22 22:37:02.337209+00:00,BTC/USD,119698.03,119538.25,119937.7,119967.59,0.12,futures,target

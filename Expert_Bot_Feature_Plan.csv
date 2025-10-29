@@ -1,0 +1,25 @@
+Feature,Purpose
+Volume Spike Detection,Confirm moves with unusual volume strength
+Volume Profile Integration,Use VPVR or VWAP to understand market zones and footprints
+Volatility Index Tracking,Flags extremely volatile markets that require caution
+Smart Support/Resistance Zones,"Detect SR levels using clustering, wicks, nodes"
+Dynamic Stop-Loss Calculation,SL using ATR or below support instead of fixed EMA21
+Risk-to-Reward Estimation,Estimates if potential reward outweighs risk
+Smart Risk Allocation,Dynamically adjust size based on volatility and score
+Multi-Timeframe Confirmation,"Check trend across 1m, 15m, 1h, 1d before entry"
+Multi-Timeframe Exit Conditions,Require multi-timeframe confirmation before exit
+Divergence Detection,Detect RSI or MACD divergence from price
+AI-Backed Pattern Detection,Detect common patterns like flags or head & shoulders
+AI-Backtested Pattern Library,AI learns from past trade outcomes
+Trade Memory & Learning,Track and learn from past bot decisions
+Market Context Awareness,"Integrate macro/news (FOMC, CPI, ETF approval)"
+Event-Driven Alerts,"React to ETF news, protocol upgrades"
+Sentiment Scoring,"Score from Twitter, Reddit, news"
+Whale Activity Tracker,Track large wallet movements
+Model Fine-Tuned Commentary,LLM summaries for market outlook
+Event-Driven Reactions,Real-time news reactions
+Backtested Confidence Score,Evaluate signal success history
+Correlation Checker,Analyze correlations with BTC/DXY/SPX
+On-Chain Metrics,"Monitor address count, NVT ratio, token velocity"
+Voice Summary & Visuals,"Send audio summaries, signal charts via Telegram"
+Backtest Sim Button,Trigger full backtest mode from Telegram
