@@ -17,7 +17,7 @@ from market_stats import get_24h_change_pct, build_vol_flags, fmt_pct
 from order_precision import apply_amount_precision
 
 #from typing import Optional, Tuple, Dict, Any
-from typing import Optional, Tuple, Dict, Any, Iterable, Union
+from typing import Optional, Tuple, Dict, Any, Iterable, Union, List
 
 # Try orjson for speed, but fall back to stdlib json
 try:
@@ -63,9 +63,23 @@ MACRO_GUARD_ENABLED = os.getenv("MACRO_GUARD_ENABLED","true").lower()=="true"
 MACRO_EVENTS_FILE   = os.getenv("MACRO_EVENTS_FILE","macro_events.json")
 MACRO_BLOCK_WINDOW_MIN = int(os.getenv("MACRO_BLOCK_WINDOW_MIN","45"))
 MACRO_BLOCK_IMPACTS = os.getenv("MACRO_BLOCK_IMPACTS","high,medium")
+MACRO_CALENDAR_ALERTS_ENABLED = os.getenv("MACRO_CALENDAR_ALERTS_ENABLED", "true").lower() == "true"
+MACRO_CALENDAR_LOOKAHEAD_HOURS = int(os.getenv("MACRO_CALENDAR_LOOKAHEAD_HOURS", "168"))
+MACRO_CALENDAR_POLL_SEC = int(os.getenv("MACRO_CALENDAR_POLL_SEC", "30"))
+MACRO_CALENDAR_ALERT_MINUTES = [
+    int(x.strip()) for x in os.getenv("MACRO_CALENDAR_ALERT_MINUTES", "120,60,30,15,5,1").split(",")
+    if x.strip().isdigit()
+]
+DESK_BRIEF_ENABLED = os.getenv("DESK_BRIEF_ENABLED", "true").lower() == "true"
+DESK_BRIEF_INTERVAL_SEC = int(os.getenv("DESK_BRIEF_INTERVAL_SEC", "900"))  # 15m
+DESK_BRIEF_TIMEFRAME = os.getenv("DESK_BRIEF_TIMEFRAME", "15m").strip().lower() or "15m"
+DESK_FLIP_ALERTS_ENABLED = os.getenv("DESK_FLIP_ALERTS_ENABLED", "true").lower() == "true"
+DESK_FLIP_COOLDOWN_SEC = int(os.getenv("DESK_FLIP_COOLDOWN_SEC", "180"))
+DESK_STYLE = os.getenv("DESK_STYLE", "plain").strip().lower()  # plain | table
 
 PCT_CHANGE_FLAG = float(os.getenv("PCT_CHANGE_ALERT","3.0"))  # show ⚠️ if abs(24h) > this
 VOL_RATIO_FLAG  = float(os.getenv("VOL_RATIO_ALERT","2.0"))   # unusual volume if >=
+LOW_CONF_THRESHOLD = int(os.getenv("LOW_CONF_THRESHOLD", "25"))  # if conf < this, demote LONG/SHORT to WAIT (UX only)
 # ──────────────────────────────────────────────────────────────────────────────
 # Telegram config
 # ──────────────────────────────────────────────────────────────────────────────
@@ -80,7 +94,23 @@ if not TOKEN or not CHAT_ID:
 # Files & liquidity snapshot
 # ──────────────────────────────────────────────────────────────────────────────
 _LIQ_PATH = os.getenv("LIQ_SNAPSHOT", "liquidity_snapshot.json")
+LIQ_SNAPSHOT_MAX_AGE_SEC = float(os.getenv("LIQ_SNAPSHOT_MAX_AGE_SEC", "3"))
+# Canonical SLA name for deterministic freshness policy.
+LIQ_MAX_AGE_SEC = float(os.getenv("LIQ_MAX_AGE_SEC", str(LIQ_SNAPSHOT_MAX_AGE_SEC)))
 print(f"[LIQ] Reading snapshot from: {_LIQ_PATH}", flush=True)
+
+# Venue divergence (multi-venue mid agreement) — BTC-USD only in Phase 1 (snapshot has Binance Fut + Coinbase).
+VENUE_DIV_ENABLED = os.getenv("VENUE_DIV_ENABLED", "true").lower() == "true"
+VENUE_DIV_BPS_WARN = float(os.getenv("VENUE_DIV_BPS_WARN", "25"))
+VENUE_DIV_BPS_HARD = float(os.getenv("VENUE_DIV_BPS_HARD", "80"))
+if VENUE_DIV_BPS_HARD <= VENUE_DIV_BPS_WARN:
+    VENUE_DIV_BPS_HARD = VENUE_DIV_BPS_WARN + 1.0
+VENUE_DIV_CONF_PENALTY = float(os.getenv("VENUE_DIV_CONF_PENALTY", "0.65"))
+print(
+    f"[VENUE] Divergence guard: enabled={VENUE_DIV_ENABLED} warn>{VENUE_DIV_BPS_WARN:.0f}bps "
+    f"hard>{VENUE_DIV_BPS_HARD:.0f}bps penalty={VENUE_DIV_CONF_PENALTY:.2f} (BTC-USD)",
+    flush=True,
+)
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Feature flags & knobs
@@ -184,6 +214,9 @@ LAST_SIGNALS = deque(maxlen=200)
 _PRICE_HISTORY = defaultdict(lambda: deque(maxlen=12))
 _TICKS = {}  # sym -> deque[(ts, price)] for swing detection
 _recent_prices = {s: deque(maxlen=60) for s in SPOT_SYMBOLS}
+_macro_alert_sent = set()  # {(event_key, tag)}
+_desk_prev_state = {}      # sym -> state dict
+_desk_last_flip_ts = defaultdict(float)
 
 # Spot state
 spot_positions = {}        # sym -> list[{entry, qty_base, tp, sl, opened_ts, buy_order_id, fee_pct}]
@@ -356,6 +389,131 @@ def _open_json(path: str):
     except Exception:
         return None
 
+def _liq_snapshot_age_sec(path: str = None) -> Optional[float]:
+    """
+    Returns snapshot file age in seconds, or None when unavailable.
+    """
+    p = path or _LIQ_PATH
+    try:
+        return max(0.0, time.time() - os.path.getmtime(p))
+    except Exception:
+        return None
+
+def _liq_data_state(path: str = None) -> tuple:
+    """
+    Deterministic liquidity data state.
+    Returns: (state, age_sec, reason)
+      - state: "fresh" | "stale"
+    """
+    age = _liq_snapshot_age_sec(path or _LIQ_PATH)
+    if age is None:
+        return "stale", None, "liq-missing"
+    if age > LIQ_MAX_AGE_SEC:
+        return "stale", age, f"liq-stale:{age:.1f}s>{LIQ_MAX_AGE_SEC:.1f}s"
+    return "fresh", age, "ok"
+
+
+def _venue_btc_usd_keys() -> tuple:
+    """Deterministic snapshot keys written by liquidity_phase1_free.py."""
+    return ("BINANCEFUT:BTCUSDT", "COINBASE:BTC-USD")
+
+
+def _venue_divergence_state(sym: str, snap: dict = None) -> dict:
+    """
+    Compare venue mid prices from the liquidity snapshot (basis points).
+    Scope: BTC-USD only (Binance USDT-perp vs Coinbase spot USD).
+    Returns machine-readable trust/quality state for decisions and tests.
+    """
+    sym_u = (sym or "").upper().strip()
+    out: Dict[str, Any] = {
+        "enabled": bool(VENUE_DIV_ENABLED),
+        "symbol": sym_u,
+        "status": "skipped",
+        "divergence_bps": None,
+        "venues": {},
+        "block_decisions": False,
+        "conf_factor": 1.0,
+        "reason": "",
+        "warn_bps": float(VENUE_DIV_BPS_WARN),
+        "hard_bps": float(VENUE_DIV_BPS_HARD),
+    }
+    if not VENUE_DIV_ENABLED:
+        out["reason"] = "venue-div:disabled"
+        return out
+    if sym_u != "BTC-USD":
+        out["reason"] = "venue-div:scope-BTC-USD-only"
+        return out
+
+    snap = snap if isinstance(snap, dict) else (_open_json(_LIQ_PATH) or {})
+    symbols = snap.get("symbols", {}) or {}
+    k_bin, k_cb = _venue_btc_usd_keys()
+    r_bin = symbols.get(k_bin) or {}
+    r_cb = symbols.get(k_cb) or {}
+    try:
+        m_bin = float(r_bin.get("mid", 0.0) or 0.0)
+    except Exception:
+        m_bin = 0.0
+    try:
+        m_cb = float(r_cb.get("mid", 0.0) or 0.0)
+    except Exception:
+        m_cb = 0.0
+    out["venues"] = {k_bin: m_bin, k_cb: m_cb}
+
+    if m_bin <= 0.0 or m_cb <= 0.0:
+        out["status"] = "incomplete"
+        out["block_decisions"] = True
+        out["reason"] = "venue-div:incomplete-mids"
+        return out
+
+    mid_ref = 0.5 * (m_bin + m_cb)
+    div_bps = abs(m_bin - m_cb) / max(mid_ref, 1e-9) * 10000.0
+    out["divergence_bps"] = float(div_bps)
+
+    if div_bps > VENUE_DIV_BPS_HARD:
+        out["status"] = "hard"
+        out["block_decisions"] = True
+        out["reason"] = f"venue-div:{div_bps:.1f}bps>{VENUE_DIV_BPS_HARD:.0f}bps-hard"
+        return out
+    if div_bps > VENUE_DIV_BPS_WARN:
+        out["status"] = "warn"
+        out["conf_factor"] = float(VENUE_DIV_CONF_PENALTY)
+        out["reason"] = f"venue-div:{div_bps:.1f}bps>{VENUE_DIV_BPS_WARN:.0f}bps-warn"
+        return out
+
+    out["status"] = "ok"
+    out["reason"] = "venue-div:ok"
+    return out
+
+
+def _coinbase_feed_health(snap: dict = None) -> str:
+    """
+    Non-blocking trust annotation written by liquidity collector.
+    Returns one of: healthy_l2 | fallback_only | degraded.
+    """
+    snap = snap if isinstance(snap, dict) else (_open_json(_LIQ_PATH) or {})
+    meta = snap.get("meta", {}) if isinstance(snap, dict) else {}
+    h = str(meta.get("coinbase_feed_health", "")).strip().lower()
+    if h in {"healthy_l2", "fallback_only", "degraded"}:
+        return h
+    return "degraded"
+
+
+def _coinbase_feed_meta(snap: dict = None) -> dict:
+    """
+    Deterministic, BTC-focused Coinbase feed trust meta from liquidity snapshot.
+    """
+    snap = snap if isinstance(snap, dict) else (_open_json(_LIQ_PATH) or {})
+    meta = snap.get("meta", {}) if isinstance(snap, dict) else {}
+    h = _coinbase_feed_health(snap)
+    return {
+        "coinbase_feed_health": h,
+        "coinbase_l2_active": bool(meta.get("coinbase_l2_active", False)),
+        "coinbase_ticker_fallback_active": bool(meta.get("coinbase_ticker_fallback_active", False)),
+        "coinbase_btc_row_valid": bool(meta.get("coinbase_btc_row_valid", False)),
+        "collector_build": str(meta.get("collector_build", "")),
+    }
+
+
 def _liquidity_bookview(sym: str):
     snap = _open_json(_LIQ_PATH) or {}
     allrows = snap.get("symbols", {}) if isinstance(snap, dict) else {}
@@ -386,8 +544,11 @@ def _liquidity_note(sym: str, mode: str = "standard") -> str:
     bid10 = float(row.get("cum_bid10", 0.0))
     ask10 = float(row.get("cum_ask10", 0.0))
     spr   = float(row.get("spread", 0.0))
-    n_ask = float(row.get("nearest_ask_wall", 0.0) or 0.0)
-    n_bid = float(row.get("nearest_bid_wall", 0.0) or 0.0)
+    # Support both liquidity snapshot schemas:
+    # - v1: nearest_bid_wall / nearest_ask_wall
+    # - v2: nearest_bid_wall_price / nearest_ask_wall_price
+    n_ask = float(row.get("nearest_ask_wall", 0.0) or row.get("nearest_ask_wall_price", 0.0) or 0.0)
+    n_bid = float(row.get("nearest_bid_wall", 0.0) or row.get("nearest_bid_wall_price", 0.0) or 0.0)
     venue = row.get("venue", "")
     asset = _asset_from_sym(sym)
 
@@ -464,13 +625,18 @@ def _fmt_bps(d_price: float, price: float) -> float:
 
 
 def _liquidity_gate(sym: str, bias: str):
+    # Hard freshness guard: stale -> no decision/execution.
+    state, age, reason = _liq_data_state(_LIQ_PATH)
+    if state != "fresh":
+        return False, 0.0, 0.0, reason
+
     snap = _open_json(_LIQ_PATH)
     if not isinstance(snap, dict):
-        return True, 0.0, 0.0, ""
+        return False, 0.0, 0.0, "liq-invalid"
     symbols = snap.get("symbols", {})
     row = next((symbols.get(k) for k in _lookup_symbols_for(sym) if symbols.get(k)), None)
     if not row:
-        return True, 0.0, 0.0, ""
+        return False, 0.0, 0.0, "liq-empty"
 
     # imbalance ∈ [-1, +1]
     try:
@@ -496,6 +662,11 @@ def _liquidity_gate(sym: str, bias: str):
         spr_bps = 0.0
 
     spr_bps = abs(float(spr_bps))  # normalize
+
+    # --- venue divergence (BTC-USD): hard/incomplete blocks decisions; warn handled via confidence ---
+    vd = _venue_divergence_state(sym, snap)
+    if vd.get("block_decisions"):
+        return False, imb, spr_bps, str(vd.get("reason") or "venue-div-block")
 
     # --- directional imbalance gates ---
     if bias == "LONG" and imb < _LIQ_IMB_LONG_MIN:
@@ -563,8 +734,8 @@ def _pick_walls(sym: str):
         return "", None, 0.0, None, 0.0, None
 
     venue = row.get("venue", "")
-    bid_px = row.get("nearest_bid_wall")
-    ask_px = row.get("nearest_ask_wall")
+    bid_px = row.get("nearest_bid_wall") or row.get("nearest_bid_wall_price")
+    ask_px = row.get("nearest_ask_wall") or row.get("nearest_ask_wall_price")
     spr_abs = row.get("spread")
 
     # depth proxies
@@ -982,6 +1153,991 @@ def news_allows_trade():
     return (not NEWS_FILTER_ENABLED) or (time.time() > pause_trades_until)
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Macro calendar alerts (Telegram) with first-principles playbook
+# ──────────────────────────────────────────────────────────────────────────────
+def _parse_iso_utc(ts: str) -> Optional[datetime.datetime]:
+    if not ts:
+        return None
+    try:
+        t = str(ts).strip()
+        if t.endswith("Z"):
+            t = t[:-1] + "+00:00"
+        dt = datetime.datetime.fromisoformat(t)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=datetime.timezone.utc)
+        return dt.astimezone(datetime.timezone.utc)
+    except Exception:
+        return None
+
+def _macro_events_within(hours: int = 24):
+    try:
+        with open(MACRO_EVENTS_FILE, "r") as f:
+            raw = json.load(f)
+    except Exception:
+        return []
+
+    if isinstance(raw, dict):
+        raw = raw.get("events", [])
+    if not isinstance(raw, list):
+        return []
+
+    now = datetime.datetime.now(datetime.timezone.utc)
+    horizon = now + datetime.timedelta(hours=max(1, int(hours)))
+    out = []
+    for ev in raw:
+        if not isinstance(ev, dict):
+            continue
+        when = _parse_iso_utc(ev.get("time_utc") or ev.get("time"))
+        if not when:
+            continue
+        if now <= when <= horizon:
+            out.append((when, ev))
+    out.sort(key=lambda x: x[0])
+    return out
+
+def _macro_events_all():
+    try:
+        with open(MACRO_EVENTS_FILE, "r") as f:
+            raw = json.load(f)
+    except Exception:
+        return []
+    if isinstance(raw, dict):
+        raw = raw.get("events", [])
+    if not isinstance(raw, list):
+        return []
+    out = []
+    for ev in raw:
+        if not isinstance(ev, dict):
+            continue
+        when = _parse_iso_utc(ev.get("time_utc") or ev.get("time"))
+        if when:
+            out.append((when, ev))
+    out.sort(key=lambda x: x[0])
+    return out
+
+def _macro_recent_past(hours_back: int = 14):
+    """
+    Latest event from macro_events.json that already occurred (within last hours_back).
+    Helps explain "we had claims today" even after the print time passed.
+    """
+    now = datetime.datetime.now(datetime.timezone.utc)
+    start = now - datetime.timedelta(hours=max(1, int(hours_back)))
+    best = None  # (when, ev)
+    for when, ev in _macro_events_all():
+        if start <= when <= now:
+            if best is None or when > best[0]:
+                best = (when, ev)
+    return best
+
+def _fmt_macro_eta_line(when: datetime.datetime, ev: dict, *, past: bool) -> str:
+    title = ev.get("name") or ev.get("title") or "Macro Event"
+    impact = str(ev.get("impact", "unknown")).upper()
+    now = datetime.datetime.now(datetime.timezone.utc)
+    delta = int(abs((when - now).total_seconds()) // 60)
+    if past:
+        return f"Macro (passed): {title} [{impact}] was {when.strftime('%a %Y-%m-%d %H:%M')} UTC (~{delta}m ago)."
+    return f"Macro (next 24h): {title} [{impact}] at {when.strftime('%a %H:%M')} UTC in {delta}m."
+
+def _macro_desk_context_lines():
+    """
+    Clear macro context for the desk: manual file disclaimer + past print + next 24h + next in file.
+    """
+    lines = [
+        "Source: macro_events.json only (not a live economic calendar). Add dates you care about.",
+    ]
+    recent = _macro_recent_past(14)
+    if recent:
+        when, ev = recent
+        lines.append(_fmt_macro_eta_line(when, ev, past=True))
+    r24 = _macro_events_within(24)
+    if r24:
+        when, ev = r24[0]
+        lines.append(_fmt_macro_eta_line(when, ev, past=False))
+    else:
+        lines.append("Macro (next 24h): none listed in JSON (still check real calendar).")
+    # Next event overall (may be >24h) — compact
+    all_up = [(w, e) for w, e in _macro_events_all() if w >= datetime.datetime.now(datetime.timezone.utc)]
+    if all_up:
+        when, ev = min(all_up, key=lambda x: x[0])
+        title = ev.get("name") or ev.get("title") or "Event"
+        mins = int((when - datetime.datetime.now(datetime.timezone.utc)).total_seconds() // 60)
+        lines.append(f"Next in file: {title} in {max(0, mins)}m ({when.strftime('%a %H:%M')} UTC).")
+    return lines
+
+def _desk_vote_triple(mom_pct: float, imb: float, ta: dict) -> tuple:
+    """Returns (mom_s, liq_s, ta_s) each in {-1,0,+1} matching _action_from_signals."""
+    mom_s = 1 if mom_pct > 0.05 else (-1 if mom_pct < -0.05 else 0)
+    liq_s = 1 if imb >= 0.10 else (-1 if imb <= -0.10 else 0)
+    ta_s = 0
+    if isinstance(ta, dict) and "headline" in ta:
+        ta_s = 1 if "LONG" in ta["headline"] else (-1 if "SHORT" in ta["headline"] else 0)
+    return mom_s, liq_s, ta_s
+
+def _desk_vote_compact(mom_s: int, liq_s: int, ta_s: int) -> str:
+    def ch(x: int) -> str:
+        if x > 0:
+            return "+"
+        if x < 0:
+            return "−"
+        return "·"
+    return f"{ch(mom_s)}{ch(liq_s)}{ch(ta_s)}"
+
+def _desk_narrative_context(
+    mom: float,
+    imb: float,
+    ta: Optional[dict],
+    action_raw: str,
+    decision: str,
+    conf: int,
+) -> Dict[str, str]:
+    """
+    Deterministic desk copy: cause language (no fake % odds).
+    Thresholds align with _desk_vote_triple / _action_from_signals (mom ±0.05, liq ±0.10).
+    """
+    if abs(mom) <= 0.05:
+        mtxt = "mixed / flat momentum"
+    elif mom > 0.05:
+        mtxt = "upward momentum"
+    else:
+        mtxt = "downward momentum"
+
+    if abs(imb) < 0.05:
+        ltxt = "balanced book (two-way)"
+    elif abs(imb) < 0.10:
+        ltxt = "mild bid support only" if imb > 0 else "mild ask pressure only"
+    else:
+        ltxt = "firm bid skew" if imb > 0 else "firm ask skew"
+
+    if isinstance(ta, dict) and ta.get("headline") not in (None, "", "warming up"):
+        pl = float(ta.get("prob_long", 50))
+        if 42 < pl < 58:
+            ttxt = "TA balanced / no edge"
+        elif pl >= 58:
+            ttxt = "TA leaning long"
+        else:
+            ttxt = "TA leaning short"
+    else:
+        ttxt = "TA still warming up"
+
+    if decision == "WAIT":
+        if action_raw in ("LONG?", "SHORT?"):
+            stxt = "soft lean only — need aligned momentum + liquidity + close"
+        elif conf < 20:
+            stxt = "low conviction — waiting for expansion"
+        else:
+            stxt = "no breakout confirmation — need 5m close vs triggers"
+    else:
+        stxt = "directional setup active — manage risk to invalidation"
+
+    driver_one = f"{mtxt}; {ltxt}; {ttxt}; {stxt}"
+    return {
+        "momentum_txt": mtxt,
+        "liquidity_txt": ltxt,
+        "ta_txt": ttxt,
+        "setup_txt": stxt,
+        "driver_line": driver_one,
+    }
+
+
+def _desk_wait_note(
+    decision: str,
+    action_raw: str,
+    mom_s: int,
+    liq_s: int,
+    ta_s: int,
+    conf: int,
+    blocked: bool,
+) -> str:
+    if decision in ("LONG", "SHORT"):
+        return "ok to consider" if conf >= LOW_CONF_THRESHOLD else f"edge weak (conf {conf}% < {LOW_CONF_THRESHOLD}%)"
+    total = mom_s + liq_s + ta_s
+    bits = []
+    if blocked:
+        bits.append("macro window")
+    if action_raw in ("LONG?", "SHORT?"):
+        bits.append("soft lean only")
+    if abs(total) < 2:
+        bits.append(f"votes {total:+d}/3 (need +2 LONG or −2 SHORT)")
+    if conf < 20:
+        bits.append("very low conf")
+    elif conf < LOW_CONF_THRESHOLD:
+        bits.append(f"conf {conf}% below {LOW_CONF_THRESHOLD}% for size")
+    return "; ".join(bits) if bits else "mixed"
+
+def _macro_bias_rules(event_name: str):
+    n = (event_name or "").lower()
+    if "jobless" in n or "initial claims" in n or "continuing claims" in n:
+        return (
+            "Claims HIGH (weaker labor) -> often dovish tilt -> BTC supportive reaction.",
+            "Claims LOW (stronger labor) -> often hawkish hold -> BTC headwind.",
+        )
+    if "cpi" in n or "inflation" in n or "ppi" in n or "pce" in n:
+        return (
+            "Inflation HOTTER -> yields up / hawkish -> often BTC bearish.",
+            "Inflation COOLER -> yields down / dovish -> often BTC bullish.",
+        )
+    if "nonfarm" in n or "nfp" in n or "payroll" in n:
+        return (
+            "Jobs STRONGER -> hotter econ -> hawkish bias -> often BTC bearish.",
+            "Jobs WEAKER -> cooler econ -> dovish odds up -> often BTC bullish.",
+        )
+    if "unemployment" in n:
+        return (
+            "Unemployment HIGHER -> growth cooling -> dovish odds up -> often BTC supportive.",
+            "Unemployment LOWER -> tighter labor -> hawkish tilt -> often BTC headwind.",
+        )
+    if "fomc" in n or "rate decision" in n or "fed" in n:
+        return (
+            "More HAWKISH tone -> usually BTC bearish.",
+            "More DOVISH tone -> usually BTC bullish.",
+        )
+    if "retail sales" in n or "ism" in n or "pmi" in n:
+        return (
+            "Stronger growth print -> yields up / hawkish tilt -> often BTC bearish.",
+            "Weaker growth print -> yields down / dovish tilt -> often BTC bullish.",
+        )
+    if "etf" in n and "flow" in n:
+        return (
+            "Stronger net inflows than trend -> spot demand tailwind -> often BTC supportive.",
+            "Net outflows / weak flows -> demand air-pocket risk -> often BTC headwind.",
+        )
+    return (
+        "Hotter macro -> USD/yields up -> often BTC risk-off first.",
+        "Softer macro -> USD/yields down -> often BTC risk-on first.",
+    )
+
+def _fmt_macro_value(v, unit: str = "") -> str:
+    if v is None or v == "":
+        return "n/a"
+    try:
+        fv = float(v)
+        if unit:
+            return f"{fv:g}{unit}"
+        return f"{fv:g}"
+    except Exception:
+        return f"{v}{unit or ''}"
+
+def _macro_event_key(ev: dict, when: datetime.datetime) -> str:
+    title = ev.get("name") or ev.get("title") or "Macro Event"
+    return f"{title}|{when.isoformat()}"
+
+def _macro_case_labels(event_name: str, has_expected: bool) -> tuple:
+    n = (event_name or "").lower()
+    if has_expected:
+        return "If print > exp", "If print < exp"
+    if "jobless" in n or "initial claims" in n or "continuing claims" in n:
+        return "If claims HIGH", "If claims LOW"
+    if "cpi" in n or "inflation" in n or "ppi" in n or "pce" in n:
+        return "If inflation HOTTER", "If inflation COOLER"
+    if "nonfarm" in n or "nfp" in n or "payroll" in n:
+        return "If jobs STRONGER", "If jobs WEAKER"
+    if "unemployment" in n:
+        return "If unemployment HIGHER", "If unemployment LOWER"
+    if "etf" in n and "flow" in n:
+        return "If net inflows strong", "If net outflows strong"
+    if "fomc" in n or "rate decision" in n or "fed" in n:
+        return "If tone is more hawkish", "If tone is more dovish"
+    return "If print is stronger", "If print is weaker"
+
+def build_macro_calendar_brief(within_hours: int = 168, include_playbook: bool = True) -> str:
+    rows = _macro_events_within(within_hours)
+    if not rows:
+        now = datetime.datetime.now(datetime.timezone.utc)
+        future = [(w, ev) for (w, ev) in _macro_events_all() if w >= now]
+        if not future:
+            return (
+                f"No upcoming macro events found in `{MACRO_EVENTS_FILE}`.\n"
+                "Add future-dated events with `time_utc`, `impact`, and optional `expected/previous/actual/unit`."
+            )
+        when, ev = future[0]
+        title = ev.get("name") or ev.get("title") or "Macro Event"
+        expected = _fmt_macro_value(ev.get("expected"), ev.get("unit", ""))
+        previous = _fmt_macro_value(ev.get("previous"), ev.get("unit", ""))
+        up_case, down_case = _macro_bias_rules(title)
+        mins = int((when - now).total_seconds() // 60)
+        return (
+            f"No macro events in next {within_hours}h.\n"
+            f"Next scheduled: {title} at {when.strftime('%Y-%m-%d %H:%M')} UTC (in {max(0, mins)}m)\n"
+            f"Expected: {expected} | Previous: {previous}\n"
+            f"If print > exp: {up_case}\n"
+            f"If print < exp: {down_case}"
+        )
+
+    now = datetime.datetime.now(datetime.timezone.utc)
+    lines = [
+        f"🗓️ Macro Calendar (next {within_hours}h, UTC)",
+        "Note: data is from macro_events.json only — not a live Forex/econ feed. Add or edit events there.",
+    ]
+    for when, ev in rows:
+        title = ev.get("name") or ev.get("title") or "Macro Event"
+        impact = str(ev.get("impact", "unknown")).upper()
+        mins = int((when - now).total_seconds() // 60)
+        eta = "now" if mins <= 0 else f"in {mins}m"
+        expected = _fmt_macro_value(ev.get("expected"), ev.get("unit", ""))
+        previous = _fmt_macro_value(ev.get("previous"), ev.get("unit", ""))
+        actual = _fmt_macro_value(ev.get("actual"), ev.get("unit", ""))
+        has_expected = ev.get("expected") not in (None, "")
+        lines.append(f"\n• {title} [{impact}]")
+        lines.append(f"  Time: {when.strftime('%Y-%m-%d %H:%M')} UTC ({eta})")
+        lines.append(f"  Expected: {expected} | Previous: {previous} | Actual: {actual}")
+        if include_playbook:
+            up_case, down_case = _macro_bias_rules(title)
+            lbl_up, lbl_dn = _macro_case_labels(title, has_expected)
+            lines.append(f"  {lbl_up}: {up_case}")
+            lines.append(f"  {lbl_dn}: {down_case}")
+            lines.append("  TA playbook: wait 1-5m candle close; trade only with liquidity tilt and momentum confirmation.")
+    return "\n".join(lines)
+
+def _next_macro_event_line(within_hours: int = 72) -> str:
+    rows = _macro_events_within(within_hours)
+    if not rows:
+        return "Macro: no scheduled event in next 72h."
+    now = datetime.datetime.now(datetime.timezone.utc)
+    when, ev = rows[0]
+    title = ev.get("name") or ev.get("title") or "Macro Event"
+    mins = int((when - now).total_seconds() // 60)
+    impact = str(ev.get("impact", "unknown")).upper()
+    return f"Macro next: {title} [{impact}] in {max(0, mins)}m ({when.strftime('%a %H:%M')} UTC)."
+
+def _desk_compute_symbol_state(sym: str, tf: str = "15m") -> dict:
+    px = _safe_price(sym)
+    if px <= 0:
+        return {"symbol": sym, "ok": False, "reason": "no price"}
+
+    _update_ta_buffer(sym, px)
+    ta = _safe_ta_bias(sym)
+    _ok_liq, imb, _spr, _venue = _safe_liq(sym)
+    mom = _safe_hist_mom(sym)
+    r, s = _safe_sr(sym, tf)
+    blocked, macro_lbl, macro_factor = _macro_penalty(time.time(), sym)
+    liq_state, liq_age, liq_reason = _liq_data_state(_LIQ_PATH)
+    vd = _venue_divergence_state(sym)
+    cb_health = _coinbase_feed_health()
+
+    action_raw = _action_from_signals(mom, imb, ta or {})
+    mom_s, liq_s, ta_s = _desk_vote_triple(mom, imb, ta or {})
+    vote_sum = mom_s + liq_s + ta_s
+    vote_compact = _desk_vote_compact(mom_s, liq_s, ta_s)
+
+    conf = _conf_from_signals(mom, imb, ta or {})
+    conf = int(round(conf * macro_factor))
+    if liq_state != "fresh":
+        conf = 0
+    elif (sym or "").upper().strip() == "BTC-USD" and vd.get("status") == "warn":
+        conf = int(round(conf * float(vd.get("conf_factor", 1.0))))
+
+    if liq_state != "fresh":
+        decision = "WAIT"
+    elif (sym or "").upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+        decision = "WAIT"
+    elif conf < 20 or action_raw in ("LONG?", "SHORT?"):
+        decision = "WAIT"
+    else:
+        decision = "LONG" if action_raw.startswith("LONG") else ("SHORT" if action_raw.startswith("SHORT") else "WAIT")
+    if decision in ("LONG", "SHORT") and conf < LOW_CONF_THRESHOLD:
+        decision = "WAIT"
+
+    wait_note = _desk_wait_note(decision, action_raw, mom_s, liq_s, ta_s, conf, blocked)
+    if liq_state != "fresh":
+        age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+        wait_note = f"stale liquidity data ({age_txt}); hard-stop decisions"
+    elif (sym or "").upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+        wait_note = f"venue divergence guard — {vd.get('reason', 'blocked')}"
+    elif (sym or "").upper().strip() == "BTC-USD" and cb_health == "degraded":
+        wait_note = "coinbase feed quality degraded (informational; non-blocking)"
+
+    _nctx = _desk_narrative_context(mom, imb, ta or {}, action_raw, decision, conf)
+    driver = _nctx["driver_line"]
+
+    # "Point no" / invalidation zone: ATR-based (PA-style kill level).
+    atrp = _safe_atr_price(sym, px, tf)
+    tp = None
+    sl = None
+    no_txt = "NO n/a"
+    if decision == "LONG":
+        sl = px - 1.00 * atrp
+        tp = px + 1.50 * atrp
+        no_txt = f"NO<{sl:.2f}"
+    elif decision == "SHORT":
+        sl = px + 1.00 * atrp
+        tp = px - 1.50 * atrp
+        no_txt = f"NO>{sl:.2f}"
+    else:
+        # When WAIT, show nearest structure as the practical "wrong-way" zone.
+        if s is not None and r is not None:
+            no_txt = f"S {s:.2f} / R {r:.2f}"
+        elif s is not None:
+            no_txt = f"S {s:.2f}"
+        elif r is not None:
+            no_txt = f"R {r:.2f}"
+
+    return {
+        "symbol": sym,
+        "ok": True,
+        "price": float(px),
+        "decision": decision,
+        "action_raw": action_raw,
+        "confidence": int(conf),
+        "momentum": float(mom),
+        "imbalance": float(imb),
+        "ta_headline": (ta.get("headline", "warming up") if isinstance(ta, dict) else "warming up"),
+        "macro_label": macro_lbl,
+        "macro_blocked": bool(blocked),
+        "resistance": r,
+        "support": s,
+        "driver": driver,
+        "vote_mlt": vote_compact,
+        "vote_sum": int(vote_sum),
+        "wait_note": wait_note,
+        "liq_state": liq_state,
+        "liq_age": liq_age,
+        "liq_reason": liq_reason,
+        "coinbase_feed_health": cb_health,
+        "venue_div": vd,
+        "atrp": float(atrp) if atrp is not None else 0.0,
+        "tp": float(tp) if tp is not None else None,
+        "sl": float(sl) if sl is not None else None,
+        "no_txt": no_txt,
+    }
+
+def _desk_state_changed(prev: dict, cur: dict) -> bool:
+    if not prev:
+        return False
+    if prev.get("decision") != cur.get("decision"):
+        return True
+    if abs(float(prev.get("confidence", 0)) - float(cur.get("confidence", 0))) >= 12:
+        return True
+    if bool(prev.get("macro_blocked")) != bool(cur.get("macro_blocked")):
+        return True
+    return False
+
+def _desk_symbol_line(st: dict, prev: dict = None, *, include_note: bool = False) -> str:
+    if not st.get("ok"):
+        return f"• {st.get('symbol','?')}: no price."
+    sym = st["symbol"]
+    d = st["decision"]
+    conf = st["confidence"]
+    px = st["price"]
+    mom = st["momentum"]
+    imb = st["imbalance"]
+    driver = st["driver"]
+    vmlt = st.get("vote_mlt", "···")
+    vs = st.get("vote_sum", 0)
+    move_note = ""
+    if prev:
+        if prev.get("decision") != d:
+            move_note = f" | flip {prev.get('decision','?')}→{d}"
+        elif abs(float(prev.get("confidence", 0)) - conf) >= 8:
+            sign = "↑" if conf > float(prev.get("confidence", 0)) else "↓"
+            move_note = f" | conf {sign}"
+    # vote_mlt = momentum/liquidity/TA: +/−/·  ; vote_sum ∈ [-3..+3], need ±2 for directional bias
+    no_txt = st.get("no_txt", "NO n/a")
+    row = (
+        f"{sym} | {d:<4} | {conf:>3}% | {vmlt} sum{vs:+d} | px {px:.2f} | mom {mom:+.2f}% | liq {imb:+.0%}"
+        f" | {driver}{move_note} | {no_txt}"
+    )
+    if include_note and st.get("wait_note"):
+        row += f"\n   → {st['wait_note']}"
+    return row
+
+def _fmt_level(px: float) -> str:
+    try:
+        p = float(px)
+    except Exception:
+        return "n/a"
+    return f"{p:.2f}" if abs(p) >= 1 else f"{p:.4f}"
+
+
+def _plain_ta_macro_token(st: dict) -> str:
+    if st.get("macro_blocked"):
+        return "blocked"
+    lbl = str(st.get("macro_label") or "").lower()
+    if "soon" in lbl:
+        return "soon"
+    return "clear"
+
+
+def _plain_ta_venue_token(st: dict) -> str:
+    vd = st.get("venue_div") or {}
+    if not vd.get("enabled"):
+        return "n/a"
+    s = str(vd.get("status") or "skipped")
+    if s == "skipped":
+        return "n/a"
+    return s
+
+
+def _plain_ta_regime_lines(
+    decision: str,
+    conf: int,
+    mom: float,
+    imb: float,
+    ta_prob: float,
+    liq_state: str,
+) -> List[str]:
+    """Institutional regime copy — no fake win-rate / odds language."""
+    if liq_state != "fresh":
+        return [
+            "• Chop / range-bound (stale book — read is observational only)",
+            "• No directional edge for execution until data is fresh",
+        ]
+    if decision in ("LONG", "SHORT") and conf >= LOW_CONF_THRESHOLD:
+        return [
+            f"• Directional — {decision} bias with desk conf {conf}%",
+            "• Size only if your plan agrees; honor invalidation",
+        ]
+    if decision in ("LONG", "SHORT") and conf < LOW_CONF_THRESHOLD:
+        return [
+            "• Directional lean — conf below size gate",
+            "• Low conviction until expansion + higher conf",
+        ]
+    if conf < 20 or (abs(mom) <= 0.05 and abs(imb) < 0.10):
+        return [
+            "• Chop / range-bound",
+            "• Low conviction until expansion confirms",
+        ]
+    if abs(ta_prob - 50.0) <= 10.0 and abs(imb) < 0.12:
+        return [
+            "• Balanced / two-way",
+            "• No directional edge — need a clean break + follow-through",
+        ]
+    return [
+        "• Mixed inputs / transition",
+        "• No directional edge until momentum + book skew align on a break",
+    ]
+
+
+def _plain_ta_conclusion_line(st: dict, decision: str, conf: int) -> str:
+    if st.get("liq_state") != "fresh":
+        return "No trade — liquidity snapshot not fresh; decisions are hard-stopped."
+    sym_u = (st.get("symbol") or "").upper()
+    vd = st.get("venue_div") or {}
+    if sym_u == "BTC-USD" and vd.get("block_decisions"):
+        return "No trade — venue divergence guard active (two-venue agreement required)."
+    if st.get("macro_blocked"):
+        return "No trade — macro guard blocking window."
+    if decision in ("LONG", "SHORT") and conf >= LOW_CONF_THRESHOLD:
+        return "Actionable directional bias per desk rules — still size to risk."
+    if conf < 20:
+        return "No real edge yet — stand aside until the confidence path clears."
+    if decision in ("LONG", "SHORT"):
+        return "Lean present but below conf gate — wait for stronger agreement."
+    return "Stand aside — wait for confirmed close vs triggers."
+
+
+def _plain_ta_confidence_path_block(
+    st: dict,
+    timeframe: str,
+    long_trigger: float,
+    short_trigger: float,
+    px: float,
+) -> str:
+    """
+    Display-only PASS/FAIL checklist. Thresholds match the retired single-line path:
+    LIQ_MAX_AGE_SEC, venue_div (BTC-USD), macro blocked / “soon”, |mom|>0.10%, |imb|>=0.10,
+    LOW_CONF_THRESHOLD, spot vs long/short triggers (no new rules).
+    """
+    _MOM_PATH = 0.10
+    _TILT_PATH = 0.10
+
+    rows: List[str] = ["Confidence path", "• Conditions:"]
+
+    liq_state = st.get("liq_state")
+    liq_age = st.get("liq_age")
+    if liq_state == "fresh":
+        age_txt = f"{float(liq_age):.1f}s" if liq_age is not None else "n/a"
+        rows.append(
+            f"  - Liquidity snapshot: PASS (age {age_txt} ≤ {LIQ_MAX_AGE_SEC:.0f}s)"
+        )
+    else:
+        age_txt = "n/a" if liq_age is None else f"{float(liq_age):.1f}s"
+        rows.append(
+            f"  - Liquidity snapshot: FAIL (age {age_txt} > {LIQ_MAX_AGE_SEC:.0f}s)"
+        )
+
+    sym_u = (st.get("symbol") or "").upper()
+    vd = st.get("venue_div") or {}
+    if sym_u != "BTC-USD" or not vd.get("enabled"):
+        rows.append("  - Venue agreement: N/A (BTC-USD guard only)")
+    elif vd.get("block_decisions"):
+        stt = str(vd.get("status") or "?")
+        div = vd.get("divergence_bps")
+        div_txt = f"{float(div):.1f} bps" if div is not None else "n/a"
+        rows.append(
+            f"  - Venue: FAIL ({stt}; div {div_txt} — {vd.get('reason', 'blocked')})"
+        )
+    elif str(vd.get("status")) == "warn":
+        div = float(vd.get("divergence_bps") or 0.0)
+        wb = float(vd.get("warn_bps") or 0.0)
+        rows.append(
+            f"  - Venue: FAIL ({div:.1f} bps > {wb:.0f} bps warn ceiling)"
+        )
+    else:
+        div = vd.get("divergence_bps")
+        div_txt = f"{float(div):.1f} bps" if div is not None else "n/a"
+        rows.append(f"  - Venue: PASS (ok; divergence {div_txt})")
+
+    if st.get("macro_blocked"):
+        rows.append("  - Macro block: FAIL (trading paused in macro window)")
+    else:
+        rows.append("  - Macro block: PASS (not blocked)")
+
+    tok = _plain_ta_macro_token(st)
+    if st.get("macro_blocked"):
+        rows.append("  - Macro proximity: N/A (blocked)")
+    elif tok == "soon":
+        rows.append(
+            f"  - Macro proximity: FAIL (high-impact soon — {st.get('macro_label', '')})"
+        )
+    else:
+        rows.append("  - Macro proximity: PASS (not in “soon” window)")
+
+    mom = float(st.get("momentum", 0.0))
+    am = abs(mom)
+    if am > _MOM_PATH:
+        rows.append(f"  - Momentum: PASS ({am:.2f}% > {_MOM_PATH:.2f}%)")
+    else:
+        rows.append(f"  - Momentum: FAIL ({am:.2f}% < {_MOM_PATH:.2f}%)")
+
+    imb = float(st.get("imbalance", 0.0))
+    aim = abs(imb)
+    if aim >= _TILT_PATH:
+        rows.append(
+            f"  - Liquidity tilt: PASS ({imb:+.0%} ≥ {_TILT_PATH:.0%} book skew)"
+        )
+    else:
+        rows.append(
+            f"  - Liquidity tilt: FAIL ({imb:+.0%} < {_TILT_PATH:.0%} required)"
+        )
+
+    conf = int(st.get("confidence", 0))
+    if conf >= LOW_CONF_THRESHOLD:
+        rows.append(
+            f"  - Desk confidence: PASS ({conf}% ≥ {LOW_CONF_THRESHOLD}%)"
+        )
+    else:
+        rows.append(
+            f"  - Desk confidence: FAIL ({conf}% < {LOW_CONF_THRESHOLD}%)"
+        )
+
+    beyond = (px >= long_trigger) or (px <= short_trigger)
+    if beyond:
+        if px >= long_trigger:
+            rows.append(
+                f"  - Close beyond trigger: PASS (price {_fmt_level(px)} ≥ long {_fmt_level(long_trigger)})"
+            )
+        else:
+            rows.append(
+                f"  - Close beyond trigger: PASS (price {_fmt_level(px)} ≤ short {_fmt_level(short_trigger)})"
+            )
+    else:
+        rows.append(
+            f"  - Close beyond trigger: FAIL (price inside range {_fmt_level(short_trigger)}–{_fmt_level(long_trigger)}; need {timeframe} close beyond)"
+        )
+
+    return "\n".join(rows)
+
+
+def _plain_ta_read(sym: str, timeframe: str = "5m") -> str:
+    """
+    Plain-English TA note: regime, control-plane honesty, triggers, maps (no fake odds).
+    """
+    st = _desk_compute_symbol_state(sym, tf=timeframe)
+    if not st.get("ok"):
+        return f"📌 {sym}: no price right now."
+
+    px = float(st["price"])
+    mom = float(st.get("momentum", 0.0))
+    imb = float(st.get("imbalance", 0.0))
+    conf = int(st.get("confidence", 0))
+    decision = st.get("decision", "WAIT")
+    action_raw = str(st.get("action_raw", "WAIT"))
+    r = st.get("resistance")
+    s = st.get("support")
+    atrp = float(st.get("atrp", max(px * 0.0045, 0.0005 * max(px, 1.0))))
+    ta = _safe_ta_bias(sym)
+    ta_prob = float(ta.get("prob_long", 50)) if isinstance(ta, dict) else 50.0
+
+    nctx = _desk_narrative_context(mom, imb, ta or {}, action_raw, decision, conf)
+
+    liq_state = str(st.get("liq_state", "fresh"))
+    liq_age = st.get("liq_age")
+
+    # Trigger map (unchanged numerics)
+    hold_up = px + 0.15 * atrp
+    press_up = px + 0.35 * atrp
+    warn_dn = px - 0.20 * atrp
+    shift_dn = px - 0.55 * atrp
+
+    if isinstance(r, (int, float)) and r > px:
+        break_up = float(r)
+    else:
+        break_up = px + 0.65 * atrp
+
+    if isinstance(s, (int, float)) and s < px:
+        shift_dn = float(s)
+
+    target_candidates = [px + 0.8 * atrp, px + 1.2 * atrp, px + 1.8 * atrp, break_up]
+    targets_up = sorted({round(float(t), 6) for t in target_candidates if float(t) > px + 1e-9})
+    while len(targets_up) < 3:
+        last = targets_up[-1] if targets_up else px + 0.8 * atrp
+        targets_up.append(last + 0.4 * atrp)
+    target1, target2, target3 = targets_up[:3]
+
+    long_trigger = max(hold_up, px + 0.10 * atrp)
+    short_trigger = min(warn_dn, px - 0.10 * atrp)
+    long_inval = px - 1.00 * atrp
+    short_inval = px + 1.00 * atrp
+
+    if liq_state != "fresh":
+        action_block = (
+            f"Action now\n"
+            f"• NO TRADE (STALE DATA)\n"
+            f"• Liquidity state: stale (age {'n/a' if liq_age is None else f'{liq_age:.1f}s'})\n"
+            f"• Wait until snapshot age <= {LIQ_MAX_AGE_SEC:.1f}s"
+        )
+    elif decision == "LONG":
+        action_block = (
+            f"Action now\n"
+            f"• Bias: LONG setup active\n"
+            f"• Trigger: hold above {_fmt_level(long_trigger)}\n"
+            f"• Invalidation: below {_fmt_level(long_inval)}\n"
+            f"• TP path: {_fmt_level(target1)} / {_fmt_level(target2)} / {_fmt_level(target3)}"
+        )
+    elif decision == "SHORT":
+        action_block = (
+            f"Action now\n"
+            f"• Bias: SHORT setup active\n"
+            f"• Trigger: hold below {_fmt_level(short_trigger)}\n"
+            f"• Invalidation: above {_fmt_level(short_inval)}\n"
+            f"• TP path: {_fmt_level(px - 0.8*atrp)} / {_fmt_level(px - 1.2*atrp)} / {_fmt_level(px - 1.8*atrp)}"
+        )
+    else:
+        action_block = (
+            f"Action now\n"
+            f"• NO TRADE\n"
+            f"• Long only on {timeframe} close above {_fmt_level(long_trigger)}\n"
+            f"• Short only on {timeframe} close below {_fmt_level(short_trigger)}\n"
+            f"• If no break: stand aside (chop risk)"
+        )
+
+    regime_lines = _plain_ta_regime_lines(decision, conf, mom, imb, ta_prob, liq_state)
+    regime_block = "Regime\n" + "\n".join(regime_lines)
+
+    if liq_state == "fresh" and liq_age is not None:
+        data_line = f"• Data: fresh (liq age {float(liq_age):.1f}s)"
+    elif liq_state == "fresh":
+        data_line = "• Data: fresh"
+    else:
+        data_line = f"• Data: stale ({'n/a' if liq_age is None else f'{float(liq_age):.1f}s'})"
+
+    control_block = (
+        "Control\n"
+        f"{data_line}\n"
+        f"• Venue: {_plain_ta_venue_token(st)}\n"
+        f"• Macro: {_plain_ta_macro_token(st)}"
+    )
+    if (sym or "").upper().strip() == "BTC-USD":
+        control_block += f"\n• Coinbase feed: {st.get('coinbase_feed_health', 'degraded')}"
+
+    why_block = (
+        "Why\n"
+        f"• Price: {_fmt_level(px)}\n"
+        f"• Momentum: {nctx['momentum_txt']} ({mom:+.2f}%)\n"
+        f"• Liquidity: {nctx['liquidity_txt']} (tilt {imb:+.0%})\n"
+        f"• TA: {nctx['ta_txt']}\n"
+        f"• Setup: {nctx['setup_txt']}\n"
+        f"• Desk decision: {decision} (conf {conf}%)\n"
+        f"• Conclusion: {_plain_ta_conclusion_line(st, decision, conf)}"
+    )
+    if (sym or "").upper().strip() == "BTC-USD" and st.get("coinbase_feed_health") == "degraded":
+        why_block += "\n• Feed note: Coinbase health is degraded (informational, non-blocking)."
+
+    conf_path = _plain_ta_confidence_path_block(
+        st, timeframe, long_trigger, short_trigger, px
+    )
+
+    matters = (
+        "What matters next\n"
+        "Bullish\n"
+        f"• {timeframe} close above {_fmt_level(hold_up)} = first hold\n"
+        f"• {timeframe} close above {_fmt_level(press_up)} = stronger continuation\n"
+        f"• Break/hold above {_fmt_level(break_up)} = expansion confirmed\n"
+        f"• Next targets: {_fmt_level(target1)} / {_fmt_level(target2)} / {_fmt_level(target3)}\n\n"
+        "Bearish\n"
+        f"• {timeframe} close below {_fmt_level(warn_dn)} = warning\n"
+        f"• {timeframe} close below {_fmt_level(shift_dn)} = bearish pressure returning\n"
+        f"• 15m close below {_fmt_level(shift_dn)} = stronger downside confirmation"
+    )
+
+    map_block = (
+        "Map\n"
+        f"• Above {_fmt_level(hold_up)} = improving for bulls\n"
+        f"• Above {_fmt_level(press_up)} = bullish continuation\n"
+        f"• Above {_fmt_level(break_up)} = bullish expansion\n"
+        f"• Below {_fmt_level(warn_dn)} = warning\n"
+        f"• Below {_fmt_level(shift_dn)} = bearish shift"
+    )
+
+    return (
+        f"📌 {sym} (Now, {timeframe})\n\n"
+        f"{regime_block}\n\n"
+        f"{control_block}\n\n"
+        f"{action_block}\n\n"
+        f"{why_block}\n\n"
+        f"{conf_path}\n\n"
+        f"{matters}\n\n"
+        f"{map_block}"
+    )
+
+def build_desk_brief(symbols: Iterable[str], timeframe: str = "15m") -> tuple:
+    tf = timeframe if timeframe in {"5m", "15m", "1h", "4h"} else "15m"
+    now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M")
+    try:
+        MACRO.reload()
+    except Exception:
+        pass
+    # Compute states first so we can generate an "Action Now" line.
+    states = {}
+    for sym in (s.strip().upper() for s in symbols if s and s.strip()):
+        states[sym] = _desk_compute_symbol_state(sym, tf=tf)
+
+    # Pick the best LONG and best SHORT by confidence (if any).
+    longs = [st for st in states.values() if st.get("ok") and st.get("decision") == "LONG"]
+    shorts = [st for st in states.values() if st.get("ok") and st.get("decision") == "SHORT"]
+    best_long = max(longs, key=lambda x: x.get("confidence", 0), default=None)
+    best_short = max(shorts, key=lambda x: x.get("confidence", 0), default=None)
+
+    if best_long and best_short:
+        action_now = f"Action Now: LONG={best_long['symbol']} ({best_long['confidence']}%) / SHORT={best_short['symbol']} ({best_short['confidence']}%)"
+    elif best_long:
+        action_now = f"Action Now: LONG {best_long['symbol']} ({best_long['confidence']}%)"
+    elif best_short:
+        action_now = f"Action Now: SHORT {best_short['symbol']} ({best_short['confidence']}%)"
+    else:
+        action_now = "Action Now: WAIT (no strong aligned LONG/SHORT)"
+
+    # Build message
+    if DESK_STYLE == "plain":
+        primary = None
+        syms = [s.strip().upper() for s in symbols if s and s.strip()]
+        # Prefer BTC as the headline read.
+        if "BTC-USD" in syms:
+            primary = "BTC-USD"
+        elif syms:
+            primary = syms[0]
+        plain = _plain_ta_read(primary or "BTC-USD", timeframe="5m")
+        plain += "\n\n(Use /ta ETH-USD 5m, /ta SOL-USD 5m, /ta XRP-USD 5m for same format.)"
+        return plain, states
+
+    lines = [f"🧠 TA Desk Brief ({tf}) • {now} UTC"]
+    liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+    if liq_state == "fresh":
+        lines.append(f"Data state: fresh (liq age {liq_age:.1f}s)")
+    else:
+        age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+        lines.append(f"Data state: stale (liq age {age_txt}) — decisions hard-stopped")
+    lines.extend(_macro_desk_context_lines())
+    lines.append(action_now)
+    lines.append(
+        "How to read: CONF = strength of signals (not “trade yes/no”). "
+        f"LONG/SHORT needs vote sum ≤−2 or ≥+2 on (Mom/Liq/TA) + conf ≥{LOW_CONF_THRESHOLD}%. "
+        "Votes: + = LONG, − = SHORT, · = flat/neutral. Mom ≈0 = chop."
+    )
+    lines.append("—")
+    lines.append("SYMBOL | DEC | CONF | VOTE | PRICE | MOM | LIQ | DRIVER | POINT NO")
+    for sym in (s.strip().upper() for s in symbols if s and s.strip()):
+        st = states[sym]
+        lines.append(_desk_symbol_line(st, _desk_prev_state.get(sym), include_note=True))
+    lines.append("—")
+    lines.append("Plan: trade only when vote sum ±2 AND momentum confirms; respect macro window.")
+    return "\n".join(lines), states
+
+def desk_brief_loop():
+    if not DESK_BRIEF_ENABLED:
+        return
+    send_telegram(
+        f"🧠 Desk updates enabled (every {max(60, DESK_BRIEF_INTERVAL_SEC)//60}m, tf={DESK_BRIEF_TIMEFRAME})."
+    )
+    last_full = 0.0
+    while True:
+        try:
+            now = time.time()
+            # periodic full digest
+            if now - last_full >= max(60, DESK_BRIEF_INTERVAL_SEC):
+                note, states = build_desk_brief(tuple(symbols_to_watch), timeframe=DESK_BRIEF_TIMEFRAME)
+                send_telegram(note)
+                _desk_prev_state.update(states)
+                last_full = now
+            # flip alerts between digests
+            if DESK_FLIP_ALERTS_ENABLED:
+                for sym in symbols_to_watch:
+                    cur = _desk_compute_symbol_state(sym, tf=DESK_BRIEF_TIMEFRAME)
+                    prev = _desk_prev_state.get(sym)
+                    if not cur.get("ok"):
+                        continue
+                    if _desk_state_changed(prev, cur):
+                        if now - _desk_last_flip_ts[sym] >= max(30, DESK_FLIP_COOLDOWN_SEC):
+                            send_telegram(
+                                f"🔄 TA Shift {sym}\n"
+                                f"{_desk_symbol_line(cur, prev, include_note=True)}\n"
+                                f"Macro: {cur.get('macro_label','n/a')}"
+                            )
+                            _desk_last_flip_ts[sym] = now
+                    _desk_prev_state[sym] = cur
+            time.sleep(30)
+        except Exception as e:
+            print(f"[desk_brief_loop] {e}", flush=True)
+            time.sleep(5)
+
+def macro_calendar_loop():
+    if not MACRO_CALENDAR_ALERTS_ENABLED:
+        return
+    send_telegram(f"🗓️ Macro calendar alerts enabled (lookahead={MACRO_CALENDAR_LOOKAHEAD_HOURS}h).")
+    while True:
+        try:
+            now = datetime.datetime.now(datetime.timezone.utc)
+            events = _macro_events_within(MACRO_CALENDAR_LOOKAHEAD_HOURS)
+            for when, ev in events:
+                title = ev.get("name") or ev.get("title") or "Macro Event"
+                key = _macro_event_key(ev, when)
+                delta_sec = (when - now).total_seconds()
+                mins_left = int(max(0, delta_sec // 60))
+
+                expected = _fmt_macro_value(ev.get("expected"), ev.get("unit", ""))
+                previous = _fmt_macro_value(ev.get("previous"), ev.get("unit", ""))
+                actual = _fmt_macro_value(ev.get("actual"), ev.get("unit", ""))
+                has_expected = ev.get("expected") not in (None, "")
+                up_case, down_case = _macro_bias_rules(title)
+                lbl_up, lbl_dn = _macro_case_labels(title, has_expected)
+
+                for mark in sorted(set(MACRO_CALENDAR_ALERT_MINUTES), reverse=True):
+                    if delta_sec >= 0 and mins_left <= mark and (key, f"t-{mark}") not in _macro_alert_sent:
+                        _macro_alert_sent.add((key, f"t-{mark}"))
+                        send_telegram(
+                            f"⏰ Macro in {mark}m: {title}\n"
+                            f"Impact: {str(ev.get('impact', 'unknown')).upper()} | Time: {when.strftime('%H:%M')} UTC\n"
+                            f"Expected: {expected} | Previous: {previous}\n"
+                            f"{lbl_up}: {up_case}\n"
+                            f"{lbl_dn}: {down_case}\n"
+                            "TA mindset: avoid pre-news chase; trade post-print only after direction + liquidity confirm."
+                        )
+
+                if abs(delta_sec) <= 45 and (key, "release") not in _macro_alert_sent:
+                    _macro_alert_sent.add((key, "release"))
+                    send_telegram(
+                        f"📣 Macro release now: {title}\n"
+                        f"Actual: {actual} | Expected: {expected} | Previous: {previous}\n"
+                        f"{lbl_up}: {up_case}\n"
+                        f"{lbl_dn}: {down_case}\n"
+                        "Execution: first impulse can fake out; prefer retest + momentum alignment before entry."
+                    )
+            time.sleep(max(10, MACRO_CALENDAR_POLL_SEC))
+        except Exception as e:
+            print(f"[macro_calendar_loop] {e}", flush=True)
+            time.sleep(5)
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Utils
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -1262,9 +2418,11 @@ def _fmt_levels_for_user(sym: str, price: float) -> str:
 
     tilt  = "Bid-heavy" if d["imb"] > 0.02 else ("Ask-heavy" if d["imb"] < -0.02 else "Balanced")
     gauge = _imb_gauge(d["imb"])
-    spr_s = f"{d['spr_bps']:.1f} bps"  # bps, always positive
+    spr_s = _spr_bps_phrase(d["spr_bps"])  # human-friendly bps/percent
 
     parts = [f"📊 {sym} @ {price:.4f} [{venue}] | {tilt} {d['imb']:+.0%} {gauge} | spr {spr_s}"]
+    if venue == "—" and d["spr_bps"] == 0:
+        parts.append(" (Liquidity data not available for this symbol.)")
     if bidw: parts.append(f" | 🟩 Bid wall {bidw:.4f}")
     if askw: parts.append(f" | 🟥 Ask wall {askw:.4f}")
     return "".join(parts)
@@ -1375,16 +2533,32 @@ def build_decision_cards(symbols: Iterable[str], timeframe: str = "15m") -> str:
             blocked, macro_lbl, macro_factor = _macro_penalty(time.time(), sym)
 
             # --- Action + Confidence (harmonize with Morning) ---
+            liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+            vd = _venue_divergence_state(sym)
             action_raw = _action_from_signals(mom_pct, imb, ta or {})
             conf = _conf_from_signals(mom_pct, imb, ta or {})
             conf = int(round(conf * macro_factor))
+            if liq_state != "fresh":
+                conf = 0
+            elif sym.upper().strip() == "BTC-USD" and vd.get("status") == "warn":
+                conf = int(round(conf * float(vd.get("conf_factor", 1.0))))
+            if sym.upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+                conf = 0
 
             # Confidence floor / soft-lean demotion
             soft = action_raw in ("LONG?", "SHORT?")
-            if conf < 20 or soft:
+            if liq_state != "fresh":
+                decision = "WAIT"
+            elif sym.upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+                decision = "WAIT"
+            elif conf < 20 or soft:
                 decision = "WAIT"
             else:
                 decision = "LONG" if action_raw.startswith("LONG") else ("SHORT" if action_raw.startswith("SHORT") else "WAIT")
+
+            # UX safety: if confidence is still low, avoid presenting LONG/SHORT as an action.
+            if decision in ("LONG", "SHORT") and conf < LOW_CONF_THRESHOLD:
+                decision = "WAIT"
 
             # --- Triggers / TP / Invalidation (ATR-based) ---
             if decision == "LONG":
@@ -1409,12 +2583,29 @@ def build_decision_cards(symbols: Iterable[str], timeframe: str = "15m") -> str:
             # --- Assemble card ---
             lines.append(f"🎛️ {sym}")
             badge = "🟢" if decision == "LONG" else ("🔴" if decision == "SHORT" else "⏸️")
-            lines.append(f"{badge} **Decision:** {decision}  •  **Conf:** {conf}%")
+            wait_note = " (no trade)" if decision == "WAIT" else ""
+            lines.append(f"{badge} **Decision:** {decision}{wait_note}  •  **Conf:** {conf}%")
+            if liq_state != "fresh":
+                age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+                lines.append(f"🧪 **Data:** stale (liq age {age_txt}) — hard-stop decisions")
+            elif sym == "BTC-USD" and vd.get("status") == "warn" and vd.get("divergence_bps") is not None:
+                lines.append(
+                    f"🧭 **Venue:** Δ {float(vd['divergence_bps']):.1f} bps "
+                    f"(warn>{float(vd.get('warn_bps', 0)):.0f}) — conf ×{float(vd.get('conf_factor', 1)):.2f}"
+                )
+            elif sym == "BTC-USD" and vd.get("block_decisions"):
+                lines.append(f"🧭 **Venue:** {vd.get('reason', 'blocked')} — hard-stop decisions")
 
             if decision != "WAIT":
-                lines.append(f"⏱️ **Trigger:** {entry_lo:.4f} → {entry_hi:.4f}   🎯 **TP:** {tp:.4f}   🛑 **Invalidation:** {inv:.4f}")
+                lines.append(
+                    f"⏱️ **Trigger:** {_fmt_price(entry_lo)} → {_fmt_price(entry_hi)}   "
+                    f"🎯 **TP:** {_fmt_price(tp)}   🛑 **Invalidation:** {_fmt_price(inv)}"
+                )
             else:
-                lines.append(f"⏱️ **Trigger:** arm on clear shift beyond {entry_hi:.4f} / below {entry_lo:.4f}")
+                lines.append(
+                    f"⏱️ **Trigger:** arm on clear shift beyond {_fmt_price(entry_hi)} / "
+                    f"below {_fmt_price(entry_lo)}"
+                )
 
             extra_bits = []
             extra_bits.append(f"TA {ta_head}")
@@ -1534,7 +2725,7 @@ def _macro_penalty(now_ts: float, sym: str) -> tuple:
             return False, "🕒 Macro soon", 0.80
     except Exception:
         pass
-    return False, "macro clear", 1.00
+    return False, f"No high-impact macro events in the next {MACRO_BLOCK_WINDOW_MIN} min", 1.00
 
 def _choose_playbook(side_hint: str, mom_pct: float, imb: float, px: float, r: float, s: float) -> str:
     """
@@ -1580,6 +2771,8 @@ def _advise_for_symbol(sym: str, tf: str = "15m") -> str:
     r, s = _safe_sr(sym, tf)                   # structure
     atrp  = _safe_atr_price(sym, px, tf)       # ATR in price terms
     blocked, macro_lbl, macro_factor = _macro_penalty(time.time(), sym)
+    liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+    vd = _venue_divergence_state(sym)
 
     # Side hint from TA
     ta_prob = float(ta.get("prob_long", 50)) / 100.0
@@ -1610,11 +2803,26 @@ def _advise_for_symbol(sym: str, tf: str = "15m") -> str:
         _ADVISE_W["mom"]  * mom_score +
         _ADVISE_W["macro"]* macro_score
     ) * macro_factor
+    if liq_state != "fresh":
+        conf = 0.0
+    elif (sym or "").upper().strip() == "BTC-USD" and vd.get("status") == "warn":
+        conf = conf * float(vd.get("conf_factor", 1.0))
+    if (sym or "").upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+        conf = 0.0
 
     conf_pct = int(round(max(0.0, min(1.0, conf)) * 100))
 
     # Choose playbook
     play = _choose_playbook(side_hint, mom, imb, px, r, s)
+    if liq_state != "fresh":
+        play = "WAIT"
+    if (sym or "").upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+        play = "WAIT"
+
+    # UX safety: if confidence is low, avoid presenting LONG/SHORT as an action.
+    if play in ("Trend-Follow LONG", "Breakout LONG", "Mean-Revert LONG",
+                "Trend-Follow SHORT", "Breakdown SHORT", "Mean-Revert SHORT") and conf_pct < LOW_CONF_THRESHOLD:
+        play = "WAIT"
 
     # Build levels (entry/TP/SL) using ATR & structure
     tp = sl = ent_lo = ent_hi = None
@@ -1637,24 +2845,21 @@ def _advise_for_symbol(sym: str, tf: str = "15m") -> str:
     if r: info_bits.append(f"R {r:.2f}")
     if s: info_bits.append(f"S {s:.2f}")
     info_bits.append(macro_lbl)
+    if liq_state != "fresh":
+        age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+        info_bits.append(f"Data stale ({age_txt})")
+    if (sym or "").upper().strip() == "BTC-USD" and vd.get("status") == "warn" and vd.get("divergence_bps") is not None:
+        info_bits.append(f"Venue Δ {float(vd['divergence_bps']):.1f} bps (warn>{float(vd.get('warn_bps', 0)):.0f})")
+    if (sym or "").upper().strip() == "BTC-USD" and vd.get("block_decisions"):
+        info_bits.append(f"Venue guard: {vd.get('reason', 'block')}")
 
-    hdr = "⏸️ WAIT" if play == "WAIT" else ("🟢 LONG" if play.endswith("LONG") else "🔴 SHORT")
+    hdr = "⏸️ WAIT (no trade)" if play == "WAIT" else ("🟢 LONG" if play.endswith("LONG") else "🔴 SHORT")
     plan = []
     if ent_lo and ent_hi and tp and sl:
-        plan.append(f"⏱️ Trigger: {ent_lo:.4f} → {ent_hi:.4f}   🎯 TP: {tp:.4f}   🛑 Invalidation: {sl:.4f}")
-
-    # Compose advice
-    info_bits = []
-    if ta: info_bits.append(f"TA {ta.get('headline','—')}")
-    info_bits.append(f"Tilt {imb:+.0%}")
-    if r: info_bits.append(f"R {r:.2f}")
-    if s: info_bits.append(f"S {s:.2f}")
-    info_bits.append(macro_lbl)
-
-    hdr = "⏸️ WAIT" if play == "WAIT" else ("🟢 LONG" if play.endswith("LONG") else "🔴 SHORT")
-    plan = []
-    if ent_lo and ent_hi and tp and sl:
-        plan.append(f"⏱️ Trigger: {ent_lo:.4f} → {ent_hi:.4f}   🎯 TP: {tp:.4f}   🛑 Invalidation: {sl:.4f}")
+        plan.append(
+            f"⏱️ Trigger: {_fmt_price(ent_lo)} → {_fmt_price(ent_hi)}   "
+            f"🎯 TP: {_fmt_price(tp)}   🛑 Invalidation: {_fmt_price(sl)}"
+        )
 
     ticket = ""
     if ent_lo and ent_hi and tp and sl:
@@ -1696,6 +2901,9 @@ WALL_ALERT_COOLDOWN   = int(os.getenv("WALL_ALERT_COOLDOWN", "120"))   # sec thr
 # Internal state for throttling + continuity
 _last_wall_alert_ts: dict = {}     # key: (sym, side, event, level_rounded) -> ts
 _last_seen_wall: dict = {}         # key: (sym, side) -> last_price_level
+WALL_SPOOF_DROP_FRAC      = float(os.getenv("WALL_SPOOF_DROP_FRAC", "0.35"))  # 0.35 = 35% drop
+WALL_SPOOF_MIN_NEAR_SEC   = int(os.getenv("WALL_SPOOF_MIN_NEAR_SEC", "12"))  # must be near for N sec
+_wall_spoof_state: dict = {}     # key: (sym, side, level_rounded) -> {'start_ts','start_size','last_size'}
 
 def _format_liq_for_user(sym: str, last_px: float) -> str:
     """
@@ -1724,18 +2932,22 @@ def _format_liq_for_user(sym: str, last_px: float) -> str:
     except Exception:
         spr_bps = 0.0
 
-    bid_w = row.get("nearest_bid_wall")
-    ask_w = row.get("nearest_ask_wall")
-    bid_label = f"🟩 Bid {float(bid_w):.4f}" if bid_w else "🟩 Bid —"
-    ask_label = f"🟥 Ask {float(ask_w):.4f}" if ask_w else "🟥 Ask —"
+    # Support both liquidity snapshot schemas.
+    bid_w = row.get("nearest_bid_wall") or row.get("nearest_bid_wall_price")
+    ask_w = row.get("nearest_ask_wall") or row.get("nearest_ask_wall_price")
+    bid_label = f"🟩 Bid {float(bid_w):.4f}" if bid_w else "🟩 Bid n/a"
+    ask_label = f"🟥 Ask {float(ask_w):.4f}" if ask_w else "🟥 Ask n/a"
 
     tilt  = "Bid-heavy" if imb > 0.02 else ("Ask-heavy" if imb < -0.02 else "Balanced")
     gauge = _imb_gauge(imb)
 
+    note = ""
+    if venue == "—" and spr_bps == 0:
+        note = " (Liquidity data not available for this symbol.)"
     return (
         f"📊 {sym} @ {float(last_px):.4f} [{venue}] | "
         f"{bid_label} | {ask_label} | "
-        f"{tilt} {imb:+.0%} {gauge} | spr {spr_bps:.1f} bps\n"
+        f"{tilt} {imb:+.0%} {gauge} | spr {_spr_bps_phrase(spr_bps)}{note}\n"
     )
 def _pick_walls(sym: str) -> tuple:
     """
@@ -1746,8 +2958,11 @@ def _pick_walls(sym: str) -> tuple:
     symbols = snap.get("symbols", {})
     row = next((symbols.get(k) for k in _lookup_symbols_for(sym) if symbols.get(k)), None) or {}
     venue = row.get("venue", "") or "—"
-    bw = row.get("nearest_bid_wall")
-    aw = row.get("nearest_ask_wall")
+    # Support both liquidity snapshot schemas:
+    # - v1: nearest_bid_wall / nearest_ask_wall
+    # - v2: nearest_bid_wall_price / nearest_ask_wall_price
+    bw = row.get("nearest_bid_wall") or row.get("nearest_bid_wall_price")
+    aw = row.get("nearest_ask_wall") or row.get("nearest_ask_wall_price")
 
     # Optional: if your snapshot contains sizes, try to pick them up
     bsz = row.get("nearest_bid_wall_size") or row.get("bid_wall_size") or None
@@ -1791,10 +3006,40 @@ def _wall_watch(sym: str, px: float):
     if ask_w is not None:
         _last_seen_wall[(sym, "ask")] = ask_w
 
+    now = time.time()
+
     # Approach alerts
     if bid_w is not None:
         dist_bps = _bps(px, bid_w)
-        if px >= bid_w and dist_bps <= WALL_APPROACH_BPS:
+        is_approach = px >= bid_w and dist_bps <= WALL_APPROACH_BPS
+        passed = (px < bid_w) and (_bps(px, bid_w) >= WALL_CONSUME_BPS)
+
+        # Spoof/cancel risk: wall size drops a lot while price is still near the level (not passed/consumed yet).
+        if is_approach and bsz and float(bsz) > 0:
+            key = (sym, "bid", round(float(bid_w), 4))
+            st = _wall_spoof_state.get(key)
+            if not st:
+                _wall_spoof_state[key] = {"start_ts": now, "start_size": float(bsz), "last_size": float(bsz)}
+            else:
+                start_sz = max(float(st.get("start_size", 0.0)), 1e-12)
+                cur_sz = float(bsz)
+                drop = (start_sz - cur_sz) / start_sz
+                if drop >= WALL_SPOOF_DROP_FRAC and (now - float(st.get("start_ts", now))) >= WALL_SPOOF_MIN_NEAR_SEC:
+                    if not _should_throttle_wall(sym, "bid", "spoof", bid_w, WALL_ALERT_COOLDOWN):
+                        send_telegram(
+                            f"🕵️ Possible BID wall spoof/cancel @ {bid_w:.4f}\n"
+                            f"{sym} price still near (dist {dist_bps:.1f} bps), wall size shrank {drop*100:.0f}% "
+                            f"({st.get('start_size'):.0f} -> {cur_sz:.0f})."
+                        )
+                    _wall_spoof_state.pop(key, None)
+                else:
+                    st["last_size"] = cur_sz
+
+        # If we moved away (or were consumed), clear spoof state for this level.
+        if (not is_approach or passed):
+            _wall_spoof_state.pop((sym, "bid", round(float(bid_w), 4)), None)
+
+        if is_approach:
             if not _should_throttle_wall(sym, "bid", "approach", bid_w, WALL_ALERT_COOLDOWN):
                 size_txt = f" (size≈{_fmt_compact(bsz)} {sym.split('-')[0]})" if bsz else ""
                 send_telegram(
@@ -1805,7 +3050,33 @@ def _wall_watch(sym: str, px: float):
 
     if ask_w is not None:
         dist_bps = _bps(px, ask_w)
-        if px <= ask_w and dist_bps <= WALL_APPROACH_BPS:
+        is_approach = px <= ask_w and dist_bps <= WALL_APPROACH_BPS
+        passed = (px > ask_w) and (_bps(px, ask_w) >= WALL_CONSUME_BPS)
+
+        if is_approach and asz and float(asz) > 0:
+            key = (sym, "ask", round(float(ask_w), 4))
+            st = _wall_spoof_state.get(key)
+            if not st:
+                _wall_spoof_state[key] = {"start_ts": now, "start_size": float(asz), "last_size": float(asz)}
+            else:
+                start_sz = max(float(st.get("start_size", 0.0)), 1e-12)
+                cur_sz = float(asz)
+                drop = (start_sz - cur_sz) / start_sz
+                if drop >= WALL_SPOOF_DROP_FRAC and (now - float(st.get("start_ts", now))) >= WALL_SPOOF_MIN_NEAR_SEC:
+                    if not _should_throttle_wall(sym, "ask", "spoof", ask_w, WALL_ALERT_COOLDOWN):
+                        send_telegram(
+                            f"🕵️ Possible ASK wall spoof/cancel @ {ask_w:.4f}\n"
+                            f"{sym} price still near (dist {dist_bps:.1f} bps), wall size shrank {drop*100:.0f}% "
+                            f"({st.get('start_size'):.0f} -> {cur_sz:.0f})."
+                        )
+                    _wall_spoof_state.pop(key, None)
+                else:
+                    st["last_size"] = cur_sz
+
+        if (not is_approach or passed):
+            _wall_spoof_state.pop((sym, "ask", round(float(ask_w), 4)), None)
+
+        if is_approach:
             if not _should_throttle_wall(sym, "ask", "approach", ask_w, WALL_ALERT_COOLDOWN):
                 size_txt = f" (size≈{_fmt_compact(asz)} {sym.split('-')[0]})" if asz else ""
                 send_telegram(
@@ -1960,13 +3231,37 @@ def _spread_bucket_bps(spr_bps: float) -> str:
     else:        label = "very wide"
     return f"{label} (~{b:.1f} bps)"
 
+def _spr_bps_phrase(spr_bps: float) -> str:
+    """
+    Human-friendly phrase for spread in bps, including approximate percent.
+    Example: 950 bps -> "very wide (~950.0 bps, ~9.5%)".
+    """
+    b = abs(float(spr_bps))
+    pct = b / 100.0  # 100 bps = 1%
+    if b <= 5:   label = "ultra-tight"
+    elif b <= 10: label = "tight"
+    elif b <= 25: label = "normal"
+    elif b <= 60: label = "wide"
+    else:        label = "very wide"
+    return f"{label} (~{b:.1f} bps, ~{pct:.1f}%)"
+
+def _fmt_price(p: float) -> str:
+    """
+    Display helper: fewer decimals for easier reading.
+    - >= 1 → 2 decimals
+    - < 1  → 4 decimals
+    """
+    p = float(p)
+    return f"{p:.2f}" if abs(p) >= 1 else f"{p:.4f}"
+
 def _walls_label_from_row(row: dict) -> str:
     """
     Return 'Walls: none' or 'Walls: bid @ x / ask @ y'.
     Suppresses the awkward '—' placeholders.
     """
-    bw = row.get("nearest_bid_wall")
-    aw = row.get("nearest_ask_wall")
+    # Support both liquidity snapshot schemas.
+    bw = row.get("nearest_bid_wall") or row.get("nearest_bid_wall_price")
+    aw = row.get("nearest_ask_wall") or row.get("nearest_ask_wall_price")
     try: bw = float(bw) if bw not in (None, "") else None
     except Exception: bw = None
     try: aw = float(aw) if aw not in (None, "") else None
@@ -2029,6 +3324,32 @@ def _what_to_do_line(imb: float, spr_bps: float, r: Optional[float], s: Optional
     s_txt = f"{s:.2f}" if isinstance(s, (int, float)) else "S"
     return f"{base}. Safer to act on a clean move: below S={s_txt} (bearish) or back above R={r_txt} (bullish)."
 
+def build_youtube_style_story(sym: str,
+                              px: float,
+                              imb: float,
+                              spr_bps: float,
+                              trend_label: str) -> str:
+    """
+    Observation/narration helper.
+    Always available, even when liquidity data is stale.
+    Must explicitly state data state and degradation notice when stale.
+    """
+    liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+    state_txt = "fresh" if liq_state == "fresh" else "stale"
+    age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+    meaning = _what_it_means_line(imb, spr_bps)
+
+    if liq_state != "fresh":
+        return (
+            f"Story ({sym}): Data state = {state_txt} (liq age {age_txt}). "
+            f"Price/trend observation still active ({trend_label}), but liquidity-dependent interpretation is degraded."
+        )
+
+    return (
+        f"Story ({sym}): Data state = {state_txt} (liq age {age_txt}). "
+        f"Price around {_fmt_price(px)} with trend {trend_label}; {meaning}"
+    )
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Daily brief (on-demand helper)
@@ -2043,6 +3364,13 @@ def build_daily_brief(symbols):
     from datetime import datetime, timezone
     now = datetime.now(timezone.utc)
     lines = [f"🧭 Daily Brief", f"🕒 {now.strftime('%Y-%m-%d %H:%M UTC')}", ""]
+    liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+    if liq_state == "fresh":
+        lines.append(f"🧪 Data state: fresh (liq age {liq_age:.1f}s)")
+    else:
+        age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+        lines.append(f"🧪 Data state: stale (liq age {age_txt}) — decisions hard-stopped")
+    lines.append("")
 
     for sym in symbols:
         try:
@@ -2079,24 +3407,32 @@ def build_daily_brief(symbols):
             vf  = build_vol_flags(sym) or {}
             atr_pct = vf.get("atr_pct_15m")
             vol_ratio = vf.get("vol_ratio")
+            trend_lbl = _trend_label_from_history(sym)
 
             # Headline
             pretty_px = f"{px:,.3f}" if px < 100 else f"{px:,.0f}"
             lines.append(f"{sym} — {pretty_px}")
 
+            # What to do (put action near the top)
+            lines.append(f"• What to do: {_what_to_do_line(imb, spr_bps, r, s)}")
+
             # Orderbook line (tilt + spread + walls)
             tilt_txt = _tilt_label(imb)
             spread_txt = _spread_bucket_bps(spr_bps)
             walls_txt = _walls_label_from_row(row)
+            venue = (row.get("venue") or "").strip() or "—"
             lines.append(f"• Orderbook: {tilt_txt} — Spread {spread_txt}")
+            if venue == "—" and spr_bps == 0:
+                lines.append("• (Liquidity data not available for this symbol.)")
 
             # Stats line (24h, ATR%, macro)
             chg_txt = (f"{chg:+.2f}%" if chg is not None else "n/a")
             atr_txt = (f"{atr_pct:.2f}%" if isinstance(atr_pct, (int, float)) else "—")
-            macro_txt = "clear"
+            macro_txt = f"No high-impact macro in next {MACRO_BLOCK_WINDOW_MIN} min"
             try:
                 blocked, reason = MACRO.is_blocked(now, sym)
-                macro_txt = f"blocked: {reason}" if blocked else "clear"
+                if blocked:
+                    macro_txt = f"blocked: {reason}"
             except Exception:
                 pass
 
@@ -2109,9 +3445,9 @@ def build_daily_brief(symbols):
 
             lines.append(f"• 24h: {chg_txt} | Typical 15m move: ~{atr_txt} | Macro: {macro_txt}{vol_note}")
 
-            # What it means + What to do
+            # What it means (supporting explanation)
             lines.append(f"• What it means: {_what_it_means_line(imb, spr_bps)}")
-            lines.append(f"• What to do: {_what_to_do_line(imb, spr_bps, r, s)}")
+            lines.append(f"• Story: {build_youtube_style_story(sym, px, imb, spr_bps, trend_lbl)}")
 
             lines.append("")  # spacer
 
@@ -2120,6 +3456,7 @@ def build_daily_brief(symbols):
 
     # Tiny legend (keeps message self-explanatory)
     lines.append("Legend: “Orderbook” = who’s heavier (buyers/sellers) and cost to trade (spread). “Typical 15m move” ≈ ATR on 15m.")
+    lines.append("R = resistance, S = support | bps = basis points (100 bps = 1%) | imb = orderbook imbalance, spr = spread.")
 
     return "\n".join(lines)
 
@@ -2175,7 +3512,7 @@ def _liq_snapshot_for_display(sym: str, px: float) -> dict:
             spr_bps = (abs(spr_abs) / max(float(px), 1e-9)) * 1e4
     except Exception:
         spr_bps = 0.0
-    text = f"{venue} | imb {imb:+.2f} | spr {spr_bps:.1f} bps"
+    text = f"{venue} | imb {imb:+.2f} | spr {_spr_bps_phrase(spr_bps)}"
     return {"venue": venue, "imb": imb, "spr_bps": spr_bps, "text": text}
 
 
@@ -2290,11 +3627,13 @@ def _liq_snapshot_brief(sym: str, px: float) -> Tuple[str, float, float, str]:
     Returns (brief_text, imb, spr_bps, venue)
     spr_bps is ALWAYS positive bps for consistent display.
     """
-    ok, imb, spr_bps, venue = _liquidity_gate(sym, "LONG")
-    imb_s = f"{imb:+.2f}"
-    spr_bps = abs(float(spr_bps))  # safety clamp
-    txt = f"{venue or '—'} | imb {imb_s} | spr {spr_bps:.1f} bps"
-    return txt, float(imb), float(spr_bps), str(venue or "—")
+    # Observation path intentionally bypasses execution gate so narration continues on stale data.
+    d = _liq_snapshot_for_display(sym, px)
+    venue = str(d.get("venue") or "—")
+    imb = float(d.get("imb", 0.0))
+    spr_bps = abs(float(d.get("spr_bps", 0.0)))
+    txt = f"{venue} | imb {imb:+.2f} | spr {_spr_bps_phrase(spr_bps)}"
+    return txt, imb, spr_bps, venue
 
 def _bias_and_plan(px: float,
                    imb: float,
@@ -2341,6 +3680,13 @@ def build_morning_overview(symbols: Iterable[str] = ("BTC-USD","SOL-USD", "ETH-U
     lines: list[str] = []
     now_utc = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     lines.append(f"Time: {now_utc}\n")
+    liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+    if liq_state == "fresh":
+        lines.append(f"Data state: fresh (liq age {liq_age:.1f}s)\n")
+    else:
+        age_txt = "n/a" if liq_age is None else f"{liq_age:.1f}s"
+        lines.append(f"Data state: stale (liq age {age_txt}) — decisions hard-stopped\n")
+    lines.append("R = resistance, S = support | bps = basis points (100 bps = 1%) | imb = orderbook imbalance, spr = spread.\n")
 
     for sym in symbols:
         try:
@@ -2361,7 +3707,7 @@ def build_morning_overview(symbols: Iterable[str] = ("BTC-USD","SOL-USD", "ETH-U
             ovc_s = f"{ovc:+.2f}%" if ovc is not None else "n/a"
 
             # Liquidity snapshot brief
-            liq_txt, imb, _spr, _venue = _liq_snapshot_brief(sym, px)
+            liq_txt, imb, liq_spr, liq_venue = _liq_snapshot_brief(sym, px)
 
             # Nearest S/R (hybrid)
             r, s = _sr_levels_hybrid(sym)
@@ -2375,10 +3721,13 @@ def build_morning_overview(symbols: Iterable[str] = ("BTC-USD","SOL-USD", "ETH-U
             # Render block
             lines.append(f"{sym}")
             lines.append(f"• Price: {px:.2f} | Overnight: {ovc_s} | Trend: {trend}{ta_txt}")
-            lines.append(f"• Liquidity: {liq_txt}")
-            lines.append(f"• Levels: {rs} | {ss}")
 
-            if bias == "Neutral":
+            # Plan near the top (action first)
+            r_txt = f"{r:.2f}" if r is not None else "n/a"
+            s_txt = f"{s:.2f}" if s is not None else "n/a"
+            vals = (round(ent_lo, 2), round(ent_hi, 2), round(tp, 2), round(sl, 2))
+            collapsed = len(set(vals)) <= 1
+            if bias == "Neutral" or collapsed:
                 # Use numeric R/S in the text without “R:/S:” labels
                 r_txt = f"{r:.2f}" if r is not None else "n/a"
                 s_txt = f"{s:.2f}" if s is not None else "n/a"
@@ -2390,6 +3739,12 @@ def build_morning_overview(symbols: Iterable[str] = ("BTC-USD","SOL-USD", "ETH-U
                 # Note: previous text showed the higher number first; keep that UX
                 entry_hi, entry_lo = max(ent_lo, ent_hi), min(ent_lo, ent_hi)
                 lines.append(f"• Plan: Bias SHORT. Entry {entry_hi:.2f}–{entry_lo:.2f}, TP {tp:.2f}, SL {sl:.2f}")
+
+            # Liquidity / levels follow the plan
+            lines.append(f"• Liquidity: {liq_txt}")
+            if liq_venue == "—" and liq_spr == 0:
+                lines.append("• (Liquidity data not available for this symbol.)")
+            lines.append(f"• Levels: {rs} | {ss}")
 
             # Unusual volatility flag (>3% overnight)
             if ovc is not None and abs(ovc) >= 3.0:
@@ -2440,6 +3795,12 @@ def signals_csv():
 
 @app.get("/")
 def dashboard():
+    liq_state, liq_age, _liq_reason = _liq_data_state(_LIQ_PATH)
+    data_badge = (
+        f"fresh (age {liq_age:.1f}s)"
+        if liq_state == "fresh" and liq_age is not None
+        else f"stale (age {'n/a' if liq_age is None else f'{liq_age:.1f}s'})"
+    )
     html = """
     <html><head><meta http-equiv="refresh" content="10">
     <style>
@@ -2452,6 +3813,7 @@ def dashboard():
     </style>
     </head><body>
       <h2>Sniper Bot — Live Signals</h2>
+      <p><strong>Data state:</strong> {{ data_badge }}</p>
       <table>
       <tr><th>Time</th><th>Symbol</th><th>Side</th><th>Entry</th><th>TP</th><th>SL</th><th>Imb</th><th>Spr</th><th>Venue</th><th>Sentiment</th><th>Macro</th><th>Conf</th></tr>
       {% for s in signals %}
@@ -2476,7 +3838,7 @@ def dashboard():
     app.jinja_env.filters['datetime'] = (
         lambda ts: datetime.datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
     )
-    return render_template_string(html, signals=list(LAST_SIGNALS))
+    return render_template_string(html, signals=list(LAST_SIGNALS), data_badge=data_badge)
 
 
 @app.get("/liq/<sym>")
@@ -2504,7 +3866,150 @@ def daily_now():
 
 @app.get("/healthz")
 def healthz():
-    return "ok"
+    liq_state, liq_age, liq_reason = _liq_data_state(_LIQ_PATH)
+    vd_btc = _venue_divergence_state("BTC-USD")
+    cb_health = _coinbase_feed_health()
+    return {
+        "status": "ok",
+        "data_state": liq_state,
+        "liquidity_snapshot_age_sec": liq_age,
+        "liquidity_reason": liq_reason,
+        "liq_max_age_sec": LIQ_MAX_AGE_SEC,
+        "coinbase_feed_health": cb_health,
+        "venue_divergence_btc_usd": {
+            "status": vd_btc.get("status"),
+            "divergence_bps": vd_btc.get("divergence_bps"),
+            "block_decisions": bool(vd_btc.get("block_decisions")),
+            "reason": vd_btc.get("reason"),
+            "warn_bps": vd_btc.get("warn_bps"),
+            "hard_bps": vd_btc.get("hard_bps"),
+        },
+    }
+
+@app.get("/test/freshness")
+def test_freshness():
+    """
+    Deterministic freshness test endpoint (BTC-USD only).
+    Uses existing state helpers and enforces stale output constraints.
+    """
+    symbol = "BTC-USD"
+    data_state, liq_age, liq_reason = _liq_data_state(_LIQ_PATH)
+    st = _desk_compute_symbol_state(symbol, tf="15m")
+
+    decision = str(st.get("decision", "WAIT"))
+    confidence = int(st.get("confidence", 0))
+    macro_blocked = bool(st.get("macro_blocked", False))
+
+    # Hard override for deterministic stale behavior contract.
+    if data_state != "fresh":
+        decision = "WAIT"
+        confidence = 0
+        blocked = True
+    else:
+        blocked = bool(macro_blocked)
+
+    return {
+        "data_state": data_state,
+        "liq_age": liq_age,
+        "liq_reason": liq_reason,
+        "decision": decision,
+        "confidence": max(0, min(100, confidence)),
+        "blocked": blocked,
+    }
+
+
+@app.get("/test/venue_divergence")
+def test_venue_divergence():
+    """
+    Deterministic venue divergence test (BTC-USD): Binance fut vs Coinbase spot mids from liquidity snapshot.
+    """
+    symbol = "BTC-USD"
+    vd = _venue_divergence_state(symbol)
+    data_state, liq_age, liq_reason = _liq_data_state(_LIQ_PATH)
+    st = _desk_compute_symbol_state(symbol, tf="15m")
+    cb_health = _coinbase_feed_health()
+
+    decision = str(st.get("decision", "WAIT"))
+    confidence = int(st.get("confidence", 0))
+    macro_blocked = bool(st.get("macro_blocked", False))
+    venue_blocked = bool(vd.get("block_decisions"))
+
+    if data_state != "fresh":
+        decision = "WAIT"
+        confidence = 0
+        blocked = True
+    elif venue_blocked:
+        decision = "WAIT"
+        confidence = 0
+        blocked = True
+    else:
+        blocked = bool(macro_blocked)
+
+    return {
+        "symbol": symbol,
+        "data_state": data_state,
+        "liq_age": liq_age,
+        "liq_reason": liq_reason,
+        "coinbase_feed_health": cb_health,
+        "venue_div_status": vd.get("status"),
+        "divergence_bps": vd.get("divergence_bps"),
+        "venues": vd.get("venues"),
+        "warn_bps": vd.get("warn_bps"),
+        "hard_bps": vd.get("hard_bps"),
+        "venue_reason": vd.get("reason"),
+        "decision": decision,
+        "confidence": max(0, min(100, confidence)),
+        "blocked": blocked,
+    }
+
+
+@app.get("/test/coinbase_feed_health")
+def test_coinbase_feed_health():
+    """
+    Deterministic Coinbase feed trust endpoint (snapshot/meta only, BTC-focused).
+    """
+    data_state, liq_age, liq_reason = _liq_data_state(_LIQ_PATH)
+    snap = _open_json(_LIQ_PATH) or {}
+    cb = _coinbase_feed_meta(snap)
+    return {
+        "coinbase_feed_health": cb.get("coinbase_feed_health", "degraded"),
+        "coinbase_l2_active": bool(cb.get("coinbase_l2_active", False)),
+        "coinbase_ticker_fallback_active": bool(cb.get("coinbase_ticker_fallback_active", False)),
+        "coinbase_btc_row_valid": bool(cb.get("coinbase_btc_row_valid", False)),
+        "collector_build": cb.get("collector_build", ""),
+        "data_state": data_state,
+        "liq_age": liq_age,
+        "liq_reason": liq_reason,
+    }
+
+
+@app.get("/test/runtime_contract")
+def test_runtime_contract():
+    """
+    Deterministic BTC runtime trust contract:
+    freshness + venue divergence + Coinbase feed health (informational).
+    """
+    symbol = "BTC-USD"
+    data_state, liq_age, liq_reason = _liq_data_state(_LIQ_PATH)
+    vd = _venue_divergence_state(symbol)
+    snap = _open_json(_LIQ_PATH) or {}
+    cb = _coinbase_feed_meta(snap)
+    blocked = (data_state != "fresh") or bool(vd.get("block_decisions"))
+    return {
+        "data_state": data_state,
+        "liq_age": liq_age,
+        "liq_reason": liq_reason,
+        "venue_div_status": vd.get("status"),
+        "venue_reason": vd.get("reason"),
+        "divergence_bps": vd.get("divergence_bps"),
+        "blocked": bool(blocked),
+        "coinbase_feed_health": cb.get("coinbase_feed_health", "degraded"),
+        "coinbase_l2_active": bool(cb.get("coinbase_l2_active", False)),
+        "coinbase_ticker_fallback_active": bool(cb.get("coinbase_ticker_fallback_active", False)),
+        "coinbase_btc_row_valid": bool(cb.get("coinbase_btc_row_valid", False)),
+        "collector_build": cb.get("collector_build", ""),
+    }
+
 
 def spot_autopilot_loop():
     """
@@ -2970,6 +4475,7 @@ def telegram_poller():
                         "• Add tickers: /daily BTC,SOL,ETH,XRP (defaults to BTC-USD,SOL-USD, ETH-USD, XRP-USD).\n"
                         "• /levels — show nearest bid/ask walls & spread.\n"
                         "• /scalp — quick intraday plan (bias, entry, TP/SL).\n"
+                        "• /calendar — macro events + expected/actual + likely BTC reaction.\n"
                         "• You’ll also get live intraday alerts here."
                     )
                     continue
@@ -2988,6 +4494,10 @@ def telegram_poller():
                         "• /morning BTC,SOL,ETH — Same but for specific symbols\n"
                         "• /decision — TA+Liquidity decision cards (default 15m)\n"
                         "• /decision 5m BTC,SOL,ETH — Decision cards for TF & symbols\n"
+                        "• /calendar — Macro calendar with expected/actual playbook (default 7d)\n"
+                        "• /calendar 48 — Same, next 48h\n"
+                        "• /desk — Pro-style TA desk snapshot (ongoing model)\n"
+                        "• /ta BTC-USD 5m — Plain-English TA read (less confusing)\n"
                         "• /health — Bot health check\n"
                     )
                     print("[TG] sent /help", flush=True)
@@ -3091,6 +4601,56 @@ def telegram_poller():
                         print(f"[TG] /morning error: {e}", flush=True)
                     continue
 
+                # /calendar (optional hours, e.g. "/calendar 48")
+                if cmd == "/calendar" or text.lower().startswith("/calendar"):
+                    try:
+                        parts = text.split(None, 1)
+                        hours = MACRO_CALENDAR_LOOKAHEAD_HOURS
+                        if len(parts) > 1:
+                            try:
+                                hours = max(1, min(168, int(parts[1].strip().split()[0])))
+                            except Exception:
+                                hours = MACRO_CALENDAR_LOOKAHEAD_HOURS
+                        note = build_macro_calendar_brief(within_hours=hours, include_playbook=True)
+                        send_telegram_chunked("🗓️ Macro Calendar\n", note)
+                        print(f"[TG] sent /calendar {hours}h", flush=True)
+                    except Exception as e:
+                        send_telegram(f"(calendar error: {e})")
+                        print(f"[TG] /calendar error: {e}", flush=True)
+                    continue
+
+                # /desk (on-demand desk snapshot)
+                if cmd == "/desk" or text.lower().startswith("/desk"):
+                    try:
+                        note, _states = build_desk_brief(tuple(symbols_to_watch), timeframe=DESK_BRIEF_TIMEFRAME)
+                        send_telegram(note)
+                        print("[TG] sent /desk snapshot", flush=True)
+                    except Exception as e:
+                        send_telegram(f"(desk error: {e})")
+                        print(f"[TG] /desk error: {e}", flush=True)
+                    continue
+
+                # /ta [symbol] [timeframe] -> plain-English TA read
+                # examples: /ta, /ta ETH-USD, /ta BTC-USD 5m
+                if cmd == "/ta" or text.lower().startswith("/ta"):
+                    try:
+                        parts = text.split()
+                        sym = "BTC-USD"
+                        tf = "5m"
+                        if len(parts) >= 2:
+                            p = parts[1].upper().strip()
+                            sym = p if "-" in p else f"{p}-USD"
+                        if len(parts) >= 3:
+                            p2 = parts[2].lower().strip()
+                            if p2 in {"5m", "15m", "1h", "4h"}:
+                                tf = p2
+                        send_telegram(_plain_ta_read(sym, timeframe=tf))
+                        print(f"[TG] sent /ta {sym} {tf}", flush=True)
+                    except Exception as e:
+                        send_telegram(f"(ta error: {e})")
+                        print(f"[TG] /ta error: {e}", flush=True)
+                    continue
+
                 # /health
                 if cmd == "/health":
                     send_telegram("ok")
@@ -3171,6 +4731,18 @@ if __name__ == "__main__":
     # Workers
     threading.Thread(target=fast_breakdown_loop, daemon=True).start()
     print("✅ [BOOT] fast_breakdown_loop thread started")
+
+    if MACRO_CALENDAR_ALERTS_ENABLED:
+        threading.Thread(target=macro_calendar_loop, daemon=True).start()
+        send_telegram("🟢 Macro calendar worker started")
+    else:
+        send_telegram("🟡 Macro calendar alerts disabled (set MACRO_CALENDAR_ALERTS_ENABLED=true)")
+
+    if DESK_BRIEF_ENABLED:
+        threading.Thread(target=desk_brief_loop, daemon=True).start()
+        send_telegram("🟢 TA Desk worker started")
+    else:
+        send_telegram("🟡 TA Desk updates disabled (set DESK_BRIEF_ENABLED=true)")
 
     if SPOT_AUTOPILOT_ENABLED:
         threading.Thread(target=spot_autopilot_loop, daemon=True).start()
